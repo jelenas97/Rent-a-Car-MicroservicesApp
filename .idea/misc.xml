@@ -8,6 +8,7 @@
       <list>
         <option value="$PROJECT_DIR$/advertisement/pom.xml" />
         <option value="$PROJECT_DIR$/messages/pom.xml" />
+        <option value="$PROJECT_DIR$/search/pom.xml" />
       </list>
     </option>
   </component>
