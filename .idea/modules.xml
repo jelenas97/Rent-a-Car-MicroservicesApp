@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Rent-a-Car-MicroservicesApp.iml" filepath="$PROJECT_DIR$/.idea/Rent-a-Car-MicroservicesApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/advertisement/advertisement.iml" filepath="$PROJECT_DIR$/advertisement/advertisement.iml" />
+      <module fileurl="file://$PROJECT_DIR$/authentication/authentication.iml" filepath="$PROJECT_DIR$/authentication/authentication.iml" />
       <module fileurl="file://$PROJECT_DIR$/messages/messages.iml" filepath="$PROJECT_DIR$/messages/messages.iml" />
     </modules>
   </component>

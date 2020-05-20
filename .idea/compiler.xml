@@ -6,18 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="authentication" />
         <module name="advertisement" />
         <module name="messages" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="advertisement" target="1.8" />
+      <module name="authentication" target="1.8" />
       <module name="messages" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="advertisement" options="-parameters" />
+      <module name="authentication" options="-parameters" />
       <module name="messages" options="-parameters" />
     </option>
   </component>
