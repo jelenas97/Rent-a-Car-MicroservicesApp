@@ -6,36 +6,40 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="authentication" />
-        <module name="advertisement" />
-        <module name="rent" />
-        <module name="messages" />
-        <module name="statistics" />
+        <module name="zuul" />
         <module name="search" />
-
+        <module name="authentication" />
+        <module name="eureka" />
+        <module name="rent" />
         <module name="location" />
+        <module name="messages" />
+        <module name="advertisement" />
+        <module name="statistics" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="advertisement" target="1.8" />
-      <module name="location" target="1.8" />
       <module name="authentication" target="1.8" />
+      <module name="eureka" target="1.8" />
+      <module name="location" target="1.8" />
       <module name="messages" target="1.8" />
       <module name="rent" target="1.8" />
-      <module name="statistics" target="1.8" />
       <module name="search" target="1.8" />
-
+      <module name="statistics" target="1.8" />
+      <module name="zuul" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="advertisement" options="-parameters" />
       <module name="authentication" options="-parameters" />
+      <module name="eureka" options="-parameters" />
       <module name="location" options="-parameters" />
       <module name="messages" options="-parameters" />
       <module name="rent" options="-parameters" />
-      <module name="statistics" options="-parameters" />
       <module name="search" options="-parameters" />
+      <module name="statistics" options="-parameters" />
+      <module name="zuul" options="-parameters" />
     </option>
   </component>
 </project>

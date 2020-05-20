@@ -13,8 +13,10 @@
         <option value="$PROJECT_DIR$/statistics/pom.xml" />
         <option value="$PROJECT_DIR$/location/pom.xml" />
         <option value="$PROJECT_DIR$/search/pom.xml" />
-
+        <option value="$PROJECT_DIR$/zuul/pom.xml" />
+        <option value="$PROJECT_DIR$/eureka/pom.xml" />
       </list>
     </option>
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="1.8.0_251" project-jdk-type="JavaSDK" />
 </project>
