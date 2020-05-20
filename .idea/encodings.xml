@@ -2,9 +2,16 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/advertisement" charset="UTF-8" />
+<<<<<<< HEAD
     <file url="file://$PROJECT_DIR$/location" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/messages" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rent" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/statistics" charset="UTF-8" />
+=======
+    <file url="file://$PROJECT_DIR$/advertisement/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/messages" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/messages/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/search/src/main/java" charset="UTF-8" />
+>>>>>>> 665b67d73f17e69938dbd36c40f681ab7d3f658e
   </component>
 </project>

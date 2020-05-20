@@ -6,7 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< HEAD
         <module name="statistics" />
+=======
+        <module name="search" />
+>>>>>>> 665b67d73f17e69938dbd36c40f681ab7d3f658e
         <module name="advertisement" />
         <module name="rent" />
         <module name="messages" />
@@ -17,8 +21,12 @@
       <module name="advertisement" target="1.8" />
       <module name="location" target="1.8" />
       <module name="messages" target="1.8" />
+<<<<<<< HEAD
       <module name="rent" target="1.8" />
       <module name="statistics" target="1.8" />
+=======
+      <module name="search" target="1.8" />
+>>>>>>> 665b67d73f17e69938dbd36c40f681ab7d3f658e
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -26,8 +34,12 @@
       <module name="advertisement" options="-parameters" />
       <module name="location" options="-parameters" />
       <module name="messages" options="-parameters" />
+<<<<<<< HEAD
       <module name="rent" options="-parameters" />
       <module name="statistics" options="-parameters" />
+=======
+      <module name="search" options="-parameters" />
+>>>>>>> 665b67d73f17e69938dbd36c40f681ab7d3f658e
     </option>
   </component>
 </project>
