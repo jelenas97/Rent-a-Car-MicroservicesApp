@@ -8,6 +8,9 @@
       <list>
         <option value="$PROJECT_DIR$/advertisement/pom.xml" />
         <option value="$PROJECT_DIR$/messages/pom.xml" />
+        <option value="$PROJECT_DIR$/rent/pom.xml" />
+        <option value="$PROJECT_DIR$/statistics/pom.xml" />
+        <option value="$PROJECT_DIR$/location/pom.xml" />
       </list>
     </option>
   </component>

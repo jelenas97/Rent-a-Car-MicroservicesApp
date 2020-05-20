@@ -4,7 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Rent-a-Car-MicroservicesApp.iml" filepath="$PROJECT_DIR$/.idea/Rent-a-Car-MicroservicesApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/advertisement/advertisement.iml" filepath="$PROJECT_DIR$/advertisement/advertisement.iml" />
+      <module fileurl="file://$PROJECT_DIR$/location/location.iml" filepath="$PROJECT_DIR$/location/location.iml" />
       <module fileurl="file://$PROJECT_DIR$/messages/messages.iml" filepath="$PROJECT_DIR$/messages/messages.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rent/rent.iml" filepath="$PROJECT_DIR$/rent/rent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/statistics/statistics.iml" filepath="$PROJECT_DIR$/statistics/statistics.iml" />
     </modules>
   </component>
 </project>
