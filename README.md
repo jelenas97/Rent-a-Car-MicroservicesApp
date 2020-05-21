@@ -1,5 +1,8 @@
 # Rent-a-Car-Agent
 
+  - #### Agent application backend: https://github.com/jelenas97/Rent-a-Car-Agent    
+  - #### Agent application frontend: https://github.com/jelenas97/Rent-a-Car-AgentFrontend
+
 ## Services
 
 
