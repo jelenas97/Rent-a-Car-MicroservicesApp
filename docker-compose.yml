@@ -1,9 +1,11 @@
-version: '3'
+version: '3.7'
 services:
 
   eureka-serviceregistry:
     container_name: eureka
     build: ./eureka
+    networks:
+      - demo
     ports:
       - "8761:8761"
     tty: true
@@ -15,83 +17,161 @@ services:
       - "8083:8083"
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
+    networks:
+      - demo
     tty: true
     depends_on:
       - eureka-serviceregistry
 
-  advertisement:
-    container_name: advertisement
-    build: ./advertisement
-    ports:
-      - "8084:8084"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
 
   authentication:
     container_name: authentication
     build: ./authentication
     ports:
       - "8085:8085"
+    networks:
+      - demo
+    restart: on-failure
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
+        DATABASE_USERNAME: pera
+        DATABASE_PASSWORD: pera
+        DATABASE_DOMAIN: mysql
+        DATABASE_SCHEMA: auth
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
     tty: true
     depends_on:
+      - mysql
       - eureka-serviceregistry
 
-  location:
-    container_name: location
-    build: ./location
-    ports:
-      - "8086:8086"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
+#  advertisement:
+#    container_name: advertisement
+#    build: ./advertisement
+#    restart: on-failure
+#    ports:
+#      - "8084:8084"
+#    networks:
+#      - demo
+#    environment:
+#      DATABASE_USERNAME: pera
+#      DATABASE_PASSWORD: pera
+#      DATABASE_DOMAIN: mysql
+#      DATABASE_SCHEMA: advert
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+#
+#    tty: true
+#    depends_on:
+#      - mysql
+#      - eureka-serviceregistry
+#
+#  location:
+#    container_name: location
+#    build: ./location
+#    restart: on-failure
+#    ports:
+#      - "8086:8086"
+#    networks:
+#      - demo
+#    environment:
+#      DATABASE_USERNAME: pera
+#      DATABASE_PASSWORD: pera
+#      DATABASE_DOMAIN: mysql
+#      DATABASE_SCHEMA: location
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+#    tty: true
+#    depends_on:
+#      - mysql
+#      - eureka-serviceregistry
+#
+#  messages:
+#    container_name: messages
+#    build: ./messages
+#    restart: on-failure
+#    ports:
+#      - "8087:8087"
+#    networks:
+#      - demo
+#    environment:
+#      DATABASE_USERNAME: pera
+#      DATABASE_PASSWORD: pera
+#      DATABASE_DOMAIN: mysql
+#      DATABASE_SCHEMA: messages
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+#    tty: true
+#    depends_on:
+#      - mysql
+#      - eureka-serviceregistry
+#
+#  rent:
+#    container_name: rent
+#    build: ./rent
+#    restart: on-failure
+#    ports:
+#      - "8088:8088"
+#    networks:
+#      - demo
+#    environment:
+#      DATABASE_USERNAME: pera
+#      DATABASE_PASSWORD: pera
+#      DATABASE_DOMAIN: mysql
+#      DATABASE_SCHEMA: rent
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+#    tty: true
+#    depends_on:
+#      - mysql
+#      - eureka-serviceregistry
+#
+#  search:
+#    container_name: search
+#    build: ./search
+#    restart: on-failure
+#    ports:
+#      - "8089:8089"
+#    networks:
+#      - demo
+#    environment:
+#      DATABASE_USERNAME: pera
+#      DATABASE_PASSWORD: pera
+#      DATABASE_DOMAIN: mysql
+#      DATABASE_SCHEMA: search
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+#    tty: true
+#    depends_on:
+#      - mysql
+#      - eureka-serviceregistry
+#
+#  statistics:
+#    container_name: statistics
+#    build: ./statistics
+#    restart: on-failure
+#    ports:
+#      - "8090:8090"
+#    networks:
+#      - demo
+#    environment:
+#      DATABASE_USERNAME: pera
+#      DATABASE_PASSWORD: pera
+#      DATABASE_DOMAIN: mysql
+#      DATABASE_SCHEMA: statistics
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+#    tty: true
+#    depends_on:
+#      - mysql
+#      - eureka-serviceregistry
 
-  messages:
-    container_name: messages
-    build: ./messages
-    ports:
-      - "8087:8087"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
 
-  rent:
-    container_name: rent
-    build: ./rent
-    ports:
-      - "8088:8088"
+  mysql:
+    image: mysql:8.0.19
+    container_name: mysql
+    restart: always
+    networks:
+      - demo
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
     environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
+      MYSQL_ROOT_PASSWORD: password
 
-  search:
-    container_name: search
-    build: ./search
-    ports:
-      - "8089:8089"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
 
-  statistics:
-    container_name: statistics
-    build: ./statistics
-    ports:
-      - "8090:8090"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
+networks:
+  demo:
+    name: demo
+    driver: bridge
