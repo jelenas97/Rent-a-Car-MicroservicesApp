@@ -6,14 +6,18 @@
     <file url="file://$PROJECT_DIR$/authentication" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/authentication/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/location" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/location/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/messages" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/messages/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rent/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/search" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/search/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/statistics" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/statistics/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/zuul" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zuul/src/main/java" charset="UTF-8" />
   </component>
 </project>
