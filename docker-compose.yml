@@ -43,25 +43,25 @@ services:
       - mysql
       - eureka-serviceregistry
 
-#  advertisement:
-#    container_name: advertisement
-#    build: ./advertisement
-#    restart: on-failure
-#    ports:
-#      - "8084:8084"
-#    networks:
-#      - demo
-#    environment:
-#      DATABASE_USERNAME: pera
-#      DATABASE_PASSWORD: pera
-#      DATABASE_DOMAIN: mysql
-#      DATABASE_SCHEMA: advert
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
-#
-#    tty: true
-#    depends_on:
-#      - mysql
-#      - eureka-serviceregistry
+  advertisement:
+    container_name: advertisement
+    build: ./advertisement
+    restart: on-failure
+    ports:
+      - "8084:8084"
+    networks:
+      - demo
+    environment:
+      DATABASE_USERNAME: pera
+      DATABASE_PASSWORD: pera
+      DATABASE_DOMAIN: mysql
+      DATABASE_SCHEMA: advert
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+
+    tty: true
+    depends_on:
+      - mysql
+      - eureka-serviceregistry
 #
 #  location:
 #    container_name: location
