@@ -1,9 +1,20 @@
 package com.authentication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.authentication.enumerations.AccountStatus;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-public class User {
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@NoArgsConstructor
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +22,9 @@ public class User {
 
     @Column(unique = true)
     private String username;
+
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status = AccountStatus.ACTIVE;
 
     @Column
     private String email;
@@ -27,8 +41,23 @@ public class User {
     @Column
     private String address;
 
-    public User() {
-    }
+//    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<Advertisement> advertisement;
+//
+//    @OneToMany(mappedBy = "recepient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<Message> inbox;
+//
+//    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<Message> sent;
+//
+//    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<RentRequest> rentRequests;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
 
     public Long getId() {
         return id;
@@ -38,12 +67,21 @@ public class User {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AccountStatus status) {
+        this.status = status;
     }
 
     public String getEmail() {
@@ -54,6 +92,7 @@ public class User {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -76,6 +115,71 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+//    public Set<Advertisement> getAdvertisement() {
+//        return advertisement;
+//    }
+//
+//    public void setAdvertisement(Set<Advertisement> advertisement) {
+//        this.advertisement = advertisement;
+//    }
+//
+//    public Set<Message> getInbox() {
+//        return inbox;
+//    }
+//
+//    public void setInbox(Set<Message> inbox) {
+//        this.inbox = inbox;
+//    }
+//
+//    public Set<Message> getSent() {
+//        return sent;
+//    }
+//
+//    public void setSent(Set<Message> sent) {
+//        this.sent = sent;
+//    }
+//
+//    public Set<RentRequest> getRentRequests() {
+//        return rentRequests;
+//    }
+//
+//    public void setRentRequests(Set<RentRequest> rentRequests) {
+//        this.rentRequests = rentRequests;
+//    }
+
+    @Override
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public String getAddress() {

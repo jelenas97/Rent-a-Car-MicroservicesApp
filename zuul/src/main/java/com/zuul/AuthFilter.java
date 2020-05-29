@@ -2,7 +2,6 @@ package com.zuul;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class AuthFilter extends ZuulFilter {
+
+    @Autowired
+    private AuthClient authClient;
 
     @Override
     public String filterType() {
@@ -38,24 +40,30 @@ public class AuthFilter extends ZuulFilter {
     @Override
     public Object run() {
 
+
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
 
-        if (request.getHeader("email") == null) {
+        String authenticationHeader = request.getHeader("Authorization");
+        if (authenticationHeader == null){
+            System.out.println( "No header present");
             return null;
-        };
+        }
 
-        String email = request.getHeader("email");
+        String jwtToken = authenticationHeader.replace("Bearer ", "");
+        System.out.println(jwtToken);
+
         try {
-            //authClient.verify(email);
-            ctx.addZuulRequestHeader("username", email);
-            ctx.addZuulRequestHeader("role", "SIMPLE_USER");
-
-        } catch (FeignException.NotFound e) {
-            setFailedRequest("Consumer does not exist!", 403);
+            boolean valid = authClient.verify(jwtToken);
+            System.out.println(valid);
+            System.out.println( "cao cao");
+            // redirection (?) -> not needed I fixed it... :)
+        } catch (Exception e) {
+            setFailedRequest("Invalid token", 403);
         }
 
         return null;
+
     }
 
 

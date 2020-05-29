@@ -5,26 +5,26 @@ zuul:
       stripPrefix: false
       serviceId: advertisement
     authentication:
-      path: /test/**
+      path: /auth/**
       stripPrefix: false
       serviceId: authentication
-    location:
-      path: /test/**
-      stripPrefix: false
-      serviceId: location
-    messages:
-      path: /test/**
-      stripPrefix: false
-      serviceId: messages
-    rent:
-      path: /test/**
-      stripPrefix: false
-      serviceId: rent
-    search:
-      path: /test/**
-      stripPrefix: false
-      serviceId: search
-    statistics:
-      path: /test/**
-      stripPrefix: false
-      serviceId: statistics
+#    location:
+#      path: /test/**
+#      stripPrefix: false
+#      serviceId: location
+#    messages:
+#      path: /test/**
+#      stripPrefix: false
+#      serviceId: messages
+#    rent:
+#      path: /test/**
+#      stripPrefix: false
+#      serviceId: rent
+#    search:
+#      path: /test/**
+#      stripPrefix: false
+#      serviceId: search
+#    statistics:
+#      path: /test/**
+#      stripPrefix: false
+#      serviceId: statistics

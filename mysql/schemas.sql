@@ -11,3 +11,5 @@ CREATE SCHEMA IF NOT EXISTS `statistics`;
 # create root user and grant rights
 CREATE USER 'pera'@'%' IDENTIFIED BY 'pera';
 GRANT ALL PRIVILEGES ON *.* TO 'pera'@'%';
+
+
