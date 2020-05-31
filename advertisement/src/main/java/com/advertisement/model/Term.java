@@ -21,4 +21,5 @@ public class Term {
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
 
+
 }
