@@ -4,21 +4,21 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 public class CreateTermCommand {
     @TargetAggregateIdentifier
-    private Long termAggregateId;
+    private String termAggregateId;
 
 
     public CreateTermCommand() {
     }
 
-    public CreateTermCommand(Long termAggregateId) {
+    public CreateTermCommand(String termAggregateId) {
         this.termAggregateId = termAggregateId;
     }
 
-    public Long getTermAggregateId() {
+    public String getTermAggregateId() {
         return termAggregateId;
     }
 
-    public void setTermAggregateId(Long termAggregateId) {
+    public void setTermAggregateId(String termAggregateId) {
         this.termAggregateId = termAggregateId;
     }
 

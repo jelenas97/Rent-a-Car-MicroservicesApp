@@ -2,6 +2,7 @@ package com.rent.controller;
 
 import com.rent.model.RentRequest;
 import com.rent.repository.RentRequestRepository;
+import com.rent.service.RentRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,10 @@ public class Test {
 
     @Autowired
     private RentRequestRepository rentRequestRepository;
+
+
+    @Autowired
+    private RentRequestService rentRequestService;
 
     @GetMapping(path = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,14 +46,15 @@ public class Test {
         try {
 
             if (confirm.equals("YES")) {
-                RentRequest r = this.rentRequestRepository.getOne(1L);
-                r.setStatus("CANCELED!!!");
-                this.rentRequestRepository.save(r);
+                RentRequest request = this.rentRequestRepository.findById(1L).orElse(null);
+                if (request != null) {
+                    System.out.print("Request nije null" + request);
+                    this.rentRequestService.rent(request);
+                }
+
 
             } else {
-                RentRequest r = this.rentRequestRepository.getOne(1L);
-                r.setStatus("NOVI");
-                this.rentRequestRepository.save(r);
+
 
             }
 

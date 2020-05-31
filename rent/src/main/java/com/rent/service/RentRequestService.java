@@ -1,5 +1,9 @@
 package com.rent.service;
 
-public interface RentRequestService {
+import com.rent.model.RentRequest;
 
+public interface RentRequestService {
+    void update(Long id, String status);
+
+    void rent(RentRequest rentRequest);
 }
