@@ -1,14 +1,12 @@
 package com.advertisement.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Setter
@@ -23,9 +21,9 @@ public class Advertisement {
     @Column
     private Integer kilometresLimit;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Term> terms;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Set<Term> terms;
 
 
 

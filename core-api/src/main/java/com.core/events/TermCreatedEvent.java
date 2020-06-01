@@ -8,6 +8,8 @@ public class TermCreatedEvent {
 
     public TermCreatedEvent(String termAggregateId) {
         this.termAggregateId = termAggregateId;
+        System.out.println("CORE API term created EVENT TERM COMMAN " + this.termAggregateId);
+
     }
 
     public String getTermAggregateId() {

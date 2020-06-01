@@ -24,12 +24,13 @@ public class RentRequestSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "rentRequestId")
     public void handle(ReservedEvent reservedEvent) {
-        System.out.println("Saga invoked");
+        System.out.println("Saga invoked second time??");
 
         String termAggregateId = UUID.randomUUID().toString();
 
         SagaLifecycle.associateWith("termAggregateId", termAggregateId);
         //ovdje vjerovatno ID advertisementa!!!!
+        System.out.print(termAggregateId + reservedEvent.getRentRequestId());
         commandGateway.send(new CreateTermCommand(termAggregateId, reservedEvent.getRentRequestId()));
     }
 

@@ -13,6 +13,8 @@ public class TermCreatedFailedEvent {
         this.termAggregateId = termAggregateId;
         this.reason = reason;
         this.rentRequestId = rentRequestId;
+        System.out.println("CORE API TERM CREATED FAILED EVENT TERM COMMAN " + this.rentRequestId + this.rentRequestId);
+
     }
 
     public String getTermAggregateId() {

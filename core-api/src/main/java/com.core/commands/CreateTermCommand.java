@@ -15,6 +15,7 @@ public class CreateTermCommand {
     public CreateTermCommand(String termAggregateId, Long advertisementId) {
         this.termAggregateId = termAggregateId;
         this.advertisementId = advertisementId;
+        System.out.println("CORE API CREATE TERM COMMAN " + this.termAggregateId + this.advertisementId);
     }
 
     public String getTermAggregateId() {

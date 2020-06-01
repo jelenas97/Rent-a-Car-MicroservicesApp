@@ -17,9 +17,12 @@ public class Term {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @ManyToOne
-    @JoinColumn(name = "advertisement_id", nullable = false)
-    private Advertisement advertisement;
+//    @ManyToOne
+//    @JoinColumn(name = "advertisement_id", nullable = false)
+//    private Advertisement advertisement;
+
+    @Column
+    private String provjera;
 
 
 }

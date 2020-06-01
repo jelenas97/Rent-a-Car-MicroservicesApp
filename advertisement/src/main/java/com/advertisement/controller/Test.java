@@ -35,9 +35,10 @@ public class Test {
     public ResponseEntity<?> processRequest() {
 
         try {
+            System.out.println("CREATE ADVERTISEMENT!!");
             Advertisement ad = new Advertisement();
             Term term = new Term();
-            term.setAdvertisement(ad);
+            //  term.setAdvertisement(ad);
             this.advertisementRepository.save(ad);
             this.termRepository.save(term);
 

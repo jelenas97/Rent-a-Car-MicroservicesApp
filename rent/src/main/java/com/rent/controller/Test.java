@@ -32,31 +32,32 @@ public class Test {
 
     @GetMapping(path = "/test/config",
             produces = MediaType.APPLICATION_JSON_VALUE)
-
     public List<RentRequest> save() {
         RentRequest request = new RentRequest();
         request.setStatus("NOVI");
-        this.rentRequestRepository.save(request);
+        for (int i = 0; i < 10; i++) {
+            this.rentRequestRepository.save(request);
+        }
         return this.rentRequestRepository.findAll();
     }
 
     @PostMapping(value = "/request/{confirm}", produces = "application/json")
-    public ResponseEntity<?> processRequest(@PathVariable String confirm) {
+    public ResponseEntity<?> processRequest(@PathVariable Long confirm) {
 
         try {
 
-            if (confirm.equals("YES")) {
-                RentRequest request = this.rentRequestRepository.findById(1L).orElse(null);
+//            if (confirm.equals("YES")) {
+            RentRequest request = this.rentRequestRepository.findById(confirm).orElse(null);
                 if (request != null) {
-                    System.out.print("Request nije null" + request);
+                    System.out.print("Request nije null" + request.toString());
                     this.rentRequestService.rent(request);
                 }
 
 
-            } else {
-
-
-            }
+//            } else {
+//
+//
+//            }
 
             return new ResponseEntity(null, HttpStatus.OK);
         } catch (NullPointerException e) {

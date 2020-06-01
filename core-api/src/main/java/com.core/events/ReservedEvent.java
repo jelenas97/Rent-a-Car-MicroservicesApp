@@ -12,6 +12,8 @@ public class ReservedEvent {
                          String status) {
         this.rentRequestId = rentRequestId;
         this.status = status;
+        System.out.println("CORE API RESERVE EVENT TERM COMMAN " + this.rentRequestId + this.status);
+
     }
 
     public Long getRentRequestId() {
