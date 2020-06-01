@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="dtba@localhost" uuid="9cbc0943-a2da-43b3-b5e1-d78489d9da57">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/dtba</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="rent@localhost" uuid="f58cac59-7ae6-4ba1-911f-bc2c08d9095d">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/rent</jdbc-url>
+    </data-source>
+  </component>
+</project>

@@ -29,8 +29,8 @@ public class RentRequestSaga {
         String termAggregateId = UUID.randomUUID().toString();
 
         SagaLifecycle.associateWith("termAggregateId", termAggregateId);
-
-        commandGateway.send(new CreateTermCommand(termAggregateId));
+        //ovdje vjerovatno ID advertisementa!!!!
+        commandGateway.send(new CreateTermCommand(termAggregateId, reservedEvent.getRentRequestId()));
     }
 
     @SagaEventHandler(associationProperty = "termAggregateId")

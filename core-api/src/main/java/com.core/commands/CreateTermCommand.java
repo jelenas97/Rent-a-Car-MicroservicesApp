@@ -6,12 +6,15 @@ public class CreateTermCommand {
     @TargetAggregateIdentifier
     private String termAggregateId;
 
+    private Long advertisementId;
+
 
     public CreateTermCommand() {
     }
 
-    public CreateTermCommand(String termAggregateId) {
+    public CreateTermCommand(String termAggregateId, Long advertisementId) {
         this.termAggregateId = termAggregateId;
+        this.advertisementId = advertisementId;
     }
 
     public String getTermAggregateId() {
@@ -22,4 +25,11 @@ public class CreateTermCommand {
         this.termAggregateId = termAggregateId;
     }
 
+    public Long getAdvertisementId() {
+        return advertisementId;
+    }
+
+    public void setAdvertisementId(Long advertisementId) {
+        this.advertisementId = advertisementId;
+    }
 }
