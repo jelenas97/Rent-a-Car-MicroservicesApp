@@ -30,19 +30,13 @@ public class RentRequestAggregate {
     @EventSourcingHandler
     public void on(ReservedEvent reservedEvent) {
         System.out.println("RentRequestAggregate reserved event on" + reservedEvent.toString());
-        System.out.println("" + reservedEvent.getRentRequestId());
-
         this.rentRequestId = reservedEvent.getRentRequestId();
-        System.out.print("SSS" + this.rentRequestId);
     }
 
     @CommandHandler
     public void on(RollbackReserveCommand rollbackReserveCommand, RentRequestService requestService) {
-
         System.out.println("RentRequestAggregate rollback command event on" + rollbackReserveCommand);
-
         requestService.update(rollbackReserveCommand.getRentRequestId(), "PENDING");
-
         AggregateLifecycle.apply(new ReserveRollbackEvent(rollbackReserveCommand.getRentRequestId()));
     }
 

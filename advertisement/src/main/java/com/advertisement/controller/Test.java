@@ -38,7 +38,6 @@ public class Test {
             System.out.println("CREATE ADVERTISEMENT!!");
             Advertisement ad = new Advertisement();
             Term term = new Term();
-            //  term.setAdvertisement(ad);
             this.advertisementRepository.save(ad);
             this.termRepository.save(term);
 

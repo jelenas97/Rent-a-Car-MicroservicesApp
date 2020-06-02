@@ -33,9 +33,9 @@ public class Test {
     @GetMapping(path = "/test/config",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RentRequest> save() {
-        RentRequest request = new RentRequest();
-        request.setStatus("NOVI");
         for (int i = 0; i < 10; i++) {
+            RentRequest request = new RentRequest();
+            request.setStatus("NOVI");
             this.rentRequestRepository.save(request);
         }
         return this.rentRequestRepository.findAll();
@@ -52,8 +52,6 @@ public class Test {
                     System.out.print("Request nije null" + request.toString());
                     this.rentRequestService.rent(request);
                 }
-
-
 //            } else {
 //
 //

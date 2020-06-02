@@ -22,6 +22,9 @@ services:
     tty: true
     depends_on:
       - eureka-serviceregistry
+  #      - axon-server
+  #      - advertisement
+  #      - rent
 
 
   authentication:
@@ -62,8 +65,14 @@ services:
     depends_on:
       - mysql
       - eureka-serviceregistry
-#
-#  location:
+  #      - axon-server
+  #  axon-server:
+  #    image: axoniq/axonserver:4.3.2
+  #    ports:
+  #      - 8024:8024
+  #      - 8124:8124
+
+  #  location:
 #    container_name: location
 #    build: ./location
 #    restart: on-failure
@@ -101,24 +110,25 @@ services:
 #      - mysql
 #      - eureka-serviceregistry
 #
-#  rent:
-#    container_name: rent
-#    build: ./rent
-#    restart: on-failure
-#    ports:
-#      - "8088:8088"
-#    networks:
-#      - demo
-#    environment:
-#      DATABASE_USERNAME: pera
-#      DATABASE_PASSWORD: pera
-#      DATABASE_DOMAIN: mysql
-#      DATABASE_SCHEMA: rent
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
-#    tty: true
-#    depends_on:
-#      - mysql
-#      - eureka-serviceregistry
+  rent:
+    container_name: rent
+    build: ./rent
+    restart: on-failure
+    ports:
+      - "8088:8088"
+    networks:
+      - demo
+    environment:
+      DATABASE_USERNAME: pera
+      DATABASE_PASSWORD: pera
+      DATABASE_DOMAIN: mysql
+      DATABASE_SCHEMA: rent
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+    tty: true
+    depends_on:
+      - mysql
+      - eureka-serviceregistry
+  #      - axon-server
 #
 #  search:
 #    container_name: search

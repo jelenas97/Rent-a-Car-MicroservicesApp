@@ -14,7 +14,7 @@ public class TermServiceImpl implements TermService {
     @Override
     public void create(String aggId, Long advertisementId) {
         Term t = new Term();
-        t.setProvjera("BAS SAM GLUP OVDJE JE BIO PROBLEM!!!!");
+        t.setProvjera("WORKING!!!");
         this.termRepository.save(t);
     }
 }
