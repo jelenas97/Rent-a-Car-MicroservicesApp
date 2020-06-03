@@ -26,8 +26,6 @@ services:
       - advertisement
       - rent
 
-
-
   authentication:
     container_name: authentication
     build: ./authentication
@@ -42,6 +40,7 @@ services:
         DATABASE_DOMAIN: mysql
         DATABASE_SCHEMA: auth
         EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+        AXON_HOST: axon-server
     tty: true
     depends_on:
       - mysql
