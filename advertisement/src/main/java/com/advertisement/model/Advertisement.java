@@ -1,8 +1,18 @@
 package com.advertisement.model;
 
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
+@ToString
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,44 +21,11 @@ public class Advertisement {
     @Column
     private Integer kilometresLimit;
 
-    @Column
-    private Integer discount;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Set<Term> terms;
 
-    @Column
-    private String place;
 
-    public Advertisement() {
-    }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getKilometresLimit() {
-        return kilometresLimit;
-    }
-
-    public void setKilometresLimit(Integer kilometresLimit) {
-        this.kilometresLimit = kilometresLimit;
-    }
-
-    public Integer getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
 }

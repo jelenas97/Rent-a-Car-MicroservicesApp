@@ -6,13 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="core-api" />
         <module name="zuul" />
-        <module name="search" />
+        <module name="rent" />
+        <module name="messages" />
         <module name="authentication" />
         <module name="eureka" />
-        <module name="rent" />
+        <module name="search" />
         <module name="location" />
-        <module name="messages" />
         <module name="advertisement" />
         <module name="statistics" />
       </profile>
@@ -20,6 +21,7 @@
     <bytecodeTargetLevel>
       <module name="advertisement" target="1.8" />
       <module name="authentication" target="1.8" />
+      <module name="core-api" target="1.5" />
       <module name="eureka" target="1.8" />
       <module name="location" target="1.8" />
       <module name="messages" target="1.8" />

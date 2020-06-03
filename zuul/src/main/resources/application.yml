@@ -16,10 +16,10 @@ zuul:
 #      path: /test/**
 #      stripPrefix: false
 #      serviceId: messages
-#    rent:
-#      path: /test/**
-#      stripPrefix: false
-#      serviceId: rent
+    rent:
+      path: /test/**
+      stripPrefix: false
+      serviceId: rent
 #    search:
 #      path: /test/**
 #      stripPrefix: false
