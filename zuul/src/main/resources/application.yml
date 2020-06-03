@@ -9,7 +9,7 @@ zuul:
       stripPrefix: false
       serviceId: authentication
     rent:
-      path: /rent/**
+      path: /rentRequest/**
       stripPrefix: false
       serviceId: rent
     location:
