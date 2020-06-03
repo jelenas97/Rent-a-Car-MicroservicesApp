@@ -37,7 +37,7 @@ public class RentRequest implements Serializable {
     @Column(nullable = false)
     private Long advertisementId;
 
-    @Column
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private RequestsHolder requests;
 
     public RentRequest(RentRequestDTO requestDTO, Long senderId, Long advertisementId, RequestsHolder holder) {
