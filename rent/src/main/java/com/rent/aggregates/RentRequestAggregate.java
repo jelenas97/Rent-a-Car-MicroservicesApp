@@ -25,7 +25,7 @@ public class RentRequestAggregate {
     public RentRequestAggregate(ReserveCommand reserveCommand) {
         System.out.println("RentRequestAggregate reserve command" + reserveCommand.toString());
         AggregateLifecycle.apply(new ReservedEvent(reserveCommand.getRentRequestId(),
-                "RESERVED"));
+                "RESERVED", reserveCommand.getStartDate(), reserveCommand.getEndDate()));
     }
 
     @EventSourcingHandler
@@ -38,7 +38,6 @@ public class RentRequestAggregate {
     public void on(RollbackReserveCommand rollbackReserveCommand, RentRequestService requestService) {
         System.out.println("RentRequestAggregate rollback command event on" + rollbackReserveCommand);
         requestService.changeStatus(rollbackReserveCommand.getRentRequestId(), RentRequestStatus.PENDING.toString());
-        // requestService.update(rollbackReserveCommand.getRentRequestId(), "PENDING");
         AggregateLifecycle.apply(new ReserveRollbackEvent(rollbackReserveCommand.getRentRequestId()));
     }
 

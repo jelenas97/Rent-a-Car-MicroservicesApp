@@ -1,6 +1,10 @@
 package com.advertisement.service;
 
-public interface AdvertisementService {
+import com.advertisement.model.Advertisement;
 
+import java.util.List;
+
+public interface AdvertisementService {
+    List<Advertisement> findAll(Long agentID);
 
 }

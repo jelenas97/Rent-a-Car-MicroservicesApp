@@ -1,6 +1,7 @@
 package com.rent.controller;
 
 import com.rent.client.AdvertisementClient;
+import com.rent.dto.AdvertisementDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.dto.RequestsHolderDTO;
 import com.rent.enumerations.RentRequestStatus;
@@ -35,7 +36,7 @@ public class RentRequestController {
     @GetMapping(path = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE)
 
-    public String getRentRequests() {
+    public AdvertisementDTO getRentRequests() {
         System.out.print("OVO NAM VRACA??? :) " + this.advertisementClient.getAdvertisement());
         return this.advertisementClient.getAdvertisement();
     }
