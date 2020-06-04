@@ -1,5 +1,6 @@
 package com.advertisement.controller;
 
+import com.advertisement.dto.AdvertisementDTO;
 import com.advertisement.model.Advertisement;
 import com.advertisement.model.Term;
 import com.advertisement.repository.AdvertisementRepository;
@@ -31,9 +32,11 @@ public class Test {
 
     @GetMapping(path = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getAdvertisement() {
-        System.out.print("Radi FEIGHNSDFFSDSDFWEFWRSDSDSEf");
-        return "Axon server RADI!!!!";
+    public AdvertisementDTO getAdvertisement() {
+        Advertisement ad = this.advertisementRepository.findById(1L).orElse(null);
+        AdvertisementDTO advertisementDTO = new AdvertisementDTO(ad);
+        System.out.print("Saljem ovaj advertisement " + advertisementDTO);
+        return advertisementDTO;
     }
 
 

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Setter
@@ -21,11 +22,22 @@ public class Advertisement {
     @Column
     private Integer kilometresLimit;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<Term> terms;
-
-
-
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id")
+    public Car car;
+    @Column
+    public Long ownerId;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public PriceList priceList;
+    @Column
+    private Integer discount;
+    @Column
+    private String place;
+    @Column
+    private Boolean cdw;
+    @Column(name = "startDate", nullable = false)
+    private LocalDate startDate;
+    @Column(name = "endDate", nullable = false)
+    private LocalDate endDate;
 
 }
