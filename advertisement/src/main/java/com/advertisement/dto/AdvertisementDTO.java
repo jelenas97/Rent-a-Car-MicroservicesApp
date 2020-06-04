@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +24,7 @@ public class AdvertisementDTO {
     private Integer mileage;
     private Double rate;
     private Integer discount;
-    private String image;
+    private List<String> imageGallery;
     private Boolean availableTracking;
     private Double price;
     private String model;
@@ -41,7 +43,7 @@ public class AdvertisementDTO {
         this.mileage = ad.getCar().getMileage();
         this.rate = 10.0;
         this.discount = ad.getDiscount();
-        this.image = ad.getCar().getImage();
+        this.imageGallery = ad.getCar().getImageGallery();
         this.availableTracking = ad.getCar().getAvailableTracking();
         this.price = ad.getPriceList().getPricePerDay();
         this.model = ad.getCar().getCarModel().getName();

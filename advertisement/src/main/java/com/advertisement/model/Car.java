@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,8 +40,8 @@ public class Car {
     private Integer kidSeats;
     @Column
     private Boolean availableTracking;
-    @Column
-    private String image;
+    @Transient
+    private List<String> imageGallery;
 
 
 }
