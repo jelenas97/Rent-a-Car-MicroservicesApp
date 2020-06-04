@@ -15,15 +15,22 @@ import java.util.Set;
 @NoArgsConstructor
 public class PriceList {
 
-    @OneToMany(mappedBy = "priceList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<Advertisement> advertisement;
-    @Column
-    public Long agentId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column()
+
+    @Column
+    public Long creatorId;
+
+    @Column
     private Double pricePerDay;
+
     @Column
     private Double pricePerKm;
+
+    @Column
+    private Double cdw;
+
+    @OneToMany(mappedBy = "priceList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Set<Advertisement> advertisement;
 }
