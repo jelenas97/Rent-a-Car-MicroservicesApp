@@ -1,25 +1,25 @@
 zuul:
   routes:
     advertisement:
-      path: /test/**
+      path: /advertisement/**
       stripPrefix: false
       serviceId: advertisement
     authentication:
       path: /auth/**
       stripPrefix: false
       serviceId: authentication
-#    location:
-#      path: /test/**
-#      stripPrefix: false
-#      serviceId: location
+    rent:
+      path: /rentRequest/**
+      stripPrefix: false
+      serviceId: rent
+    location:
+      path: /test/**
+      stripPrefix: false
+      serviceId: location
 #    messages:
 #      path: /test/**
 #      stripPrefix: false
 #      serviceId: messages
-    rent:
-      path: /test/**
-      stripPrefix: false
-      serviceId: rent
 #    search:
 #      path: /test/**
 #      stripPrefix: false

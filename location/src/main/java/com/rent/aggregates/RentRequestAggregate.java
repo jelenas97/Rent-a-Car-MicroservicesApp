@@ -4,7 +4,6 @@ import com.core.commands.ReserveCommand;
 import com.core.commands.RollbackReserveCommand;
 import com.core.events.ReserveRollbackEvent;
 import com.core.events.ReservedEvent;
-import com.rent.enumerations.RentRequestStatus;
 import com.rent.service.RentRequestService;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -37,8 +36,7 @@ public class RentRequestAggregate {
     @CommandHandler
     public void on(RollbackReserveCommand rollbackReserveCommand, RentRequestService requestService) {
         System.out.println("RentRequestAggregate rollback command event on" + rollbackReserveCommand);
-        requestService.changeStatus(rollbackReserveCommand.getRentRequestId(), RentRequestStatus.PENDING.toString());
-        // requestService.update(rollbackReserveCommand.getRentRequestId(), "PENDING");
+        requestService.update(rollbackReserveCommand.getRentRequestId(), "PENDING");
         AggregateLifecycle.apply(new ReserveRollbackEvent(rollbackReserveCommand.getRentRequestId()));
     }
 
