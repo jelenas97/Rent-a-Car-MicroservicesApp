@@ -1,5 +1,6 @@
 package com.advertisement.service.impl;
 
+import com.advertisement.model.FuelType;
 import com.advertisement.model.TransmissionType;
 import com.advertisement.repository.TransmissionTypeRepository;
 import com.advertisement.service.TransmissionTypeService;
@@ -40,11 +41,9 @@ public class TransmissionTypeServiceImpl implements TransmissionTypeService {
     }
 
     @Override
-    public void delete(String name) {
-        TransmissionType transmissionType = this.transmissionTypeRepository.findByName(name);
+    public void delete(TransmissionType transmissionType) {
         transmissionType.setActive(false);
         this.transmissionTypeRepository.save(transmissionType);
-
     }
 
     @Override
