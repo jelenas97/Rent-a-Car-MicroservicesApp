@@ -11,10 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.security.PermitAll;
 
 
 @RestController
@@ -46,7 +45,6 @@ public class AdvertisementController {
         for (Advertisement a : advertisements) {
             advertisementDTOS.add(new AdvertisementDTO(a));
         }
-
         return advertisementDTOS;
     }
 
