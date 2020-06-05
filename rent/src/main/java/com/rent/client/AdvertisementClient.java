@@ -13,9 +13,9 @@ import java.util.List;
 
 @FeignClient(name = "advertisement")
 public interface AdvertisementClient {
-//
-//    @GetMapping("/advertisement")
-//    AdvertisementDTO getAdvertisement();
+
+    @GetMapping("/advertisement/{id}")
+    AdvertisementDTO getAdvertisement(@PathVariable Long id);
 
     @GetMapping("/advertisement/owner/{id}")
     List<AdvertisementDTO> getUserAdvertisements(@PathVariable Long id);

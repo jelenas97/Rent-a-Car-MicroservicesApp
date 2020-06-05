@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class TermServiceImpl implements TermService {
@@ -35,5 +37,14 @@ public class TermServiceImpl implements TermService {
         Term t = new Term(start, end, ad);
         System.out.println(t.toString());
         this.termRepository.save(t);
+    }
+
+    @Override
+    public List<Term> findTakenTerms(Long id, LocalDateTime startDate, LocalDateTime endDate) {
+        LocalDate start = LocalDate.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth());
+        LocalDate end = LocalDate.of(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth());
+        System.out.println(id);
+        return this.termRepository.findTakenTerm(id, start, end);
+
     }
 }

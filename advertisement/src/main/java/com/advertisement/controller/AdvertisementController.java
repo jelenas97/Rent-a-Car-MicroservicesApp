@@ -27,14 +27,13 @@ public class AdvertisementController {
     @Autowired
     private AdvertisementService advertisementService;
 
-//    @GetMapping(value = "/",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public AdvertisementDTO getAdvertisement() {
-////        Advertisement ad = this.advertisementRepository.findById(1L).orElse(null);
-//        Advertisemvalue = "/owner/{id}tDTO advertisementDTO = new AdvertisementDTO();
-//        //     AdvertisementDTO advertisementDTO = new AdvertisementDTO(ad);
-//        System.out.print("Saljem ovaj advertisement " + advertisementDTO);
-//        return advertisementDTO;
-//    }
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AdvertisementDTO getAdvertisement(@PathVariable Long id) {
+        Advertisement ad = this.advertisementService.find(id);
+        AdvertisementDTO advertisementDTO = new AdvertisementDTO(ad);
+        System.out.print("Saljem ovaj advertisement " + advertisementDTO);
+        return advertisementDTO;
+    }
 
 
     @GetMapping(value = "/owner/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
