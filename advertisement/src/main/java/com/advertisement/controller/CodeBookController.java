@@ -80,14 +80,18 @@ public class CodeBookController {
 
     @GetMapping(value = "/getCodeBookInfoModel/{id}", produces = "application/json")
     //@PreAuthorize("hasRole('ADMIN')"
-    public ResponseEntity<?> getCodeBookInfoModel(@PathVariable Long id) {
+    public ResponseEntity<?> getCodeBookInfoModel(@PathVariable("id") Long id) {
         try {
-            List<CarBrand> carBrands = this.carBrandService.findAll();
-            List<CarClass> carClasses = this.carClassService.findAll();
-            List<FuelType> fuelTypes = this.fuelTypeService.findAll();
-            List<TransmissionType> transmissionTypes = this.transTypeService.findAll();
+            System.out.print("OVO JE ID: " + id);
+
+            List<CarBrand> carBrands = this.carBrandService.findAllActive();
+            List<CarClass> carClasses = this.carClassService.findAllActive();
+            List<FuelType> fuelTypes = this.fuelTypeService.findAllActive();
+            List<TransmissionType> transmissionTypes = this.transTypeService.findAllActive();
             List<PriceListDTO> priceLists = this.priceListService.getCreatorsPriceLists(id);
+            System.out.print(priceLists);
             CodeBookModelDTO codeBook = new CodeBookModelDTO(carBrands, carClasses, fuelTypes, transmissionTypes, priceLists);
+            System.out.print(codeBook);
 
             return new ResponseEntity(codeBook, HttpStatus.OK);
 

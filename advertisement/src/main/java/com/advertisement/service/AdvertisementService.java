@@ -4,11 +4,16 @@ import com.advertisement.model.Advertisement;
 
 import java.util.List;
 
+import com.advertisement.model.Advertisement;
+
+import java.util.List;
+
 public interface AdvertisementService {
 
     List<Advertisement> findAll();
     List<Advertisement> search(SearchDTO dto);
     List<Advertisement> findAll(Long agentID);
-
+    void add(Advertisement ad);
+    int findAllCount(Long ownerId);
     Advertisement find(Long id);
 }

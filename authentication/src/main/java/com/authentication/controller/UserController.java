@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.security.Principal;
 import java.util.List;
 
@@ -34,6 +35,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while loading users");
         }
     }
+
+    @GetMapping(value = "/{id}", produces = "application/json" )
+    public UserDTO getUser(@PathVariable("id") String id){
+        User user = this.userService.findById(Long.parseLong(id));
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO;
+    }
+
     @PutMapping(value="/changeStatus", produces = "application/json", consumes = "application/json")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity changeStatus(@RequestBody UserDTO user) {

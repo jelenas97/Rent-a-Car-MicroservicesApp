@@ -28,7 +28,7 @@ public class Advertisement {
     public Car car;
     @Column
     public Long ownerId;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public PriceList priceList;
     @Column
     private Integer discount;

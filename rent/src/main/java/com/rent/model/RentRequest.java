@@ -51,5 +51,17 @@ public class RentRequest implements Serializable {
 
     }
 
+    public RentRequest(RentRequestDTO requestDTO, Long senderId, Long advertisementId, RequestsHolder holder, RentRequestStatus status) {
+        this.startDateTime = requestDTO.getStartDateTime();
+        this.endDateTime = requestDTO.getEndDateTime();
+        System.out.println(requestDTO.getStartDateTime());
+        this.rentRequestStatus = status;
+        this.senderId = senderId;
+        this.advertisementId = advertisementId;
+        this.requests = holder;
+
+    }
+
+
 
 }

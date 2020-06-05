@@ -36,4 +36,8 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     @Query(value = "select a from Advertisement a where a.id = ?1")
     Advertisement find(Long id);
+
+    @Query(value = "select count(a) from Advertisement a where a.ownerId = ?1 ")
+    int findAllCount(Long id);
+
 }
