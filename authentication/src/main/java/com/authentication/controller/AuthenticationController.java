@@ -113,21 +113,27 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "/verify/{token}", method = RequestMethod.GET)
-    public ResponseEntity<?> verify(@PathVariable("token") String token){
+    @PostMapping(value = "/verify" ,consumes = "text/plain")
+    public boolean verify(@RequestBody String token){
         String username = tokenUtils.getUsernameFromToken(token);
+        System.out.print("VERIFIKACIJA");
+        System.out.print(token);
+        System.out.print(username);
+
         if (username == null){
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return false;
         }
         UserDetails user = userDetailsService.loadUserByUsername(username);
+        System.out.print(user);
+
         if (user == null){
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return false;
         }
 
         if (tokenUtils.validateToken(token, user)) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
+            return true;
         } else {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+            return false;
         }
     }
 

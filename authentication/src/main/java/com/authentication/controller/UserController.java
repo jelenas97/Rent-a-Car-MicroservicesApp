@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/user/{id}", produces = "application/json" )
+    @GetMapping(value = "/{id}", produces = "application/json" )
     public UserDTO getUser(@PathVariable("id") String id){
         User user = this.userService.findById(Long.parseLong(id));
         UserDTO userDTO = new UserDTO(user);
