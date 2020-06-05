@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -39,5 +40,8 @@ public class Advertisement {
     private LocalDate startDate;
     @Column(name = "endDate", nullable = false)
     private LocalDate endDate;
+
+    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Term> terms;
 
 }
