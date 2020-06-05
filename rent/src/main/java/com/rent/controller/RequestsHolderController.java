@@ -25,6 +25,11 @@ public class RequestsHolderController {
     //    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT','ROLE_AGENT')")
     public ResponseEntity<?> getRequestHolders(@PathVariable Long id) {
         try {
+            //dobavi ovde id-eve od oglasa od ovog id-a usera
+            //imas listu id-eva oglasa od coveka
+            //funkcija koja za query kasnije ima
+            ////    @Query(value = "select c from RequestsHolder c inner join c.rentRequests req where req.id in lista id-eva od gore where req.rentRequestStatus='PENDING'  group by c.id")
+
             List<RequestsHolderDTO> holders = this.requestsHolderService.getAllPending(id);
             for (RequestsHolderDTO holder : holders) {
                 if (holder.getRentRequests().size() <= 1) {
