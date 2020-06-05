@@ -2,9 +2,12 @@ package com.advertisement.dto;
 
 import com.advertisement.model.PriceList;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class PriceListDTO {
 

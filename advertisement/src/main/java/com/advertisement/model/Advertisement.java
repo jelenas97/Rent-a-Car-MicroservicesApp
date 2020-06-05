@@ -27,7 +27,7 @@ public class Advertisement {
     public Car car;
     @Column
     public Long ownerId;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public PriceList priceList;
     @Column
     private Integer discount;
@@ -39,5 +39,6 @@ public class Advertisement {
     private LocalDate startDate;
     @Column(name = "endDate", nullable = false)
     private LocalDate endDate;
+
 
 }

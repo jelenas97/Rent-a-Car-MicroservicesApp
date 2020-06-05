@@ -10,17 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Controller
+@RestController
 @RequestMapping(value = "codebook")
 @CrossOrigin("http://localhost:4200")
 public class CodeBookController {
@@ -83,14 +80,18 @@ public class CodeBookController {
 
     @GetMapping(value = "/getCodeBookInfoModel/{id}", produces = "application/json")
     //@PreAuthorize("hasRole('ADMIN')"
-    public ResponseEntity<?> getCodeBookInfoModel(@PathVariable Long id) {
+    public ResponseEntity<?> getCodeBookInfoModel(@PathVariable("id") Long id) {
         try {
-            List<CarBrand> carBrands = this.carBrandService.findAll();
-            List<CarClass> carClasses = this.carClassService.findAll();
-            List<FuelType> fuelTypes = this.fuelTypeService.findAll();
-            List<TransmissionType> transmissionTypes = this.transTypeService.findAll();
+            System.out.print("OVO JE ID: " + id);
+
+            List<CarBrand> carBrands = this.carBrandService.findAllActive();
+            List<CarClass> carClasses = this.carClassService.findAllActive();
+            List<FuelType> fuelTypes = this.fuelTypeService.findAllActive();
+            List<TransmissionType> transmissionTypes = this.transTypeService.findAllActive();
             List<PriceListDTO> priceLists = this.priceListService.getCreatorsPriceLists(id);
+            System.out.print(priceLists);
             CodeBookModelDTO codeBook = new CodeBookModelDTO(carBrands, carClasses, fuelTypes, transmissionTypes, priceLists);
+            System.out.print(codeBook);
 
             return new ResponseEntity(codeBook, HttpStatus.OK);
 
