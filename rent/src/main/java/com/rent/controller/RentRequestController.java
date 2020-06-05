@@ -72,7 +72,9 @@ public class RentRequestController {
                 System.out.println("Vlasnik = " + id);
 
                 for (RentRequestDTO requestDTO : holderDTO.getRentRequests()) {
-                    if (id.equals(requestDTO.getAdvertisementId())) {
+                    AdvertisementDTO ad = this.advertisementClient.getAdvertisement(requestDTO.getAdvertisementId());
+
+                    if (id.equals(ad.getOwnerID())) {
                         RentRequest rentRequest = new RentRequest(requestDTO, requestDTO.getSenderId(), requestDTO.getAdvertisementId(), rq);
                         System.out.println(rentRequest);
                         //treba i holder snimiti???
@@ -160,7 +162,9 @@ public class RentRequestController {
     public ResponseEntity<?> physicalRent(@RequestBody RentRequestDTO rentDTO) {
         try {
             System.out.println("Physical rent " + rentDTO);
-            RentRequest req = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
+            RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(),rentDTO.getAdvertisementId(),null,RentRequestStatus.RESERVED);
+            rentRequestService.save(req1);
+            RentRequest req = this.rentRequestRepository.findById(req1.getId()).orElse(null);
             if (req != null) {
                 this.rentRequestService.rent(req);
             }

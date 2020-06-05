@@ -132,6 +132,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 retAds.add(adv);
             }
         }
+        retAds = loadImages(retAds);
         return retAds;
     }
     @Override
