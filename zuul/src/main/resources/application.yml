@@ -1,15 +1,31 @@
 zuul:
   routes:
-    advertisement:
+    advertisement_codebook:
+      path: /codebook/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_advertisement:
       path: /advertisement/**
       stripPrefix: false
       serviceId: advertisement
-    authentication:
+    advertisement_car:
+      path: /car/**
+      stripPrefix: false
+      serviceId: advertisement
+    authentication_user:
+      path: /user/**
+      stripPrefix: false
+      serviceId: authentication
+    authentication_auth:
       path: /auth/**
       stripPrefix: false
       serviceId: authentication
-    rent:
+    rent_rentRequest:
       path: /rentRequest/**
+      stripPrefix: false
+      serviceId: rent
+    rent_requestHolder:
+      path: /requestHolder/**
       stripPrefix: false
       serviceId: rent
     location:
