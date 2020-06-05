@@ -37,6 +37,10 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
         List<RequestsHolder> holders = this.requestsHolderRepository.getAllPending(ads);
         List<RequestsHolderDTO> requestsHolderDTOS = new ArrayList<>();
 
+//        List<Long> adsIds = advertisementDTOS.stream()
+//                .map(AdvertisementDTO::getId)
+//                .collect(Collectors.toList());
+
         for (RequestsHolder req : holders) {
             requestsHolderDTOS.add(new RequestsHolderDTO(req));
         }
