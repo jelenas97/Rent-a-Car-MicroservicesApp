@@ -18,10 +18,12 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
+
     @Autowired
     private UserService userService;
 
     @GetMapping(produces="application/json")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getUsers(){
 
         try {
@@ -60,5 +62,4 @@ public class UserController {
     public User user(Principal user) {
         return this.userService.findByUsername(user.getName());
     }
-
 }
