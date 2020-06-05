@@ -38,11 +38,9 @@ public class CarClassServiceImpl implements CarClassService {
     }
 
     @Override
-    public void delete(String name) {
-        CarClass carClass = this.carClassRepository.findByName(name);
+    public void delete(CarClass carClass) {
         carClass.setActive(false);
         this.carClassRepository.save(carClass);
-
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.advertisement.service.impl;
 
+import com.advertisement.model.CarClass;
 import com.advertisement.model.FuelType;
 import com.advertisement.repository.FuelTypeRepository;
 import com.advertisement.service.FuelTypeService;
@@ -38,11 +39,9 @@ public class FuelTypeServiceImpl implements FuelTypeService {
     }
 
     @Override
-    public void delete(String name) {
-        FuelType fuelType = this.fuelTypeRepository.findByName(name);
+    public void delete(FuelType fuelType) {
         fuelType.setActive(false);
         this.fuelTypeRepository.save(fuelType);
-
     }
 
     @Override

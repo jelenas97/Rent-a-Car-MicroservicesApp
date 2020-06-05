@@ -18,7 +18,7 @@ public interface TransmissionTypeService {
 
     void save(String name);
 
-    void delete(String name);
+    void delete(TransmissionType transmissionType);
 
     void setActive(String name);
 }
