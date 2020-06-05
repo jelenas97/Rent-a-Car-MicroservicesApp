@@ -1,9 +1,10 @@
 package com.rent.controller;
 
 import com.rent.client.AdvertisementClient;
-import com.rent.dto.AdvertisementDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.dto.RequestsHolderDTO;
+import com.rent.dto.TermDTO;
+import com.rent.dto.TermSearchDTO;
 import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
 import com.rent.model.RequestsHolder;
@@ -33,13 +34,13 @@ public class RentRequestController {
     @Autowired
     private AdvertisementClient advertisementClient;
 
-    @GetMapping(path = "/test",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-
-    public AdvertisementDTO getRentRequests() {
-        System.out.print("OVO NAM VRACA??? :) " + this.advertisementClient.getAdvertisement());
-        return this.advertisementClient.getAdvertisement();
-    }
+//    @GetMapping(path = "/test",
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//
+//    public AdvertisementDTO getRentRequests() {
+//        System.out.print("OVO NAM VRACA??? :) " + this.advertisementClient.getAdvertisement());
+//        return this.advertisementClient.getAdvertisement();
+//    }
 
 //    @GetMapping(path = "/test/config",
 //            produces = MediaType.APPLICATION_JSON_VALUE)
@@ -143,15 +144,17 @@ public class RentRequestController {
         }
     }
 
+    //Accept or reject requests from users!
     @PostMapping(value = "/request/{confirm}", produces = "application/json")
-//    @PermitAll
     //   @PreAuthorize("hasAuthority('ROLE_AGENT')")
     public ResponseEntity<?> processRequest(@PathVariable String confirm, @RequestBody RentRequestDTO rentDTO) {
         try {
             if (confirm.equals("YES")) {
                 System.out.println(rentDTO);
-                List<?> term = new ArrayList<>();
-                //  List<Term> term = this.termService.findTakenTerm(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+                TermSearchDTO termSearchDTO = new TermSearchDTO(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+                List<TermDTO> term = this.advertisementClient.getTakenTerms(termSearchDTO);
+                System.out.println("Zauzeti termini su " + term.toString());
+
                 if (term.size() == 0) {
                     System.out.println("NEMA TERMINA SA PREKLAPANJEM!!!!");
                     RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
