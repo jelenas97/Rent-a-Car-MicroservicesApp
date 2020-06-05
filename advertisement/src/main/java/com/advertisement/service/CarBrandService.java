@@ -1,5 +1,6 @@
 package com.advertisement.service;
 
+import com.advertisement.model.Car;
 import com.advertisement.model.CarBrand;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface CarBrandService {
 
     void save(String name);
 
-    void delete(String name);
+    void delete(CarBrand carBrand);
 
     void setActive(String name);
 }
