@@ -17,7 +17,7 @@ public interface CarClassService {
 
     void save(String name);
 
-    void delete(String name);
+    void delete(CarClass carClass);
 
     void setActive(String name);
 }

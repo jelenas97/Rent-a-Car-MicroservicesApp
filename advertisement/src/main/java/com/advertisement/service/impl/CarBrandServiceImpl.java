@@ -43,8 +43,7 @@ public class CarBrandServiceImpl implements CarBrandService {
     }
 
     @Override
-    public void delete(String name) {
-        CarBrand carBrand = this.carBrandRepository.findByName(name);
+    public void delete(CarBrand carBrand) {
         carBrand.setActive(false);
         this.carBrandRepository.save(carBrand);
     }
