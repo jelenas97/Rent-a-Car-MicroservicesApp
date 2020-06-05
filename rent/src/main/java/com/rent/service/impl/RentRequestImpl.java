@@ -37,9 +37,9 @@ public class RentRequestImpl implements RentRequestService {
     @Override
     public void rent(RentRequest rentRequest) {
         rentRequest.setRentRequestStatus(RentRequestStatus.RESERVED);
-        System.out.println("Salje se komanda" + rentRequest);
+        System.out.println("Salje se komanda" + rentRequest.getId() + " sa" + rentRequest.getAdvertisementId());
         this.rentRequestRepository.save(rentRequest);
-        commandGateway.send(new ReserveCommand(rentRequest.getId(), rentRequest.getRentRequestStatus().toString()));
+        commandGateway.send(new ReserveCommand(rentRequest.getId(), rentRequest.getRentRequestStatus().toString(), rentRequest.getStartDateTime().toString(), rentRequest.getEndDateTime().toString(), rentRequest.getAdvertisementId()));
         System.out.println("Poslata je komanda");
     }
 

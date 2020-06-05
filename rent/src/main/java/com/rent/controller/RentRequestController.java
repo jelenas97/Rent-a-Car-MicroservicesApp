@@ -114,9 +114,10 @@ public class RentRequestController {
                 Boolean yes = true;
                 for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
                     List<?> term = new ArrayList<>();
+
                     //    List<Term> term = this.termService.findTakenTerm(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
                     if (term.size() != 0) {
-                        yes = false;
+                        //yes = false;
                     }
                 }
                 if (yes) {

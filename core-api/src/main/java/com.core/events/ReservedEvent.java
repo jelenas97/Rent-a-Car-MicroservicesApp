@@ -6,16 +6,18 @@ public class ReservedEvent {
     private String status;
     private String startDate;
     private String endDate;
+    private Long advertisementId;
 
     public ReservedEvent() {
     }
 
     public ReservedEvent(Long rentRequestId,
-                         String status, String startDate, String endDate) {
+                         String status, String startDate, String endDate, Long adertisementId) {
         this.rentRequestId = rentRequestId;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.advertisementId = adertisementId;
         System.out.println("CORE API RESERVE EVENT TERM COMMAN " + this.rentRequestId + this.status);
 
     }
@@ -50,5 +52,13 @@ public class ReservedEvent {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public Long getAdvertisementId() {
+        return advertisementId;
+    }
+
+    public void setAdvertisementId(Long advertisementId) {
+        this.advertisementId = advertisementId;
     }
 }

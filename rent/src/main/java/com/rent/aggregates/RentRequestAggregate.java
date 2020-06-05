@@ -23,14 +23,17 @@ public class RentRequestAggregate {
 
     @CommandHandler
     public RentRequestAggregate(ReserveCommand reserveCommand) {
-        System.out.println("RentRequestAggregate reserve command" + reserveCommand.toString());
+        System.out.println("RentRequestAggregate reserve command" + reserveCommand.getRentRequestId()
+                + reserveCommand.getStartDate() + reserveCommand.getEndDate());
+
         AggregateLifecycle.apply(new ReservedEvent(reserveCommand.getRentRequestId(),
-                "RESERVED", reserveCommand.getStartDate(), reserveCommand.getEndDate()));
+                "RESERVED", reserveCommand.getStartDate(), reserveCommand.getEndDate(), reserveCommand.getAdvertisementId()));
     }
 
     @EventSourcingHandler
     public void on(ReservedEvent reservedEvent) {
-        System.out.println("RentRequestAggregate reserved event on" + reservedEvent.toString());
+        System.out.println("RentRequestAggregate reserved event on" + reservedEvent.getRentRequestId());
+
         this.rentRequestId = reservedEvent.getRentRequestId();
     }
 

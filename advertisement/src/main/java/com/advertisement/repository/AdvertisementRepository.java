@@ -10,6 +10,9 @@ import java.util.List;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long> {
-    @Query(value = "select a from Advertisement a where a.endDate >= ?1 and a.owner.id = ?2 ")
+    @Query(value = "select a from Advertisement a where a.endDate >= ?1 and a.ownerId = ?2 ")
     List<Advertisement> findAll(LocalDate today, Long agentID);
+
+    @Query(value = "select a from Advertisement a where a.id = ?1")
+    Advertisement find(Long id);
 }

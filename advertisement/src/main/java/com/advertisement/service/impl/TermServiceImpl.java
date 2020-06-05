@@ -21,14 +21,19 @@ public class TermServiceImpl implements TermService {
     @Override
     public void create(Long advertisementId, String startDate, String endDate) {
         //   Dobro provjeriti ovaj string i splitovanje!!!
-        Advertisement ad = new Advertisement();
-        String[] startDateParts = startDate.split(".");
-        String[] endDateParts = endDate.split(".");
-        LocalDate start = LocalDate.of(Integer.parseInt(startDateParts[0]), Integer.parseInt(startDateParts[0]),
-                Integer.parseInt(startDateParts[0]));
-        LocalDate end = LocalDate.of(Integer.parseInt(endDateParts[0]), Integer.parseInt(endDateParts[0]),
-                Integer.parseInt(endDateParts[0]));
+        System.out.println("ADvertisement id:" + advertisementId);
+        Advertisement ad = this.advertisementService.find(advertisementId);
+        String[] startDateParts = startDate.split("-");
+        String[] endDateParts = endDate.split("-");
+
+        System.out.println("Ovo dobijam u terminu" + ad + startDate + endDate);
+        LocalDate start = LocalDate.of(Integer.parseInt(startDateParts[0]), Integer.parseInt(startDateParts[1]),
+                Integer.parseInt(startDateParts[2].split("T")[0]));
+        LocalDate end = LocalDate.of(Integer.parseInt(endDateParts[0]), Integer.parseInt(endDateParts[1]),
+                Integer.parseInt(endDateParts[2].split("T")[0]));
+        System.out.println("Ovo dobijam u terminu" + start + end);
         Term t = new Term(start, end, ad);
+        System.out.println(t.toString());
         this.termRepository.save(t);
     }
 }
