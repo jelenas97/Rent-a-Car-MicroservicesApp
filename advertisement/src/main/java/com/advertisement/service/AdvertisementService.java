@@ -1,5 +1,4 @@
 package com.advertisement.service;
-
 import com.advertisement.dto.SearchDTO;
 import com.advertisement.model.Advertisement;
 
@@ -9,5 +8,7 @@ public interface AdvertisementService {
 
     List<Advertisement> findAll();
     List<Advertisement> search(SearchDTO dto);
+    List<Advertisement> findAll(Long agentID);
 
+    Advertisement find(Long id);
 }

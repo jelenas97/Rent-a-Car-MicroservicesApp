@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService {
 
@@ -40,6 +43,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
         return this.advertisementRepository.findAll(today);
+    }
+
+    @Override
+    public List<Advertisement> findAll(Long agentID) {
+        LocalDate today = LocalDate.now();
+        return this.advertisementRepository.findAll(today, agentID);
     }
 
     @Override
@@ -112,6 +121,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         return retAds;
     }
+    @Override
+    public Advertisement find(Long id) {
 
+        return this.advertisementRepository.find(id);
+    }
 
 }

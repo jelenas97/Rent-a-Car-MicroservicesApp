@@ -1,6 +1,7 @@
 package com.rent.controller;
 
 import com.rent.client.AdvertisementClient;
+import com.rent.dto.AdvertisementDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.dto.RequestsHolderDTO;
 import com.rent.enumerations.RentRequestStatus;
@@ -35,7 +36,7 @@ public class RentRequestController {
     @GetMapping(path = "/test",
             produces = MediaType.APPLICATION_JSON_VALUE)
 
-    public String getRentRequests() {
+    public AdvertisementDTO getRentRequests() {
         System.out.print("OVO NAM VRACA??? :) " + this.advertisementClient.getAdvertisement());
         return this.advertisementClient.getAdvertisement();
     }
@@ -113,9 +114,10 @@ public class RentRequestController {
                 Boolean yes = true;
                 for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
                     List<?> term = new ArrayList<>();
+
                     //    List<Term> term = this.termService.findTakenTerm(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
                     if (term.size() != 0) {
-                        yes = false;
+                        //yes = false;
                     }
                 }
                 if (yes) {

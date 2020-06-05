@@ -31,4 +31,9 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "and  ad.place = ?1 and ad.startDate <= ?2 and ad.endDate >= ?3")
     List<Advertisement> findFree(String place, LocalDate startDate, LocalDate endDate);
 
+    @Query(value = "select a from Advertisement a where a.endDate >= ?1 and a.ownerId = ?2 ")
+    List<Advertisement> findAll(LocalDate today, Long agentID);
+
+    @Query(value = "select a from Advertisement a where a.id = ?1")
+    Advertisement find(Long id);
 }

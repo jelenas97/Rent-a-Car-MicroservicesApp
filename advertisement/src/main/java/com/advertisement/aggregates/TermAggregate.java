@@ -21,8 +21,7 @@ public class TermAggregate {
     @CommandHandler
     public TermAggregate(CreateTermCommand createTermCommand, TermService termService) {
         try {
-            termService.create(createTermCommand.getTermAggregateId(), createTermCommand.getAdvertisementId());
-            //  System.out.println("Creating event " + createTermCommand.getTermAggregateId());
+            termService.create(createTermCommand.getAdvertisementId(), createTermCommand.getStartDate(), createTermCommand.getEndDate());
             AggregateLifecycle.apply(new TermCreatedEvent(createTermCommand.getTermAggregateId()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
