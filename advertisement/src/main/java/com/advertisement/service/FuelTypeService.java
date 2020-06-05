@@ -17,7 +17,7 @@ public interface FuelTypeService {
 
     void save(String name);
 
-    void delete(String name);
+    void delete(FuelType fuelType);
 
     void setActive(String name);
 }

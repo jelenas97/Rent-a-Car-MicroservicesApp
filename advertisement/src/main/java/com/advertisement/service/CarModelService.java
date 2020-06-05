@@ -16,7 +16,7 @@ public interface CarModelService {
 
     void save(String name, CarBrand brand);
 
-    void delete(String name);
+    void delete(CarModel carModel);
 
     void setActive(String name);
 }
