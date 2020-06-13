@@ -32,17 +32,11 @@ public class PriceListServiceImpl implements PriceListService {
 
     @Override
     public List<PriceListDTO> getCreatorsPriceLists(Long id) {
-        System.out.print("Preuzimam pricelist");
         List<PriceListDTO> dtoList = new ArrayList<>();
-        System.out.print(dtoList);
         List<PriceList> list = priceListRepository.findByCreatorId(id);
-        System.out.print(list);
         for (PriceList p : list) {
-            System.out.print(p);
             dtoList.add(new PriceListDTO(p));
         }
-        System.out.print(dtoList);
-
         return dtoList;
     }
 }

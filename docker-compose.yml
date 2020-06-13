@@ -58,6 +58,10 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
       AXON_HOST : axon-server
     tty: true
+    volumes:
+      - type: bind
+        source: ./advertisement/images
+        target: /images
     depends_on:
       - eureka-serviceregistry
       - axon-server
