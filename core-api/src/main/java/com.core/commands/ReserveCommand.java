@@ -4,8 +4,8 @@ package com.core.commands;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 public class ReserveCommand {
-    private String rentAggregateId;
     @TargetAggregateIdentifier
+    private String rentAggregateId;
     private Long rentRequestId;
     private String status;
     private String startDate;
@@ -14,12 +14,13 @@ public class ReserveCommand {
     public ReserveCommand() {
     }
 
-    public ReserveCommand(Long rentRequestId, String status, String startDate, String endDate, Long advertisementId) {
+    public ReserveCommand(String rentAggregateId, Long rentRequestId, String status, String startDate, String endDate, Long advertisementId) {
         this.rentRequestId = rentRequestId;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
         this.advertisementId = advertisementId;
+        this.rentAggregateId = rentAggregateId;
 
         System.out.println("CORE API RESERVE TERM COMMAN " + this.rentRequestId + this.status);
 
@@ -72,4 +73,6 @@ public class ReserveCommand {
     public void setAdvertisementId(Long advertisementId) {
         this.advertisementId = advertisementId;
     }
+
+
 }
