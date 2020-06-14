@@ -50,14 +50,14 @@ public class AuthFilter extends ZuulFilter {
             return null;
         }
 
-        String jwtToken = authenticationHeader.replace("Bearer ", "");
+        String jwtToken = request.getHeader("Authorization").substring(7);
         System.out.println(jwtToken);
-
         try {
             boolean valid = authClient.verify(jwtToken);
             System.out.println(valid);
             System.out.println( "cao cao");
-            // redirection (?) -> not needed I fixed it... :)
+            ctx.addZuulRequestHeader("Authorization", authenticationHeader);
+            ctx.addZuulRequestHeader("Access-Control-Allow-Origin", "http://localhost:4200");
         } catch (Exception e) {
             setFailedRequest("Invalid token", 403);
         }

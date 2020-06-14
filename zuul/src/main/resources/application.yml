@@ -1,15 +1,55 @@
 zuul:
   routes:
-    advertisement:
+    advertisement_codebook:
+      path: /codebook/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_advertisement:
       path: /advertisement/**
       stripPrefix: false
       serviceId: advertisement
-    authentication:
+    advertisement_fuel:
+      path: /fuel/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_term:
+      path: /term/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_transmission:
+      path: /transmission/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_brand:
+      path: /brand/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_class:
+      path: /class/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_model:
+      path: /model/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_car:
+      path: /car/**
+      stripPrefix: false
+      serviceId: advertisement
+    authentication_user:
+      path: /user/**
+      stripPrefix: false
+      serviceId: authentication
+    authentication_auth:
       path: /auth/**
       stripPrefix: false
       serviceId: authentication
-    rent:
+    rent_rentRequest:
       path: /rentRequest/**
+      stripPrefix: false
+      serviceId: rent
+    rent_requestHolder:
+      path: /requestHolder/**
       stripPrefix: false
       serviceId: rent
     location:

@@ -35,10 +35,11 @@ values ('Automatic', 1);
 insert into transmission_type(name, active)
 values ('Semi-Automatic', 1);
 
-insert into price_list(price_per_day, price_per_km, creator_id)
-values (1000, 20, 3);
-insert into price_list(price_per_day, price_per_km, creator_id)
-values (2000, 50, 3);
+insert into price_list(price_per_day, price_per_km, cdw, creator_id)
+values (1000, 20, 100, 3);
+insert into price_list(price_per_day, price_per_km, cdw, creator_id)
+values (2000, 50, 200, 3);
+
 
 
 insert into car(available_tracking, kid_seats, mileage, name, rate, car_brand_id, car_class_id,

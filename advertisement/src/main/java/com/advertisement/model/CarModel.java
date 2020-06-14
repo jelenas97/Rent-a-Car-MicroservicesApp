@@ -1,5 +1,6 @@
 package com.advertisement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class CarModel {
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public CarBrand carBrand;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "carModel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Car> car;
     @Id

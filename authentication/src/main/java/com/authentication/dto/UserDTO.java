@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,6 +33,11 @@ public class UserDTO {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.address=user.getAddress();
+        this.roles = new ArrayList<String>();
+        for(int i = 0; i < user.getAuthorities().size();i++)
+        {
+            this.roles.add(user.getAuthorities().get(i).getName());
+        }
     }
 
 }

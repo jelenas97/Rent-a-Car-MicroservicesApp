@@ -13,6 +13,7 @@ import java.util.List;
 public class AdvertisementDTO {
 
     private Long id;
+    private Long carId;
     private String name;
     private String carBrand;
     private String fuelType;
@@ -32,6 +33,7 @@ public class AdvertisementDTO {
 
     public AdvertisementDTO(Advertisement ad) {
         this.id = ad.getId();
+        this.carId = ad.getCar().getId();
         this.name = ad.getCar().getName();
         this.carBrand = ad.getCar().getCarBrand().getName();
         this.fuelType = ad.getCar().getFuelType().toString();

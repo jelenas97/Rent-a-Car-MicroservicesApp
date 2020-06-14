@@ -32,9 +32,7 @@ public class PriceListServiceImpl implements PriceListService {
 
     @Override
     public List<PriceListDTO> getCreatorsPriceLists(Long id) {
-
         List<PriceListDTO> dtoList = new ArrayList<>();
-
         List<PriceList> list = priceListRepository.findByCreatorId(id);
         for (PriceList p : list) {
             dtoList.add(new PriceListDTO(p));

@@ -1,6 +1,9 @@
 package com.advertisement.service.impl;
 
 
+import com.advertisement.model.Advertisement;
+import com.advertisement.repository.AdvertisementRepository;
+import com.advertisement.dto.AdvertisementDTO;
 import com.advertisement.dto.SearchDTO;
 import com.advertisement.model.Advertisement;
 import com.advertisement.model.CarModel;
@@ -10,6 +13,9 @@ import com.advertisement.service.AdvertisementService;
 import com.advertisement.service.CarModelService;
 import com.advertisement.service.FuelTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService {
@@ -33,7 +50,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
-        return this.advertisementRepository.findAll(today);
+        List<Advertisement> ads = this.advertisementRepository.findAll(today);
+        ads = loadImages(ads);
+        return ads;
     }
 
     @Override
@@ -110,12 +129,44 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 retAds.add(adv);
             }
         }
+        retAds = loadImages(retAds);
         return retAds;
     }
     @Override
     public Advertisement find(Long id) {
         System.out.println("Pokusavam da pronadjem id" + id);
         return this.advertisementRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void add(Advertisement ad) {
+        this.advertisementRepository.save(ad);
+    }
+
+    @Override
+    public int findAllCount(Long id) {
+        return this.advertisementRepository.findAllCount(id);
+    }
+
+
+    private List<Advertisement> loadImages(List<Advertisement> ads) {
+        for (int i = 0; i < ads.size(); i++) {
+            String resourceFile = "images/" + ads.get(i).getCar().getId() + ".txt";
+            ads.get(i).getCar().setImageGallery(new ArrayList<String>());
+
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    ads.get(i).getCar().getImageGallery().add(line);
+                    line = bufferedReader.readLine();
+                }
+            } catch (FileNotFoundException e) {
+                // Exception handling
+            } catch (IOException e) {
+                // Exception handling
+            }
+        }
+        return ads;
     }
 
 }
