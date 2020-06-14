@@ -8,6 +8,30 @@ zuul:
       path: /advertisement/**
       stripPrefix: false
       serviceId: advertisement
+    advertisement_fuel:
+      path: /fuel/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_term:
+      path: /term/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_transmission:
+      path: /transmission/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_brand:
+      path: /brand/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_class:
+      path: /class/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_model:
+      path: /model/**
+      stripPrefix: false
+      serviceId: advertisement
     advertisement_car:
       path: /car/**
       stripPrefix: false

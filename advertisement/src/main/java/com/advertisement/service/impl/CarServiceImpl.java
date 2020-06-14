@@ -25,8 +25,7 @@ public class CarServiceImpl implements CarService {
 
 
     private void saveImages(List<String> imageGallery, Car car) {
-        String rootPath = System.getProperty("user.dir");
-        String resourceFile = rootPath + "\\advertisement\\images\\" + car.getId() + ".txt";
+        String resourceFile =  "images/" + car.getId() + ".txt";
         System.out.print(resourceFile);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(resourceFile))) {
             for (int i = 0; i < imageGallery.size(); i++) {
@@ -48,8 +47,7 @@ public class CarServiceImpl implements CarService {
 
 
     private Car loadImages(Car car) {
-        String rootPath = System.getProperty("user.dir");
-        String resourceFile = rootPath + "\\advertisement\\images\\" + car.getId() + ".txt";
+        String resourceFile = "images/" + car.getId() + ".txt";
         car.setImageGallery(new ArrayList<String>());
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
