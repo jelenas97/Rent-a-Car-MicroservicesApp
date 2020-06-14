@@ -31,7 +31,7 @@ public class RentRequestSaga {
         SagaLifecycle.associateWith("termAggregateId", termAggregateId);
         //ovdje vjerovatno ID advertisementa!!!!
         System.out.print(termAggregateId + reservedEvent.getRentRequestId());
-        commandGateway.send(new CreateTermCommand(termAggregateId, reservedEvent.getAdvertisementId(), reservedEvent.getStartDate(), reservedEvent.getEndDate()));
+        commandGateway.send(new CreateTermCommand(reservedEvent.getRentAggregateId(), termAggregateId, reservedEvent.getAdvertisementId(), reservedEvent.getStartDate(), reservedEvent.getEndDate()));
     }
 
     @SagaEventHandler(associationProperty = "termAggregateId")
@@ -44,7 +44,7 @@ public class RentRequestSaga {
     @SagaEventHandler(associationProperty = "termAggregateId")
     public void handle(TermCreatedFailedEvent termCreatedFailedEvent) {
         System.out.println("Saga declined, starting compensation transaction!");
-        commandGateway.send(new RollbackReserveCommand(termCreatedFailedEvent.getRentRequestId(), "PENDING"));
+        commandGateway.send(new RollbackReserveCommand(termCreatedFailedEvent.getRentAggregateId(), termCreatedFailedEvent.getRentRequestId(), "PENDING"));
 
     }
 

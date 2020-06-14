@@ -12,6 +12,6 @@ public interface RequestsHolderRepository extends JpaRepository<RequestsHolder, 
 //    @Query(value = "select c from RequestsHolder c inner join c.rentRequests req inner join req.advertisement a where req.rentRequestStatus='PENDING' and a.owner.id=?1 group by c.id")
 //    List<RequestsHolder> getAllPending(Long id);
 
-    @Query(value = "select c from RequestsHolder c inner join c.rentRequests req where req.id in ?1 and req.rentRequestStatus='PENDING'  group by c.id")
+    @Query(value = "select c from RequestsHolder c inner join c.rentRequests req where req in ?1 and req.rentRequestStatus='PENDING'  group by c.id")
     List<RequestsHolder> getAllPending(List<Long> idLists);
 }

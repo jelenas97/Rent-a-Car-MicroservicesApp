@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RentRequestImpl implements RentRequestService {
@@ -25,22 +27,17 @@ public class RentRequestImpl implements RentRequestService {
     @Inject
     private transient CommandGateway commandGateway;
 
-    //    @Override
-//    public void update(Long id, String status) {
-//        RentRequest req = this.rentRequestRepository.findById(id).orElse(null);
-//        if (req != null) {
-//            req.setStatus("PENDING");
-//            this.rentRequestRepository.save(req);
-//        }
-//    }
-//
     @Override
+    @Transactional
     public void rent(RentRequest rentRequest) {
-        rentRequest.setRentRequestStatus(RentRequestStatus.RESERVED);
-        System.out.println("Salje se komanda" + rentRequest.getId() + " sa" + rentRequest.getAdvertisementId());
-        this.rentRequestRepository.save(rentRequest);
-        commandGateway.send(new ReserveCommand(rentRequest.getId(), rentRequest.getRentRequestStatus().toString(), rentRequest.getStartDateTime().toString(), rentRequest.getEndDateTime().toString(), rentRequest.getAdvertisementId()));
-        System.out.println("Poslata je komanda");
+        if (rentRequest.getRentRequestStatus().equals(RentRequestStatus.PENDING)) {
+            rentRequest.setRentRequestStatus(RentRequestStatus.RESERVED);
+            System.out.println("Salje se komanda" + rentRequest.getId() + " sa" + rentRequest.getAdvertisementId());
+            this.save(rentRequest);
+            String rentAggregateId = UUID.randomUUID().toString();
+            commandGateway.send(new ReserveCommand(rentAggregateId, rentRequest.getId(), rentRequest.getRentRequestStatus().toString(), rentRequest.getStartDateTime().toString(), rentRequest.getEndDateTime().toString(), rentRequest.getAdvertisementId()));
+            System.out.println("Poslata je komanda");
+        }
     }
 
 
@@ -80,7 +77,9 @@ public class RentRequestImpl implements RentRequestService {
         return cancelableList;
     }
 
+
     @Override
+    @Transactional
     public void changeStatus(Long id, String status) {
         RentRequest rentRequest = this.rentRequestRepository.find(id);
         rentRequest.setRentRequestStatus(RentRequestStatus.valueOf(status));
@@ -91,6 +90,7 @@ public class RentRequestImpl implements RentRequestService {
     public List<RentRequest> findPending(Long id, LocalDateTime startDate, LocalDateTime endDate) {
         return this.rentRequestRepository.findPending(id, startDate, endDate);
     }
+
 
     @Override
     public void save(RentRequest rentRequest) {
