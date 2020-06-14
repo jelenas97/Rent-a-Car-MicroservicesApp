@@ -1,7 +1,6 @@
 package com.advertisement.service.impl;
 
 
-import com.advertisement.dto.AdvertisementDTO;
 import com.advertisement.dto.SearchDTO;
 import com.advertisement.model.Advertisement;
 import com.advertisement.model.CarModel;
@@ -11,21 +10,13 @@ import com.advertisement.service.AdvertisementService;
 import com.advertisement.service.CarModelService;
 import com.advertisement.service.FuelTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.annotation.security.PermitAll;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService {
@@ -123,8 +114,8 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
     @Override
     public Advertisement find(Long id) {
-
-        return this.advertisementRepository.find(id);
+        System.out.println("Pokusavam da pronadjem id" + id);
+        return this.advertisementRepository.findById(id).orElse(null);
     }
 
 }

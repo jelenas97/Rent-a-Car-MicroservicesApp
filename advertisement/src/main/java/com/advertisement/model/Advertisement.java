@@ -4,7 +4,6 @@ package com.advertisement.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import java.util.Set;
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString
 public class Advertisement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,4 +42,19 @@ public class Advertisement {
     @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Term> terms;
 
+    @Override
+    public String toString() {
+        return "Advertisement{" +
+                "id=" + id +
+                ", kilometresLimit=" + kilometresLimit +
+                ", car=" + car +
+                ", ownerId=" + ownerId +
+                ", priceList=" + priceList +
+                ", discount=" + discount +
+                ", place='" + place + '\'' +
+                ", cdw=" + cdw +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

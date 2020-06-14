@@ -21,11 +21,12 @@ public class TermAggregate {
     @CommandHandler
     public TermAggregate(CreateTermCommand createTermCommand, TermService termService) {
         try {
+            System.out.println("Try create new termin" + createTermCommand.getAdvertisementId() + createTermCommand.getStartDate() + createTermCommand.getEndDate());
             termService.create(createTermCommand.getAdvertisementId(), createTermCommand.getStartDate(), createTermCommand.getEndDate());
             AggregateLifecycle.apply(new TermCreatedEvent(createTermCommand.getTermAggregateId()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            AggregateLifecycle.apply(new TermCreatedFailedEvent(createTermCommand.getTermAggregateId(), "FAILED", createTermCommand.getAdvertisementId()));
+            AggregateLifecycle.apply(new TermCreatedFailedEvent(createTermCommand.getRentAggregateId(), createTermCommand.getTermAggregateId(), "FAILED", createTermCommand.getAdvertisementId()));
         }
     }
 
