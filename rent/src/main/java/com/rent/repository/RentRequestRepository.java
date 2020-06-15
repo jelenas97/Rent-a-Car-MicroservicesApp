@@ -23,4 +23,5 @@ public interface RentRequestRepository extends JpaRepository<RentRequest, Long> 
             "or t.rentRequestStatus='PENDING' and t.advertisementId = ?1 and t.startDateTime >= ?2 and t.endDateTime <= ?3")
     List<RentRequest> findPending(Long id, LocalDateTime startDate, LocalDateTime endDate);
 
+
 }

@@ -17,10 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.annotation.security.PermitAll;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,8 +134,8 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
     @Override
     public Advertisement find(Long id) {
-
-        return this.advertisementRepository.find(id);
+        System.out.println("Pokusavam da pronadjem id" + id);
+        return this.advertisementRepository.findById(id).orElse(null);
     }
 
     @Override

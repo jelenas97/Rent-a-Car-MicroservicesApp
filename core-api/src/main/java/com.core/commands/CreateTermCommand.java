@@ -6,7 +6,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public class CreateTermCommand {
     @TargetAggregateIdentifier
     private String termAggregateId;
-
+    private String rentAggregateId;
     private Long advertisementId;
     private String startDate;
     private String endDate;
@@ -15,8 +15,9 @@ public class CreateTermCommand {
     public CreateTermCommand() {
     }
 
-    public CreateTermCommand(String termAggregateId, Long advertisementId, String startDate, String endDate) {
+    public CreateTermCommand(String rentAggregateId, String termAggregateId, Long advertisementId, String startDate, String endDate) {
         this.termAggregateId = termAggregateId;
+        this.rentAggregateId = rentAggregateId;
         this.advertisementId = advertisementId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -53,5 +54,13 @@ public class CreateTermCommand {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getRentAggregateId() {
+        return rentAggregateId;
+    }
+
+    public void setRentAggregateId(String rentAggregateId) {
+        this.rentAggregateId = rentAggregateId;
     }
 }

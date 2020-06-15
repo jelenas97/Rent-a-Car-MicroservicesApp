@@ -22,6 +22,9 @@ public class RentRequest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
+
     @Column(name = "startDateTime", nullable = false)
     private LocalDateTime startDateTime;
 
@@ -39,6 +42,7 @@ public class RentRequest implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private RequestsHolder requests;
+
 
     public RentRequest(RentRequestDTO requestDTO, Long senderId, Long advertisementId, RequestsHolder holder) {
         this.startDateTime = requestDTO.getStartDateTime();

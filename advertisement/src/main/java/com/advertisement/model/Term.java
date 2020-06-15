@@ -3,7 +3,6 @@ package com.advertisement.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import java.time.Period;
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString
 public class Term {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +25,9 @@ public class Term {
     private Period period;
     @Column(name = "canceled")
     private Boolean canceled;
-    @ManyToOne
-    @JoinColumn(name = "advertisement_id", nullable = false)
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Advertisement advertisement;
 
     public Term(LocalDate startDate, LocalDate endDate, Advertisement advertisement) {
@@ -39,4 +38,13 @@ public class Term {
         this.canceled = false;
     }
 
+    @Override
+    public String toString() {
+        return "Term{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", canceled=" + canceled +
+                '}';
+    }
 }

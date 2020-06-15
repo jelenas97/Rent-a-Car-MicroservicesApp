@@ -1,7 +1,7 @@
 package com.core.events;
 
 public class ReservedEvent {
-
+    private String rentAggregateId;
     private Long rentRequestId;
     private String status;
     private String startDate;
@@ -11,8 +11,9 @@ public class ReservedEvent {
     public ReservedEvent() {
     }
 
-    public ReservedEvent(Long rentRequestId,
+    public ReservedEvent(String rentAggregateId, Long rentRequestId,
                          String status, String startDate, String endDate, Long adertisementId) {
+        this.rentAggregateId = rentAggregateId;
         this.rentRequestId = rentRequestId;
         this.status = status;
         this.startDate = startDate;
@@ -60,5 +61,13 @@ public class ReservedEvent {
 
     public void setAdvertisementId(Long advertisementId) {
         this.advertisementId = advertisementId;
+    }
+
+    public String getRentAggregateId() {
+        return rentAggregateId;
+    }
+
+    public void setRentAggregateId(String rentAggregateId) {
+        this.rentAggregateId = rentAggregateId;
     }
 }

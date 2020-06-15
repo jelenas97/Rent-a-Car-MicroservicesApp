@@ -16,7 +16,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 public class RentRequestAggregate {
 
     @AggregateIdentifier
-    private Long rentRequestId;
+    private String rentAggregateId;
 
     public RentRequestAggregate() {
     }
@@ -26,7 +26,7 @@ public class RentRequestAggregate {
         System.out.println("RentRequestAggregate reserve command" + reserveCommand.getRentRequestId()
                 + reserveCommand.getStartDate() + reserveCommand.getEndDate());
 
-        AggregateLifecycle.apply(new ReservedEvent(reserveCommand.getRentRequestId(),
+        AggregateLifecycle.apply(new ReservedEvent(reserveCommand.getRentAggregateId(), reserveCommand.getRentRequestId(),
                 "RESERVED", reserveCommand.getStartDate(), reserveCommand.getEndDate(), reserveCommand.getAdvertisementId()));
     }
 
@@ -34,14 +34,14 @@ public class RentRequestAggregate {
     public void on(ReservedEvent reservedEvent) {
         System.out.println("RentRequestAggregate reserved event on" + reservedEvent.getRentRequestId());
 
-        this.rentRequestId = reservedEvent.getRentRequestId();
+        this.rentAggregateId = reservedEvent.getRentAggregateId();
     }
 
     @CommandHandler
     public void on(RollbackReserveCommand rollbackReserveCommand, RentRequestService requestService) {
         System.out.println("RentRequestAggregate rollback command event on" + rollbackReserveCommand);
         requestService.changeStatus(rollbackReserveCommand.getRentRequestId(), RentRequestStatus.PENDING.toString());
-        AggregateLifecycle.apply(new ReserveRollbackEvent(rollbackReserveCommand.getRentRequestId()));
+        AggregateLifecycle.apply(new ReserveRollbackEvent(rollbackReserveCommand.getRentAggregateId(), rollbackReserveCommand.getRentRequestId()));
     }
 
 }
