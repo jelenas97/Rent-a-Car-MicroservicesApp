@@ -43,6 +43,9 @@ public class RentRequest implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private RequestsHolder requests;
 
+    @Column
+    private LocalDateTime created = LocalDateTime.now();
+
 
     public RentRequest(RentRequestDTO requestDTO, Long senderId, Long advertisementId, RequestsHolder holder) {
         this.startDateTime = requestDTO.getStartDateTime();
@@ -52,6 +55,7 @@ public class RentRequest implements Serializable {
         this.senderId = senderId;
         this.advertisementId = advertisementId;
         this.requests = holder;
+        this.created = LocalDateTime.now();
 
     }
 
@@ -63,6 +67,7 @@ public class RentRequest implements Serializable {
         this.senderId = senderId;
         this.advertisementId = advertisementId;
         this.requests = holder;
+        this.created = LocalDateTime.now();
 
     }
 

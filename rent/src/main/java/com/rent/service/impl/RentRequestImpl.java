@@ -9,6 +9,7 @@ import com.rent.repository.RentRequestRepository;
 import com.rent.service.RentRequestService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -95,6 +96,23 @@ public class RentRequestImpl implements RentRequestService {
     @Override
     public void save(RentRequest rentRequest) {
         this.rentRequestRepository.save(rentRequest);
+    }
+
+    @Override
+    @Transactional
+    //  @Scheduled(cron = "${every30sec.cron}")
+    @Scheduled(cron = "${fourHours.cron}")
+    public void cleanOldRequests() {
+        System.out.println("Requests maintenance");
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        //for trying put every30sec.cron and use twoMinutes instead of yesterday
+        //LocalDateTime twoMinutes = LocalDateTime.now().minusMinutes(2);
+        List<RentRequest> requests = this.rentRequestRepository.findOldRequests(yesterday);
+        System.out.println("Found : " + requests);
+        for (RentRequest r : requests) {
+            r.setRentRequestStatus(RentRequestStatus.CANCELED);
+            this.save(r);
+        }
     }
 
 

@@ -19,4 +19,6 @@ public interface RentRequestService {
     List<RentRequest> findPending(Long id, LocalDateTime startDate, LocalDateTime endDate);
 
     void save(RentRequest requestDTO);
+
+    void cleanOldRequests();
 }
