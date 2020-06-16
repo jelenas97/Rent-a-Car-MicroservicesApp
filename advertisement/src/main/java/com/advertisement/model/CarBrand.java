@@ -1,20 +1,21 @@
 package com.advertisement.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
-
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
+@Data
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "carBrandClass")
 public class CarBrand {
-    @JsonIgnore
     @OneToMany(mappedBy = "carBrand", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+
     public Set<Car> car;
 
     @OneToMany(mappedBy = "carBrand", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
