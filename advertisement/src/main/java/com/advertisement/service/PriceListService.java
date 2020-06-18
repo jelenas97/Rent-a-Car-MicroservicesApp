@@ -10,4 +10,6 @@ public interface PriceListService {
     PriceList createNewPriceList(PriceListDTO dto);
 
     List<PriceListDTO> getCreatorsPriceLists(Long id);
+
+    PriceList findById(Long id);
 }

@@ -20,12 +20,26 @@ public class CarServiceImpl implements CarService {
     public void add(Car car) {
         car.setName(car.getCarBrand() + " " + car.getCarModel());
         carRepository.save(car);
-        saveImages(car.getImageGallery(), car);
+        saveImagesLocal(car.getImageGallery(), car);
     }
 
 
     private void saveImages(List<String> imageGallery, Car car) {
         String resourceFile =  "images/" + car.getId() + ".txt";
+        System.out.print(resourceFile);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(resourceFile))) {
+            for (int i = 0; i < imageGallery.size(); i++) {
+                bufferedWriter.write(imageGallery.get(i));
+                bufferedWriter.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing file!");
+        }
+    }
+
+    private void saveImagesLocal(List<String> imageGallery, Car car) {
+        String rootPath = System.getProperty("user.dir");
+        String resourceFile = rootPath + "\\advertisement\\images\\" + car.getId() + ".txt";
         System.out.print(resourceFile);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(resourceFile))) {
             for (int i = 0; i < imageGallery.size(); i++) {

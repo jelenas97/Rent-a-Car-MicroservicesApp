@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema xmlns:tns="https://localhost:8084/microservices/advertisement" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+<xs:schema xmlns:tns="http://localhost:8084/advertisement" xmlns:xs="http://www.w3.org/2001/XMLSchema"
            version="1.0" elementFormDefault="qualified"
-           targetNamespace="https://localhost:8084/microservices/advertisement">
+           targetNamespace="http://localhost:8084/advertisement">
 
 
     <xs:complexType name="Advertisement">
