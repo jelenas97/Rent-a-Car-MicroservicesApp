@@ -16,10 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CarClass {
-    @JsonIgnore
-    @OneToMany(mappedBy = "carClass", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<Car> car;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +23,10 @@ public class CarClass {
     private String name;
     @Column
     private Boolean active = true;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "carClass", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Set<Car> car;
 
     public CarClass(String name) {
         this.name = name;

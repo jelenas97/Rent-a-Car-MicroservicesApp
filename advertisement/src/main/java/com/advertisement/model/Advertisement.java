@@ -17,19 +17,10 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Advertisement", namespace = "https://localhost:8084/microservices/advertisement")
+@XmlType(name = "Advertisement", namespace = "http://localhost:8084/microservices/advertisement")
 @XmlRootElement(name = "advertisementClass")
 public class Advertisement {
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "car_id")
-    @XmlElement
-    public Car car;
-    @Column
-    @XmlElement
-    public Long ownerId;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @XmlElement
-    public PriceList priceList;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlElement
@@ -58,6 +49,18 @@ public class Advertisement {
     @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @XmlElement
     private Set<Term> terms;
+
+    @Column
+    @XmlElement
+    public Long ownerId;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @XmlElement
+    public PriceList priceList;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @XmlElement
+    public Car car;
 
     @Override
     public String toString() {

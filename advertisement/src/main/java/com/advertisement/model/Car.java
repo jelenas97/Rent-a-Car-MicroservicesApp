@@ -8,16 +8,36 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Car {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column
+    private String name;
 
+//    @JsonIgnore
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    public Advertisement advertisement;
+
+    @Column
+    private Double rate;
+    @Column
+    private Integer mileage;
+    @Column
+    private Integer kidSeats;
+    @Column
+    private Boolean availableTracking;
+    @Transient
+    private List<String> imageGallery;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public CarClass carClass;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
@@ -29,24 +49,8 @@ public class Car {
     public TransmissionType transmissionType;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     public Set<FuelType> fuelType;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
-    private String name;
 
-    //    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    public Advertisement advertisement;
-    @Column
-    private Double rate;
-    @Column
-    private Integer mileage;
-    @Column
-    private Integer kidSeats;
-    @Column
-    private Boolean availableTracking;
-    @Transient
-    private List<String> imageGallery;
-
-
+    public Car() {
+        this.fuelType = new HashSet<FuelType>();
+    }
 }

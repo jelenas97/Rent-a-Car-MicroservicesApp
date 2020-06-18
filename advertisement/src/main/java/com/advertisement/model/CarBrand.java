@@ -1,5 +1,6 @@
 package com.advertisement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,13 +15,6 @@ import java.util.Set;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "carBrandClass")
 public class CarBrand {
-    @OneToMany(mappedBy = "carBrand", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-
-    public Set<Car> car;
-
-    @OneToMany(mappedBy = "carBrand", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    public Set<CarModel> carModels;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +22,13 @@ public class CarBrand {
     private String name;
     @Column
     private Boolean active = true;
+
+    @OneToMany(mappedBy = "carBrand", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnore
+    public Set<Car> car;
+
+    @OneToMany(mappedBy = "carBrand", cascade = CascadeType.ALL)
+    public Set<CarModel> carModels;
 
     public CarBrand(String name) {
         this.name = name;
