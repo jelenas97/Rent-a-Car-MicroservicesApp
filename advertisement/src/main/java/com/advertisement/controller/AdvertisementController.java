@@ -97,21 +97,7 @@ public class AdvertisementController {
 
     @PostMapping(consumes = "application/json")
     public ResponseEntity<?> addAdvertisement(@RequestBody Advertisement ad) {
-        try {
-            UserDTO userDTO = this.authenticationClient.getUser(ad.getOwnerId().toString());
-            if (userDTO.getRoles().get(0).equals("ROLE_CLIENT")) {
-                int numberOfAds = this.advertisementService.findAllCount(ad.getOwnerId());
-                if (numberOfAds >= 3) {
-                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("You can not create more than 3 advertisement");
-                }
-            }
-            this.carService.add(ad.getCar());
-            this.advertisementService.add(ad);
-
-            return ResponseEntity.ok().build();
-        } catch (NullPointerException e) {
-            return ResponseEntity.notFound().build();
-        }
+            return this.advertisementService.add(ad);
     }
 
     @PostMapping(value = "/create", produces = "application/json")

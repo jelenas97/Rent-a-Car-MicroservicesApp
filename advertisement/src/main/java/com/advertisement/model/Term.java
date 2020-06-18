@@ -1,28 +1,32 @@
 package com.advertisement.model;
 
+import com.advertisement.adapter.LocalDateAdapter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
-import java.time.Period;
 
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Term {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(name = "startDate", nullable = false)
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate startDate;
     @Column(name = "endDate", nullable = false)
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate endDate;
-    @Column(name = "period")
-    private Period period;
     @Column(name = "canceled")
     private Boolean canceled;
 
@@ -33,7 +37,6 @@ public class Term {
     public Term(LocalDate startDate, LocalDate endDate, Advertisement advertisement) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.period = Period.between(startDate, endDate);
         this.advertisement = advertisement;
         this.canceled = false;
     }

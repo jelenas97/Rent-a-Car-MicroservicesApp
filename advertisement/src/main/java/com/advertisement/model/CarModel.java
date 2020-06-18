@@ -6,13 +6,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CarModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column
+    private String name;
+    @Column
+    private Boolean active = true;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -21,13 +31,6 @@ public class CarModel {
     @JsonIgnore
     @OneToMany(mappedBy = "carModel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public Set<Car> car;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
-    private String name;
-    @Column
-    private Boolean active = true;
 
     public CarModel(String name, CarBrand carBrand) {
         this.name = name;

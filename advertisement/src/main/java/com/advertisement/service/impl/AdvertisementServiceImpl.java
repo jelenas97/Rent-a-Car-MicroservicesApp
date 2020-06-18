@@ -1,6 +1,8 @@
 package com.advertisement.service.impl;
 
 
+import com.advertisement.client.AuthenticationClient;
+import com.advertisement.dto.UserDTO;
 import com.advertisement.model.Advertisement;
 import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.dto.AdvertisementDTO;
@@ -11,6 +13,7 @@ import com.advertisement.model.FuelType;
 import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.service.AdvertisementService;
 import com.advertisement.service.CarModelService;
+import com.advertisement.service.CarService;
 import com.advertisement.service.FuelTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Autowired
     private FuelTypeService fuelTypeService;
+
+    @Autowired
+    private AuthenticationClient authenticationClient;
+
+    @Autowired
+    private CarService carService;
 
     @Override
     public List<Advertisement> findAll() {
@@ -139,8 +147,27 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public void add(Advertisement ad) {
-        this.advertisementRepository.save(ad);
+    public ResponseEntity<?> add(Advertisement ad) {
+        try {
+//            UserDTO userDTO = this.authenticationClient.getUser(ad.getOwnerId().toString());
+//            if (userDTO.getRoles().get(0).equals("ROLE_CLIENT")) {
+//                int numberOfAds = this.findAllCount(ad.getOwnerId());
+//                if (numberOfAds >= 3) {
+//                    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("You can not create more than 3 advertisement");
+//                }
+//            }
+            this.carService.add(ad.getCar());
+            ad.setDiscount(0);
+            ad.setTerms(new HashSet<>());
+            this.advertisementRepository.save(ad);
+
+            return new ResponseEntity(ad,HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        }
+
     }
 
     @Override
