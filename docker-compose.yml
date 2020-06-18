@@ -108,24 +108,24 @@ services:
       - axon-server
 
 
-#  messages:
-#    container_name: messages
-#    build: ./messages
-#    restart: on-failure
-#    ports:
-#      - "8087:8087"
-#    networks:
-#      - demo
-#    environment:
-#      DATABASE_USERNAME: pera
-#      DATABASE_PASSWORD: pera
-#      DATABASE_DOMAIN: mysql
-#      DATABASE_SCHEMA: messages
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
-#    tty: true
-#    depends_on:
-#      - mysql
-#      - eureka-serviceregistry
+  messages:
+    container_name: messages
+    build: ./messages
+    restart: on-failure
+    ports:
+      - "8087:8087"
+    networks:
+      - demo
+    environment:
+      DATABASE_USERNAME: pera
+      DATABASE_PASSWORD: pera
+      DATABASE_DOMAIN: mysql
+      DATABASE_SCHEMA: messages
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+    tty: true
+    depends_on:
+      - mysql
+      - eureka-serviceregistry
 #
 #
 #  search:
