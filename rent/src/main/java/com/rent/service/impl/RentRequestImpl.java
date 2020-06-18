@@ -80,7 +80,6 @@ public class RentRequestImpl implements RentRequestService {
 
 
     @Override
-    @Transactional
     public void changeStatus(Long id, String status) {
         RentRequest rentRequest = this.rentRequestRepository.find(id);
         rentRequest.setRentRequestStatus(RentRequestStatus.valueOf(status));
@@ -108,7 +107,9 @@ public class RentRequestImpl implements RentRequestService {
         //for trying put every30sec.cron and use twoMinutes instead of yesterday
         //LocalDateTime twoMinutes = LocalDateTime.now().minusMinutes(2);
         List<RentRequest> requests = this.rentRequestRepository.findOldRequests(yesterday);
+
         System.out.println("Found : " + requests);
+
         for (RentRequest r : requests) {
             r.setRentRequestStatus(RentRequestStatus.CANCELED);
             this.save(r);

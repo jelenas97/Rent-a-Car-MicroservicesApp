@@ -7,6 +7,7 @@ import com.advertisement.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class TermController {
     private TermService termService;
 
     @PostMapping(value = "/getTakenTerms", produces = "application/json")
+    @PermitAll
     public List<TermDTO> getTakenTerms(@RequestBody TermSearchDTO termSearchDTO) {
         try {
             List<Term> terms = this.termService.findTakenTerms(termSearchDTO.getAdvertisementId(), termSearchDTO.getStartDate(), termSearchDTO.getEndDate());
