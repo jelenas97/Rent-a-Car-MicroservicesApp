@@ -56,6 +56,14 @@ zuul:
       path: /test/**
       stripPrefix: false
       serviceId: location
+    statistics_comment:
+      path: /comment/**
+      stripPrefix: false
+      serviceId: statistics
+    statistics_rate:
+      path: /rate/**
+      stripPrefix: false
+      serviceId: statistics
 #    messages:
 #      path: /test/**
 #      stripPrefix: false
