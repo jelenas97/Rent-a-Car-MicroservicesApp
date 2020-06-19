@@ -109,15 +109,19 @@ public class RentRequestController {
                     }
                 }
                 if (yes) {
+                    RentRequestDTO dto = new RentRequestDTO();
                     for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
                         RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
-                        List<RentRequest> rentRequests = this.rentRequestService.findPending(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+                        dto = rentDTO;
                         if (request != null) {
                             this.rentRequestService.rent(request);
-                            this.automaticRejection(rentRequests);
+
 
                         }
                     }
+
+                    List<RentRequest> rentRequests = this.rentRequestService.findPending(dto.getAdvertisementId(), dto.getStartDateTime(), dto.getEndDateTime());
+                    this.automaticRejection(rentRequests);
                 } else {
                     for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
                         this.rentRequestService.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
@@ -175,7 +179,7 @@ public class RentRequestController {
     public ResponseEntity<?> physicalRent(@RequestBody RentRequestDTO rentDTO) {
         try {
             System.out.println("Physical rent " + rentDTO);
-            RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(),rentDTO.getAdvertisementId(),null,RentRequestStatus.RESERVED);
+            RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(), rentDTO.getAdvertisementId(), null, RentRequestStatus.PENDING);
             rentRequestService.save(req1);
             RentRequest req = this.rentRequestRepository.findById(req1.getId()).orElse(null);
             if (req != null) {
