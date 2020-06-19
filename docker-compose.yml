@@ -22,9 +22,9 @@ services:
     tty: true
     depends_on:
       - eureka-serviceregistry
-      #- axon-server
-      #- advertisement
-      #- rent
+      - axon-server
+      - advertisement
+      - rent
 
   authentication:
     container_name: authentication
@@ -46,25 +46,25 @@ services:
       - mysql
       - eureka-serviceregistry
 
-#  advertisement:
-#    container_name: advertisement
-#    build: ./advertisement
-#    restart: on-failure
-#    ports:
-#      - "8084:8084"
-#    networks:
-#      - demo
-#    environment:
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
-#      AXON_HOST : axon-server
-#    tty: true
-#    volumes:
-#      - type: bind
-#        source: ./advertisement/images
-#        target: /images
-#    depends_on:
-#      - eureka-serviceregistry
-#      - axon-server
+  advertisement:
+    container_name: advertisement
+    build: ./advertisement
+    restart: on-failure
+    ports:
+      - "8084:8084"
+    networks:
+      - demo
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+      AXON_HOST : axon-server
+    tty: true
+    volumes:
+      - type: bind
+        source: ./advertisement/images
+        target: /images
+    depends_on:
+      - eureka-serviceregistry
+      - axon-server
 
 #  location:
 #    container_name: location
@@ -83,29 +83,29 @@ services:
 #      - eureka-serviceregistry
 #      - axon-server
 
-#  axon-server:
-#    image: axoniq/axonserver:4.3.2
-#    ports:
-#      - 8024:8024
-#      - 8124:8124
-#    networks:
-#      - demo
+  axon-server:
+    image: axoniq/axonserver:4.3.2
+    ports:
+      - 8024:8024
+      - 8124:8124
+    networks:
+      - demo
 
-#  rent:
-#    container_name: rent
-#    build: ./rent
-#    restart: on-failure
-#    ports:
-#      - "8095:8095"
-#    networks:
-#      - demo
-#    environment:
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
-#      AXON_HOST : axon-server
-#    tty: true
-#    depends_on:
-#      - eureka-serviceregistry
-#      - axon-server
+  rent:
+    container_name: rent
+    build: ./rent
+    restart: on-failure
+    ports:
+      - "8095:8095"
+    networks:
+      - demo
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+      AXON_HOST : axon-server
+    tty: true
+    depends_on:
+      - eureka-serviceregistry
+      - axon-server
 
 
 #  messages:
