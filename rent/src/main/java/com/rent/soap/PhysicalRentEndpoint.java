@@ -19,7 +19,7 @@ import java.util.HashSet;
 
 @Endpoint
 public class PhysicalRentEndpoint {
-    private static final String NAMESPACE_URI = "http://localhost:8095/rent";
+    private static final String NAMESPACE_URI = "http://localhost:8095/microservices/rent";
 
     @Autowired
     private RentRequestService rentRequestService;
@@ -27,7 +27,7 @@ public class PhysicalRentEndpoint {
     @Autowired
     private RequestsHolderService requestsHolderService;
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "postAdRequest")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "physicalRentRequest")
     @ResponsePayload
     public PhysicalRentResponse physicalRentResponse(@RequestPayload PhysicalRentRequest request) {
         System.out.println("Soap request");

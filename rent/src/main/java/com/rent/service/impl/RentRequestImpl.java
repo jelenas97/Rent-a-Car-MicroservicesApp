@@ -142,7 +142,9 @@ public class RentRequestImpl implements RentRequestService {
     @Override
     public RentRequest physicalRent(RentRequestDTO rentDTO) {
         System.out.println("Physical rent " + rentDTO);
-        RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(), rentDTO.getAdvertisementId(), null, RentRequestStatus.PENDING);
+        RequestsHolder holder = new RequestsHolder();
+        holder.setBundle(false);
+        RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(), rentDTO.getAdvertisementId(), holder, RentRequestStatus.PENDING);
         this.save(req1);
         RentRequest req = this.rentRequestRepository.findById(req1.getId()).orElse(null);
         if (req != null) {
