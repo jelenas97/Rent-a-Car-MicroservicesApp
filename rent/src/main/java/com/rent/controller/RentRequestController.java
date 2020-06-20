@@ -38,6 +38,7 @@ public class RentRequestController {
 
     @GetMapping(value = "/history/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     // @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
     public ResponseEntity<List<RentRequestDTO>> getHistoryRentRequests(@PathVariable String id) {
         try {
             return new ResponseEntity<>(rentRequestService.getHistoryRentRequests(Long.parseLong(id)), HttpStatus.OK);
@@ -49,6 +50,7 @@ public class RentRequestController {
 
     @GetMapping(value = "/cancelable/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
     public ResponseEntity<List<RentRequestDTO>> getCancelableRentRequests(@PathVariable String id) {
         try {
             return new ResponseEntity<>(rentRequestService.getCancelableRentRequests(Long.parseLong(id)), HttpStatus.OK);
@@ -217,6 +219,20 @@ public class RentRequestController {
             }
         }
 
+    }
+
+    @PutMapping("/cancel/{id}")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
+    public ResponseEntity cancelRentRequest(@PathVariable long id){
+
+        try{
+            RentRequestDTO rrDTO = rentRequestService.cancelRentRequest(id);
+            return  new ResponseEntity(rrDTO, HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
 
