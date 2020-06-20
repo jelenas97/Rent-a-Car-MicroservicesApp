@@ -21,4 +21,6 @@ public interface RentRequestService {
     void save(RentRequest requestDTO);
 
     void cleanOldRequests();
+
+    RentRequestDTO cancelRentRequest(long id);
 }
