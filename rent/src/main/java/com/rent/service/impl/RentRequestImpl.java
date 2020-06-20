@@ -8,8 +8,10 @@ import com.rent.dto.CommentAndRateDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
+import com.rent.model.RequestsHolder;
 import com.rent.repository.RentRequestRepository;
 import com.rent.service.RentRequestService;
+import com.rent.service.RequestsHolderService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RentRequestImpl implements RentRequestService {
@@ -36,6 +39,12 @@ public class RentRequestImpl implements RentRequestService {
 
     @Autowired
     private AdvertisementClient advertisementClient;
+
+    @Autowired
+    private RequestsHolderService requestsHolderService;
+
+
+
 
     @Override
     @Transactional
@@ -69,6 +78,7 @@ public class RentRequestImpl implements RentRequestService {
             historyList.add(new RentRequestDTO(rr, dto, carClass));
         }
 
+        System.out.println(historyList);
         return historyList;
     }
 
@@ -130,6 +140,25 @@ public class RentRequestImpl implements RentRequestService {
     }
 
     @Override
+    public RentRequest physicalRent(RentRequestDTO rentDTO) {
+        System.out.println("Physical rent " + rentDTO);
+        RequestsHolder holder = new RequestsHolder();
+        holder.setBundle(false);
+        RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(), rentDTO.getAdvertisementId(), holder, RentRequestStatus.PENDING);
+        this.save(req1);
+        RentRequest req = this.rentRequestRepository.findById(req1.getId()).orElse(null);
+        if (req != null) {
+            this.rent(req);
+        }
+        //automatsko odbijanje
+        List<RentRequest> rentRequests = this.findPending(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+        System.out.println("OVI SU VEC POSTOJALI: " + rentRequests);
+
+        this.automaticRejection(rentRequests);
+        return req;
+    }
+
+    @Override
     public RentRequestDTO cancelRentRequest(long id) {
 
         RentRequest rr = this.rentRequestRepository.find(id);
@@ -139,6 +168,24 @@ public class RentRequestImpl implements RentRequestService {
         RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
 
         return rrDTO;
+    }
+
+    public void automaticRejection(List<RentRequest> rentRequests) {
+        for (RentRequest request : rentRequests) {
+            RequestsHolder holder = this.requestsHolderService.findById(request.getRequests().getId());
+            if (holder.getBundle()) {
+                List<Long> listIds = holder.getRentRequests().stream()
+                        .map(Object -> Object.getId())
+                        .collect(Collectors.toList());
+                for (Long id : listIds) {
+                    System.out.println("Ovo je bilo u bundle uklanjam!!!" + id);
+                    this.changeStatus(id, "CANCELED");
+                }
+            } else {
+                this.changeStatus(request.getId(), "CANCELED");
+            }
+        }
+
     }
 
 

@@ -22,5 +22,7 @@ public interface RentRequestService {
 
     void cleanOldRequests();
 
+    RentRequest physicalRent(RentRequestDTO rentDTO);
+
     RentRequestDTO cancelRentRequest(long id);
 }
