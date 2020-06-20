@@ -20,6 +20,34 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @GetMapping(produces="application/json")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PermitAll
+    public ResponseEntity<?> getUnComments(){
+
+        try {
+            List<CommentDTO> users = this.commentService.findUnprocessed();
+            return new ResponseEntity(users, HttpStatus.OK);
+
+        }catch(NullPointerException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while loading users");
+        }
+    }
+
+    @PutMapping(produces = "application/json", consumes = "application/json")
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PermitAll
+    public ResponseEntity changeStatus(@RequestBody CommentDTO commentDTO) {
+
+        try {
+            this.commentService.changeStatus(commentDTO);
+            return new ResponseEntity(HttpStatus.OK);
+
+        } catch (NullPointerException e) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping(produces = "application/json", consumes = "application/json")
     //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @PermitAll
