@@ -1,7 +1,11 @@
 package com.messages.service.impl;
 
+import com.messages.client.AdvertisementClient;
 import com.messages.client.AuthenticationClient;
+import com.messages.client.RentClient;
+import com.messages.dto.AdvertisementDTO;
 import com.messages.dto.MessageDTO;
+import com.messages.dto.RentRequestDTO;
 import com.messages.dto.UserDTO;
 import com.messages.model.Message;
 import com.messages.repository.MessageRepository;
@@ -21,6 +25,12 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private AuthenticationClient authenticationClient;
 
+    @Autowired
+    private RentClient rentClient;
+
+    @Autowired
+    private AdvertisementClient advertisementClient;
+
     @Override
     public List<MessageDTO> getRentRequestMessages(long id, long userId) {
         List<Message> lista = this.messageRepository.getRentRequestMessages(id);
@@ -33,24 +43,38 @@ public class MessageServiceImpl implements MessageService {
                 }
             }
             UserDTO sender = authenticationClient.getUser(m.getSenderId().toString());
-            listaDTO.add(new MessageDTO(m.getId(), m.getDate(), m.getContent(), m.getSenderId(), sender.getUsername(), m.getRecepientId(), m.getRentRequest().getId()));
+            listaDTO.add(new MessageDTO(m.getId(), m.getDate(), m.getContent(), m.getSenderId(), sender.getUsername(), m.getRecepientId(), m.getRentRequestId(),m.getSeen()));
         }
         return listaDTO;
     }
 
     @Override
-    public void save(MessageDTO messageDTO) {
+    public Message save(MessageDTO messageDTO) {
         Message newMessage = new Message();
         newMessage.setContent(messageDTO.getContent());
         newMessage.setRentRequestId(messageDTO.getRentRequestId());
         newMessage.setDate(LocalDateTime.now());
         newMessage.setSeen(false);
         newMessage.setSenderId(messageDTO.getSenderId());
-        if (messageDTO.getSenderId() == rentRequest.getSender().getId()) {
-            newMessage.setRecepient(rentRequest.getAdvertisement().getOwner());
+        Long id = messageDTO.getRentRequestId();
+        RentRequestDTO rentRequest = rentClient.getRentRequest(id.toString());
+        AdvertisementDTO advertisementDTO = advertisementClient.getAdvertisement(rentRequest.getAdvertisementId());
+        if (messageDTO.getSenderId() == rentRequest.getSenderId()) {
+            newMessage.setRecepientId(advertisementDTO.getOwnerID());
         } else {
-            newMessage.setRecepient(rentRequest.getSender());
+            newMessage.setRecepientId(rentRequest.getSenderId());
         }
-        this.messageRepository.save(newMessage);
+        newMessage = this.messageRepository.save(newMessage);
+        return newMessage;
     }
+
+    @Override
+    public List<MessageDTO> getRentRequestMessagesById(long id) {
+        List<Message> lista = this.messageRepository.getRentRequestMessages(id);
+        List<MessageDTO> listaDTO = new ArrayList<MessageDTO>();
+        for (Message m : lista) {
+            UserDTO sender = authenticationClient.getUser(m.getSenderId().toString());
+            listaDTO.add(new MessageDTO(m.getId(), m.getDate(), m.getContent(), m.getSenderId(), sender.getUsername(), m.getRecepientId(), m.getRentRequestId(),m.getSeen()));
+        }
+        return listaDTO;    }
 }

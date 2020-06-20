@@ -59,7 +59,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
         List<Advertisement> ads = this.advertisementRepository.findAll(today);
-        ads = loadImages(ads);
+        ads = loadImagesLocally(ads);
         return ads;
     }
 
@@ -137,7 +137,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 retAds.add(adv);
             }
         }
-        retAds = loadImages(retAds);
+        retAds = loadImagesLocally(retAds);
         return retAds;
     }
     @Override
@@ -196,4 +196,25 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         return ads;
     }
 
+
+    private List<Advertisement> loadImagesLocally(List<Advertisement> ads) {
+        for (int i = 0; i < ads.size(); i++) {
+            String rootPath = System.getProperty("user.dir");
+            String resourceFile = rootPath + "\\advertisement\\images\\" +  ads.get(i).getCar().getId() + ".txt";
+            ads.get(i).getCar().setImageGallery(new ArrayList<String>());
+
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    ads.get(i).getCar().getImageGallery().add(line);
+                    line = bufferedReader.readLine();
+                }
+            } catch (FileNotFoundException e) {
+                // Exception handling
+            } catch (IOException e) {
+                // Exception handling
+            }
+        }
+        return ads;
+    }
 }

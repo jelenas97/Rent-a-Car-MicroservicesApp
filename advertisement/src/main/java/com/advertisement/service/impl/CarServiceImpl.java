@@ -55,13 +55,33 @@ public class CarServiceImpl implements CarService {
     public Car findById(String id) {
         Long carId = Long.parseLong(id);
         Car car = this.carRepository.findById(carId).orElse(null);
-        car = loadImages(car);
+        car = loadImagesLocally(car);
         return car;
     }
 
 
     private Car loadImages(Car car) {
         String resourceFile = "images/" + car.getId() + ".txt";
+        car.setImageGallery(new ArrayList<String>());
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                car.getImageGallery().add(line);
+                line = bufferedReader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            // Exception handling
+        } catch (IOException e) {
+            // Exception handling
+        }
+
+        return car;
+    }
+
+    private Car loadImagesLocally(Car car) {
+        String rootPath = System.getProperty("user.dir");
+        String resourceFile = rootPath + "\\advertisement\\images\\" + car.getId() + ".txt";
         car.setImageGallery(new ArrayList<String>());
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {

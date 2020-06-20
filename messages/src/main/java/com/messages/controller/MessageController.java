@@ -1,7 +1,13 @@
 package com.messages.controller;
 
+import com.messages.client.AdvertisementClient;
+import com.messages.client.RentClient;
+import com.messages.dto.AdvertisementDTO;
 import com.messages.dto.MessageDTO;
+import com.messages.dto.RentRequestDTO;
+import com.messages.model.Message;
 import com.messages.service.MessageService;
+import com.messages.soap.code.PostMessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,13 +18,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "message")
 @CrossOrigin("http://localhost:4200")
 public class MessageController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private RentClient rentClient;
+
+    @Autowired
+    private AdvertisementClient advertisementClient;
 
     @GetMapping(value = "/rentRequest/{id}/user/{id2}", produces = MediaType.APPLICATION_JSON_VALUE)
     //@PreAuthorize("hasAuthority('ROLE_AGENT') or hasAuthority('ROLE_CLIENT')")
@@ -34,13 +46,28 @@ public class MessageController {
         }
     }
 
+    @GetMapping(value = "/rentRequest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasAuthority('ROLE_AGENT') or hasAuthority('ROLE_CLIENT')")
+    public List<MessageDTO> getMessagesFromRentRequest(@PathVariable("id") String id) {
+
+        try {
+            List<MessageDTO> list = new ArrayList<>();
+            list = messageService.getRentRequestMessagesById(Long.parseLong(id));
+            return list;
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+    }
+
     @PostMapping(produces = "application/json", consumes = "application/json")
     //@Secured("ROLE_ADMIN")
     public ResponseEntity<?> newMessage(@RequestBody MessageDTO messageDTO) {
 
         try {
-            this.messageService.save(messageDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            Message newMessage = this.messageService.save(messageDTO);
+            return new ResponseEntity<>(newMessage, HttpStatus.OK);
 
         } catch (NullPointerException e) {
             return ResponseEntity.notFound().build();

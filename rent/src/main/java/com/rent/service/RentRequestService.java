@@ -21,4 +21,8 @@ public interface RentRequestService {
     void save(RentRequest requestDTO);
 
     void cleanOldRequests();
+
+    RentRequest findById(long id);
+
+    List<RentRequestDTO> getRentRequestReserved(long id);
 }

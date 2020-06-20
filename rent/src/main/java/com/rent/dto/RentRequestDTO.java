@@ -21,6 +21,26 @@ public class RentRequestDTO {
     private String cars;
     private Long advertisementId;
     private Long senderId;
+    private int numberOfUnseen;
+
+
+    public RentRequestDTO(RentRequest rr, int numberOfUnseen) {
+
+        this.id = rr.getId();
+        String[] dateTime = rr.getStartDateTime().toString().split("T");
+        this.startDateString = dateTime[0] + " at " + dateTime[1] + "h";
+        this.startDateTime = rr.getStartDateTime();
+        String[] dateTime1 = rr.getEndDateTime().toString().split("T");
+        this.endDateString = dateTime1[0] + " at " + dateTime1[1] + "h";
+        this.endDateTime = rr.getEndDateTime();
+        this.rentRequestStatus = rr.getRentRequestStatus().toString();
+
+        //this.cars = rr.getAdvertisement().getCar().getCarClass().toString();
+        this.advertisementId = rr.getAdvertisementId();
+        this.senderId = rr.getSenderId();
+        this.numberOfUnseen = numberOfUnseen;
+
+    }
 
     public RentRequestDTO(RentRequest rr) {
 

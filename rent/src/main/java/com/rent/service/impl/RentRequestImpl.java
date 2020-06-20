@@ -2,6 +2,10 @@ package com.rent.service.impl;
 
 
 import com.core.commands.ReserveCommand;
+import com.rent.client.AdvertisementClient;
+import com.rent.client.MessagesClient;
+import com.rent.dto.AdvertisementDTO;
+import com.rent.dto.MessageDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
@@ -27,6 +31,12 @@ public class RentRequestImpl implements RentRequestService {
 
     @Inject
     private transient CommandGateway commandGateway;
+
+    @Autowired
+    private AdvertisementClient advertisementClient;
+
+    @Autowired
+    private MessagesClient messagesClient;
 
     @Override
     @Transactional
@@ -114,6 +124,47 @@ public class RentRequestImpl implements RentRequestService {
             this.save(r);
         }
     }
+
+    @Override
+    public RentRequest findById(long id) {
+        return rentRequestRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<RentRequestDTO> getRentRequestReserved(long id) {
+        try {
+
+            List<RentRequestDTO> reserved = new ArrayList<>();
+
+            List<RentRequest> listReserved = this.rentRequestRepository.findBySenderIdAndStatus(id);
+            List<AdvertisementDTO> advertisementDTO = this.advertisementClient.getUserAdvertisements(id);
+            List<Long> ids = new ArrayList<Long>();
+            for(AdvertisementDTO ad : advertisementDTO)
+            {
+                ids.add(ad.getId());
+            }
+            List<RentRequest> listOwnerId = this.rentRequestRepository.findByOwnerIdAndStatus(ids);
+
+            listReserved.addAll(listOwnerId);
+
+            for (RentRequest rr : listReserved) {
+                int numberOfUnseen = 0;
+                List<MessageDTO> messageDTOS = this.messagesClient.getMessagesFromRentRequest(rr.getId().toString());
+                for (MessageDTO m : messageDTOS) {
+                    if (m.getRecepientId().equals(id) && !m.isSeen()) {
+                        numberOfUnseen++;
+                    }
+                }
+                reserved.add(new RentRequestDTO(rr, numberOfUnseen));
+            }
+
+            return reserved;
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 }
