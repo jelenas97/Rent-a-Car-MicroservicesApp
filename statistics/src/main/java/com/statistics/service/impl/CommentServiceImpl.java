@@ -23,6 +23,25 @@ public class CommentServiceImpl implements CommentService {
     private AuthenticationClient authenticationClient;
 
     @Override
+    public List<CommentDTO> findUnprocessed() {
+
+        List<Comment> comments = this.commentRepository.findUnprocessed();
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        for(Comment com : comments){
+            UserDTO dto = this.authenticationClient.getUser(String.valueOf(com.getUserId()));
+            commentDTOS.add(new CommentDTO(com, dto));
+        }
+        return commentDTOS;
+    }
+
+    @Override
+    public void changeStatus(CommentDTO comment) {
+        Comment com = this.commentRepository.getOne(comment.getId());
+        com.setStatus(ApproveStatus.valueOf(comment.getStatus()));
+        this.commentRepository.save(com);
+    }
+
+    @Override
     public Long addComment(CommentDTO dto) {
 
         Comment comment = new Comment();
