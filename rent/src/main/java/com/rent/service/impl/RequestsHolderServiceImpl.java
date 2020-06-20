@@ -28,8 +28,9 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
     private AdvertisementClient advertisementClient;
 
     @Override
-    public void save(RequestsHolder requestsHolder) {
+    public RequestsHolder save(RequestsHolder requestsHolder) {
         this.requestsHolderRepository.save(requestsHolder);
+        return requestsHolder;
     }
 
     @Override

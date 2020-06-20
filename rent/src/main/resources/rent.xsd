@@ -14,6 +14,8 @@
             <xs:element name="advertisementId" type="xs:long" minOccurs="0"/>
             <xs:element name="requests" type="tns:requestsHolder" minOccurs="0"/>
             <xs:element name="created" type="xs:string" minOccurs="0"/>
+            <xs:element name="commentId" type="xs:long" minOccurs="0"/>
+            <xs:element name="rateId" type="xs:long" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -35,6 +37,35 @@
             <xs:enumeration value="CANCELED"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:element name="physicalRentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long" minOccurs="0"/>
+                <xs:element name="startDateTime" type="xs:string" minOccurs="0"/>
+                <xs:element name="endDateTime" type="xs:string" minOccurs="0"/>
+                <xs:element name="startDateString" type="xs:string" minOccurs="0"/>
+                <xs:element name="endDateString" type="xs:string" minOccurs="0"/>
+                <xs:element name="rentRequestStatus" type="tns:rentRequestStatus" minOccurs="0"/>
+                <xs:element name="cars" type="xs:string" minOccurs="0"/>
+                <xs:element name="senderId" type="xs:long" minOccurs="0"/>
+                <xs:element name="advertisementId" type="xs:long" minOccurs="0"/>
+                <xs:element name="rated" type="xs:boolean"/>
+                <xs:element name="commented" type="xs:boolean"/>
+                <xs:element name="numberOfUnseen" type="xs:int" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="physicalRentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="advertisementId"/>
+                <xs:element type="xs:long" name="holderId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 
 </xs:schema>
 

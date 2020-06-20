@@ -6,7 +6,7 @@ import com.rent.model.RequestsHolder;
 import java.util.List;
 
 public interface RequestsHolderService {
-    void save(RequestsHolder requestsHolder);
+    RequestsHolder save(RequestsHolder requestsHolder);
 
     List<RequestsHolderDTO> getAllPending(Long id);
 
