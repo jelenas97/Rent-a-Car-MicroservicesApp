@@ -17,4 +17,5 @@ public interface AdvertisementService {
     ResponseEntity<?> add(Advertisement ad);
     int findAllCount(Long ownerId);
     Advertisement find(Long id);
+    String getRentRequestsCarClass(Long id);
 }
