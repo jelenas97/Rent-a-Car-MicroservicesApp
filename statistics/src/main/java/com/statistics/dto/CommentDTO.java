@@ -21,6 +21,17 @@ public class CommentDTO {
     private String commenter;
     private Long rent_request_id;
 
+    public CommentDTO(Comment comment, UserDTO dto){
+        this.id = comment.getId();
+        this.date = comment.getDate();
+        this.dateString=comment.getDate().toString();
+        this.content = comment.getContent();
+        this.status = comment.getStatus().toString();
+        this.advertisement_id = comment.getAdvertisementId();
+        this.commenter_id = comment.getUserId();
+        this.commenter= dto.getFirstName()+" "+ dto.getLastName();
+        this.rent_request_id= comment.getRentRequestId();
+    }
 
     public CommentDTO(Comment comment, long a, UserDTO dto){
         this.id = comment.getId();
