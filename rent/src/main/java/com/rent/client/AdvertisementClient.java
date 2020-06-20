@@ -23,6 +23,7 @@ public interface AdvertisementClient {
     @PostMapping("/term/getTakenTerms")
     List<TermDTO> getTakenTerms(@RequestBody TermSearchDTO termSearchDTO);
 
-
+    @GetMapping("advertisement/{id}/class")
+    String getRentRequestsCarClass(@PathVariable Long id);
 
 }

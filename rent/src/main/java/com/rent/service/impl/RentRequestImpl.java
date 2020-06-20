@@ -2,6 +2,9 @@ package com.rent.service.impl;
 
 
 import com.core.commands.ReserveCommand;
+import com.rent.client.AdvertisementClient;
+import com.rent.client.StatisticsClient;
+import com.rent.dto.CommentAndRateDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
@@ -28,6 +31,12 @@ public class RentRequestImpl implements RentRequestService {
     @Inject
     private transient CommandGateway commandGateway;
 
+    @Autowired
+    private StatisticsClient statisticsClient;
+
+    @Autowired
+    private AdvertisementClient advertisementClient;
+
     @Override
     @Transactional
     public void rent(RentRequest rentRequest) {
@@ -49,11 +58,15 @@ public class RentRequestImpl implements RentRequestService {
 
         LocalDateTime dateTime = LocalDateTime.now();
         RentRequestStatus status = RentRequestStatus.PAID;
-        List<RentRequest> historyListR = rentRequestRepository.findBySenderIdAndRentRequestStatusAndEndDateTimeGreaterThanEqual(id, status, dateTime);
+        List<RentRequest> historyListR = rentRequestRepository.findBySenderIdAndRentRequestStatusAndEndDateTimeLessThanEqual(id, status, dateTime);
+
+        CommentAndRateDTO dto = statisticsClient.getCommentsAndRates(id);
 
         System.out.println(historyListR);
         for (RentRequest rr : historyListR) {
-            historyList.add(new RentRequestDTO(rr));
+
+            String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+            historyList.add(new RentRequestDTO(rr, dto, carClass));
         }
 
         System.out.println(historyList);
@@ -72,12 +85,13 @@ public class RentRequestImpl implements RentRequestService {
 
         System.out.println(cancelableListR);
         for (RentRequest rr : cancelableListR) {
-            cancelableList.add(new RentRequestDTO(rr));
+
+            String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+            cancelableList.add(new RentRequestDTO(rr, 0, carClass));
         }
 
         return cancelableList;
     }
-
 
     @Override
     public void changeStatus(Long id, String status) {
@@ -119,6 +133,18 @@ public class RentRequestImpl implements RentRequestService {
     @Override
     public void physicalRent() {
 
+    }
+
+    @Override
+    public RentRequestDTO cancelRentRequest(long id) {
+
+        RentRequest rr = this.rentRequestRepository.find(id);
+        rr.setRentRequestStatus(RentRequestStatus.CANCELED);
+        this.rentRequestRepository.save(rr);
+        String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+        RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
+
+        return rrDTO;
     }
 
 

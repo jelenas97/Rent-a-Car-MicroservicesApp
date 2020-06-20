@@ -147,24 +147,24 @@ services:
 #      - mysql
 #      - eureka-serviceregistry
 #
-#  statistics:
-#    container_name: statistics
-#    build: ./statistics
-#    restart: on-failure
-#    ports:
-#      - "8090:8090"
-#    networks:
-#      - demo
-#    environment:
-#      DATABASE_USERNAME: pera
-#      DATABASE_PASSWORD: pera
-#      DATABASE_DOMAIN: mysql
-#      DATABASE_SCHEMA: statistics
-#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
-#    tty: true
-#    depends_on:
-#      - mysql
-#      - eureka-serviceregistry
+  statistics:
+    container_name: statistics
+    build: ./statistics
+    restart: on-failure
+    ports:
+      - "8090:8090"
+    networks:
+      - demo
+    environment:
+      DATABASE_USERNAME: pera
+      DATABASE_PASSWORD: pera
+      DATABASE_DOMAIN: mysql
+      DATABASE_SCHEMA: statistics
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-serviceregistry:8761/eureka/
+    tty: true
+    depends_on:
+      - mysql
+      - eureka-serviceregistry
 
 
   mysql:
