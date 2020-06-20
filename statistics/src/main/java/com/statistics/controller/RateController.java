@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,7 @@ public class RateController {
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
     public ResponseEntity<?> rateAdvertisement(@RequestBody RateDTO dto) {
 
         try {
@@ -34,6 +36,7 @@ public class RateController {
 
     @GetMapping(value="/{id}", produces="application/json")
     //@PreAuthorize("hasAnyAuthority('ROLE_CLIENT', 'ROLE_AGENT')")
+    @PermitAll
     public ResponseEntity<?> getAverageAdvertisementRate(@PathVariable Long id){
 
         try {
