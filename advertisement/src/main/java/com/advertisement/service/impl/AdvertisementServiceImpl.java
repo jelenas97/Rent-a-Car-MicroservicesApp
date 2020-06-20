@@ -196,4 +196,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         return ads;
     }
 
+    @Override
+    public String getRentRequestsCarClass(Long id) {
+
+        Advertisement a= this.advertisementRepository.find(id);
+        String carClass=a.getCar().getCarClass().getName();
+
+        return carClass;
+    }
 }

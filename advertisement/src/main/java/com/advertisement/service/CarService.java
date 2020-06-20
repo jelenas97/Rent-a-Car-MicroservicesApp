@@ -1,9 +1,10 @@
 package com.advertisement.service;
 
+import com.advertisement.dto.CarDTO;
 import com.advertisement.model.Car;
 
 public interface CarService {
     void add(Car car);
 
-    Car findById(String id);
+    CarDTO findById(String id);
 }
