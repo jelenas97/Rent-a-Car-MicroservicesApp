@@ -24,6 +24,10 @@ zuul:
       path: /brand/**
       stripPrefix: false
       serviceId: advertisement
+    advertisement_report:
+      path: /report/**
+      stripPrefix: false
+      serviceId: advertisement
     advertisement_class:
       path: /class/**
       stripPrefix: false

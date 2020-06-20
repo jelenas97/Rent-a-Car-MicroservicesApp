@@ -1,5 +1,6 @@
 package com.advertisement.dto;
 
+import com.advertisement.model.Advertisement;
 import com.advertisement.model.Term;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class TermDTO {
     private Period period;
     private Boolean canceled;
     private Long advertisementId;
+    private AdvertisementDTO advertisement;
 
     public TermDTO(Term term) {
         this.startDate = term.getStartDate();
