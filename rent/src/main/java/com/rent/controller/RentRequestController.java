@@ -180,19 +180,7 @@ public class RentRequestController {
     @PermitAll
     public ResponseEntity<?> physicalRent(@RequestBody RentRequestDTO rentDTO) {
         try {
-            System.out.println("Physical rent " + rentDTO);
-            RentRequest req1 = new RentRequest(rentDTO, rentDTO.getSenderId(), rentDTO.getAdvertisementId(), null, RentRequestStatus.PENDING);
-            rentRequestService.save(req1);
-            RentRequest req = this.rentRequestRepository.findById(req1.getId()).orElse(null);
-            if (req != null) {
-                this.rentRequestService.rent(req);
-            }
-            //automatsko odbijanje
-            List<RentRequest> rentRequests = this.rentRequestService.findPending(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
-            System.out.println("OVI SU VEC POSTOJALI: " + rentRequests);
-
-            this.automaticRejection(rentRequests);
-
+            this.rentRequestService.physicalRent(rentDTO);
             return new ResponseEntity(null, HttpStatus.OK);
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
