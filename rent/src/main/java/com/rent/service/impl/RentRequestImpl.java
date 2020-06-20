@@ -116,5 +116,10 @@ public class RentRequestImpl implements RentRequestService {
         }
     }
 
+    @Override
+    public void physicalRent() {
+
+    }
+
 
 }
