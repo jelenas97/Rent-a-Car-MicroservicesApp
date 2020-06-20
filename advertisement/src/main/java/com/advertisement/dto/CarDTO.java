@@ -1,5 +1,6 @@
 package com.advertisement.dto;
 
+import com.advertisement.model.Advertisement;
 import com.advertisement.model.Car;
 import com.advertisement.model.FuelType;
 import lombok.Getter;
@@ -24,8 +25,10 @@ public class CarDTO {
     private List<String> imageGallery;
     private Boolean availableTracking;
     private String carModel;
+    private Long advertisementId;
+    private Long ownerId;
 
-    public CarDTO(Car car) {
+    public CarDTO(Car car, Advertisement a) {
         this.id = car.getId();
         this.carBrand = car.getCarBrand().getName();
         this.fuelType = car.getFuelType();
@@ -36,5 +39,7 @@ public class CarDTO {
         this.imageGallery = car.getImageGallery();
         this.availableTracking = car.getAvailableTracking();
         this.carModel = car.getCarModel().getName();
+        this.advertisementId= a.getId();
+        this.ownerId=a.getOwnerId();
     }
 }

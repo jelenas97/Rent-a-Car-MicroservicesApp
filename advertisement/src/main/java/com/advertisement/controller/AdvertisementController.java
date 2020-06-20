@@ -116,4 +116,12 @@ public class AdvertisementController {
     }
 
 
+    @GetMapping(value="/{id}/class", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PermitAll
+    public ResponseEntity<?> getRentRequestsCarClass(@PathVariable("id") String id) {
+
+        String carClass=this.advertisementService.getRentRequestsCarClass(Long.parseLong(id));
+
+        return new ResponseEntity(carClass, HttpStatus.OK);
+    }
 }
