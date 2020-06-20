@@ -36,6 +36,10 @@ zuul:
       path: /car/**
       stripPrefix: false
       serviceId: advertisement
+    advertisement_pricelist:
+      path: /pricelist/**
+      stripPrefix: false
+      serviceId: advertisement
     authentication_user:
       path: /user/**
       stripPrefix: false
@@ -62,6 +66,10 @@ zuul:
       serviceId: statistics
     statistics_rate:
       path: /rate/**
+      stripPrefix: false
+      serviceId: statistics
+    statistics_aggregate:
+      path: /aggregate/**
       stripPrefix: false
       serviceId: statistics
 #    messages:
