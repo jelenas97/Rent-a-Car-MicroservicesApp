@@ -25,7 +25,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     }
 
     @Bean(name = "schema1")
-    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema rentSchema) {
+    public DefaultWsdl11Definition defaultWsdl11Definition1(XsdSchema rentSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("schema1Port");
         wsdl11Definition.setLocationUri("/ws");

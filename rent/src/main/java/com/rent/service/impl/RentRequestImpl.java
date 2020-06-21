@@ -47,8 +47,6 @@ public class RentRequestImpl implements RentRequestService {
     @Autowired
     private StatisticsClient statisticsClient;
 
-    @Autowired
-    private AdvertisementClient advertisementClient;
 
     @Autowired
     private RequestsHolderService requestsHolderService;
