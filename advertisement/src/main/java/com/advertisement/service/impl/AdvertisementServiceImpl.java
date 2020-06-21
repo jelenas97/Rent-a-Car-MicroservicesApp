@@ -63,7 +63,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
         List<Advertisement> ads = this.advertisementRepository.findAll(today);
-        ads = loadImages(ads);
+        ads = loadImagesLocally(ads);
         return ads;
     }
 
@@ -141,7 +141,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 retAds.add(adv);
             }
         }
-        retAds = loadImages(retAds);
+        retAds = loadImagesLocally(retAds);
         return retAds;
     }
     @Override

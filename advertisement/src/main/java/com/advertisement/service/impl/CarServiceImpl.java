@@ -25,6 +25,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void add(Car car) {
         car.setName(car.getCarBrand() + " " + car.getCarModel());
+        car.setRate(0.0);
         carRepository.save(car);
         saveImagesLocal(car.getImageGallery(), car);
     }
