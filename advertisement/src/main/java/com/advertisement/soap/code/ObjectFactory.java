@@ -30,6 +30,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetStatisticRequest }
+     * 
+     */
+    public GetStatisticRequest createGetStatisticRequest() {
+        return new GetStatisticRequest();
+    }
+
+    /**
      * Create an instance of {@link PostAdRequest }
      * 
      */
@@ -51,6 +59,22 @@ public class ObjectFactory {
      */
     public Car createCar() {
         return new Car();
+    }
+
+    /**
+     * Create an instance of {@link GetStatisticResponse }
+     * 
+     */
+    public GetStatisticResponse createGetStatisticResponse() {
+        return new GetStatisticResponse();
+    }
+
+    /**
+     * Create an instance of {@link StatisticDTO }
+     * 
+     */
+    public StatisticDTO createStatisticDTO() {
+        return new StatisticDTO();
     }
 
     /**
