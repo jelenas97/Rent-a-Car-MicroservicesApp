@@ -25,4 +25,8 @@ public interface RentRequestService {
     RentRequest findById(long id);
 
     List<RentRequestDTO> getRentRequestReserved(long id);
+
+    RentRequest physicalRent(RentRequestDTO rentDTO);
+
+    RentRequestDTO cancelRentRequest(long id);
 }

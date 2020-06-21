@@ -1,6 +1,9 @@
 package com.advertisement.service.impl;
 
+import com.advertisement.dto.CarDTO;
+import com.advertisement.model.Advertisement;
 import com.advertisement.model.Car;
+import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.repository.CarRepository;
 import com.advertisement.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private AdvertisementRepository advertisementRepository;
 
     @Override
     public void add(Car car) {
@@ -52,11 +58,14 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car findById(String id) {
+    public CarDTO findById(String id) {
         Long carId = Long.parseLong(id);
         Car car = this.carRepository.findById(carId).orElse(null);
-        car = loadImagesLocally(car);
-        return car;
+        car = loadImages(car);
+
+        Advertisement a= advertisementRepository.findByCarId(carId);
+        CarDTO carDTO = new CarDTO(car, a);
+        return carDTO;
     }
 
 

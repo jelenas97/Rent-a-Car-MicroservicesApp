@@ -25,6 +25,10 @@ zuul:
       path: /brand/**
       stripPrefix: false
       serviceId: advertisement
+    advertisement_report:
+      path: /report/**
+      stripPrefix: false
+      serviceId: advertisement
     advertisement_class:
       path: /class/**
       stripPrefix: false
@@ -35,6 +39,10 @@ zuul:
       serviceId: advertisement
     advertisement_car:
       path: /car/**
+      stripPrefix: false
+      serviceId: advertisement
+    advertisement_pricelist:
+      path: /pricelist/**
       stripPrefix: false
       serviceId: advertisement
     authentication_user:
@@ -61,6 +69,18 @@ zuul:
       path: /test/**
       stripPrefix: false
       serviceId: location
+    statistics_comment:
+      path: /comment/**
+      stripPrefix: false
+      serviceId: statistics
+    statistics_rate:
+      path: /rate/**
+      stripPrefix: false
+      serviceId: statistics
+    statistics_aggregate:
+      path: /aggregate/**
+      stripPrefix: false
+      serviceId: statistics
 #    messages:
 #      path: /test/**
 #      stripPrefix: false

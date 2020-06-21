@@ -126,6 +126,7 @@
                 <configuration>
                     <sources>
                         <source>${project.basedir}/src/main/resources/schema1.xsd</source>
+                        <source>${project.basedir}/src/main/resources/rent.xsd</source>
                     </sources>
                 </configuration>
             </plugin>

@@ -59,7 +59,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
         List<Advertisement> ads = this.advertisementRepository.findAll(today);
-        ads = loadImagesLocally(ads);
+        ads = loadImages(ads);
         return ads;
     }
 
@@ -137,7 +137,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 retAds.add(adv);
             }
         }
-        retAds = loadImagesLocally(retAds);
+        retAds = loadImages(retAds);
         return retAds;
     }
     @Override
@@ -196,6 +196,14 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         return ads;
     }
 
+    @Override
+    public String getRentRequestsCarClass(Long id) {
+
+        Advertisement a= this.advertisementRepository.find(id);
+        String carClass=a.getCar().getCarClass().getName();
+
+        return carClass;
+    }
 
     private List<Advertisement> loadImagesLocally(List<Advertisement> ads) {
         for (int i = 0; i < ads.size(); i++) {

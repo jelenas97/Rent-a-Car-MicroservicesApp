@@ -1,6 +1,7 @@
 package com.advertisement.model;
 
 import com.advertisement.adapter.LocalDateAdapter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,20 +19,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Term {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @Column(name = "startDate", nullable = false)
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate startDate;
+
     @Column(name = "endDate", nullable = false)
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     private LocalDate endDate;
+
     @Column(name = "canceled")
     private Boolean canceled;
 
+    @Column
+    private Boolean reportWritten;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
 
     public Term(LocalDate startDate, LocalDate endDate, Advertisement advertisement) {
