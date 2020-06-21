@@ -187,6 +187,25 @@ public class RentRequestController {
         }
     }
 
+    @GetMapping(value = "/{id}", produces = "application/json" )
+    public RentRequestDTO getRentRequest(@PathVariable("id") String id){
+        RentRequest rentRequest = this.rentRequestService.findById(Long.parseLong(id));
+        RentRequestDTO rentRequestDTO = new RentRequestDTO(rentRequest);
+        return rentRequestDTO;
+    }
+
+    @GetMapping(value = "/user/{id}/reserved", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    public ResponseEntity<List<RentRequestDTO>> getRentRequestsReserved(@PathVariable String id) {
+
+        try {
+            return new ResponseEntity<>(rentRequestService.getRentRequestReserved(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     public void automaticRejection(List<RentRequest> rentRequests) {
         for (RentRequest request : rentRequests) {
