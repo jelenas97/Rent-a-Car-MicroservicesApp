@@ -1,26 +1,44 @@
 package com.rent.dto;
 
+import com.rent.adapter.LocalDateAdapter;
 import com.rent.model.RentRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "RentRequest", namespace = "http://localhost:8095/rent")
+@XmlRootElement(name = "rentRequestClass")
 public class RentRequestDTO {
 
+    @XmlElement
     private Long id;
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    @XmlElement
     private LocalDateTime startDateTime;
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
+    @XmlElement
     private LocalDateTime endDateTime;
+    @XmlElement
     private String startDateString;
+    @XmlElement
     private String endDateString;
+    @XmlElement
     private String rentRequestStatus;
+    @XmlElement
     private String cars;
+    @XmlElement
     private Long advertisementId;
+    @XmlElement
     private Long senderId;
+    @XmlElement
     private int numberOfUnseen;
 
 

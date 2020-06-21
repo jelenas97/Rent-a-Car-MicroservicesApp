@@ -149,7 +149,8 @@ public class RentRequestImpl implements RentRequestService {
 
             for (RentRequest rr : listReserved) {
                 int numberOfUnseen = 0;
-                List<MessageDTO> messageDTOS = this.messagesClient.getMessagesFromRentRequest(rr.getId().toString());
+                List<MessageDTO> messageDTOS = new ArrayList<MessageDTO>();
+                messageDTOS = this.messagesClient.getMessagesFromRentRequest(rr.getId().toString());
                 for (MessageDTO m : messageDTOS) {
                     if (m.getRecepientId().equals(id) && !m.isSeen()) {
                         numberOfUnseen++;
