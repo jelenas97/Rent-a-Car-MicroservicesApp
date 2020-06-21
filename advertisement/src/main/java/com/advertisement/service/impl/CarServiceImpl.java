@@ -62,7 +62,7 @@ public class CarServiceImpl implements CarService {
     public CarDTO findById(String id) {
         Long carId = Long.parseLong(id);
         Car car = this.carRepository.findById(carId).orElse(null);
-        car = loadImages(car);
+        car = loadImagesLocally(car);
 
         Advertisement a= advertisementRepository.findByCarId(carId);
         CarDTO carDTO = new CarDTO(car, a);
