@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema xmlns:tns="http://localhost:8095/microservices/rent" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           version="1.0" targetNamespace="http://localhost:8095/microservices/rent" elementFormDefault="qualified">
+<xs:schema xmlns:tns="http://localhost:8095/microservices/rent"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           version="1.0" targetNamespace="http://localhost:8095/microservices/rent"
+           elementFormDefault="qualified">
 
 
     <xs:complexType name="RentRequests">
