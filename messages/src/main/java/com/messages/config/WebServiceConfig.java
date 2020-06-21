@@ -1,4 +1,4 @@
-package com.rent.config;
+package com.messages.config;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +15,6 @@ import org.springframework.xml.xsd.XsdSchema;
 @EnableWs
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
-
     @Bean
     public ServletRegistrationBean messageDispatcherServlet(ApplicationContext applicationContext) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
@@ -25,30 +24,17 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     }
 
     @Bean(name = "schema1")
-    public DefaultWsdl11Definition defaultWsdl11Definition1(XsdSchema rentSchema) {
+    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema adSchema) {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("schema1Port");
         wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://localhost:8095/rent");
-        wsdl11Definition.setSchema(rentSchema);
-        return wsdl11Definition;
-    }
-    @Bean(name = "rent")
-    public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema adSchema) {
-        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("rent1Port");
-        wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://localhost:8095/rent");
+        wsdl11Definition.setTargetNamespace("http://localhost:8087/messages");
         wsdl11Definition.setSchema(adSchema);
         return wsdl11Definition;
     }
-    @Bean
-    public XsdSchema rentSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("schema1.xsd"));
-    }
+
     @Bean
     public XsdSchema adSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("rent.xsd"));
+        return new SimpleXsdSchema(new ClassPathResource("schema1.xsd"));
     }
 }
-

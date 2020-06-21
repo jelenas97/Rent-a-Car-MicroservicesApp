@@ -1,4 +1,5 @@
 zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
   routes:
     advertisement_codebook:
       path: /codebook/**
@@ -60,6 +61,10 @@ zuul:
       path: /requestHolder/**
       stripPrefix: false
       serviceId: rent
+    messages:
+      path: /message/**
+      stripPrefix: false
+      serviceId: messages
     location:
       path: /test/**
       stripPrefix: false

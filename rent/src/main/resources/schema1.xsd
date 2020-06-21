@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://localhost:8095/microservices/rent" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://localhost:8095/microservices/rent">
+
+  <xs:complexType name="RentRequest">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" minOccurs="0"/>
+      <xs:element name="startDateTime" type="xs:string" minOccurs="0"/>
+      <xs:element name="endDateTime" type="xs:string" minOccurs="0"/>
+      <xs:element name="startDateString" type="xs:string" minOccurs="0"/>
+      <xs:element name="endDateString" type="xs:string" minOccurs="0"/>
+      <xs:element name="rentRequestStatus" type="xs:string" minOccurs="0"/>
+      <xs:element name="cars" type="xs:string" minOccurs="0"/>
+      <xs:element name="advertisementId" type="xs:long" minOccurs="0"/>
+      <xs:element name="senderId" type="xs:long" minOccurs="0"/>
+      <xs:element name="numberOfUnseen" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="getRentRequestRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="rentRequestId" type="xs:long" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getRentRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="rentRequest" type="tns:RentRequest" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

@@ -3,6 +3,10 @@ package com.rent.service.impl;
 
 import com.core.commands.ReserveCommand;
 import com.rent.client.AdvertisementClient;
+import com.rent.client.MessagesClient;
+import com.rent.dto.AdvertisementDTO;
+import com.rent.dto.MessageDTO;
+import com.rent.client.AdvertisementClient;
 import com.rent.client.StatisticsClient;
 import com.rent.dto.CommentAndRateDTO;
 import com.rent.dto.RentRequestDTO;
@@ -35,10 +39,14 @@ public class RentRequestImpl implements RentRequestService {
     private transient CommandGateway commandGateway;
 
     @Autowired
-    private StatisticsClient statisticsClient;
+    private AdvertisementClient advertisementClient;
 
     @Autowired
-    private AdvertisementClient advertisementClient;
+    private MessagesClient messagesClient;
+
+    @Autowired
+    private StatisticsClient statisticsClient;
+
 
     @Autowired
     private RequestsHolderService requestsHolderService;
@@ -187,6 +195,48 @@ public class RentRequestImpl implements RentRequestService {
         }
 
     }
+
+    @Override
+    public RentRequest findById(long id) {
+        return rentRequestRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<RentRequestDTO> getRentRequestReserved(long id) {
+        try {
+
+            List<RentRequestDTO> reserved = new ArrayList<>();
+
+            List<RentRequest> listReserved = this.rentRequestRepository.findBySenderIdAndStatus(id);
+            List<AdvertisementDTO> advertisementDTO = this.advertisementClient.getUserAdvertisements(id);
+            List<Long> ids = new ArrayList<Long>();
+            for(AdvertisementDTO ad : advertisementDTO)
+            {
+                ids.add(ad.getId());
+            }
+            List<RentRequest> listOwnerId = this.rentRequestRepository.findByOwnerIdAndStatus(ids);
+
+            listReserved.addAll(listOwnerId);
+
+            for (RentRequest rr : listReserved) {
+                int numberOfUnseen = 0;
+                List<MessageDTO> messageDTOS = new ArrayList<MessageDTO>();
+                messageDTOS = this.messagesClient.getMessagesFromRentRequest(rr.getId().toString());
+                for (MessageDTO m : messageDTOS) {
+                    if (m.getRecepientId().equals(id) && !m.isSeen()) {
+                        numberOfUnseen++;
+                    }
+                }
+                reserved.add(new RentRequestDTO(rr, numberOfUnseen));
+            }
+
+            return reserved;
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 }

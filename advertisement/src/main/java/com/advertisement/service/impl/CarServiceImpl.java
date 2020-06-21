@@ -88,4 +88,24 @@ public class CarServiceImpl implements CarService {
         return car;
     }
 
+    private Car loadImagesLocally(Car car) {
+        String rootPath = System.getProperty("user.dir");
+        String resourceFile = rootPath + "\\advertisement\\images\\" + car.getId() + ".txt";
+        car.setImageGallery(new ArrayList<String>());
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                car.getImageGallery().add(line);
+                line = bufferedReader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            // Exception handling
+        } catch (IOException e) {
+            // Exception handling
+        }
+
+        return car;
+    }
+
 }
