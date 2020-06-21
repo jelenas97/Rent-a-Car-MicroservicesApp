@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
+        targetNamespace="http://localhost:8090/microservices/statistics"
+        elementFormDefault="qualified">
+
+    <xs:complexType name="CommentDTO">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="date" type="xs:string" minOccurs="0"/>
+            <xs:element name="dateString" type="xs:string" minOccurs="0"/>
+            <xs:element name="content" type="xs:string" minOccurs="0"/>
+            <xs:element name="status" type="xs:string" minOccurs="0"/>
+            <xs:element name="advertisement_id" type="xs:long" minOccurs="0"/>
+            <xs:element name="commenter_id" type="xs:long" minOccurs="0"/>
+            <xs:element name="commenter" type="xs:string" minOccurs="0"/>
+            <xs:element name="rent_request_id" type="xs:long" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="commentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long" minOccurs="0"/>
+                <xs:element name="date" type="xs:string" minOccurs="0"/>
+                <xs:element name="dateString" type="xs:string" minOccurs="0"/>
+                <xs:element name="content" type="xs:string" minOccurs="0"/>
+                <xs:element name="status" type="xs:string" minOccurs="0"/>
+                <xs:element name="advertisement_id" type="xs:long" minOccurs="0"/>
+                <xs:element name="commenter_id" type="xs:long" minOccurs="0"/>
+                <xs:element name="commenter" type="xs:string" minOccurs="0"/>
+                <xs:element name="rent_request_id" type="xs:long" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="commentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="commentId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+</xs:schema>
+
