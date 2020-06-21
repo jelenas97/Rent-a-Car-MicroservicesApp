@@ -3,6 +3,7 @@ package com.rent.soap.code;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "getRentRequestRequest", namespace = "http://localhost:8095/microservices/rent")
 public class GetRentRequestRequest {
 
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected Long rentRequestId;
 
     /**

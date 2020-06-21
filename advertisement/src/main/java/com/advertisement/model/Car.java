@@ -44,7 +44,6 @@ public class Car {
     public CarBrand carBrand;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public CarModel carModel;
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public TransmissionType transmissionType;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

@@ -3,6 +3,7 @@ package com.rent.soap.code;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -49,15 +50,25 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class RentRequest {
 
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected Long id;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected String startDateTime;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected String endDateTime;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected String startDateString;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected String endDateString;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected String rentRequestStatus;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected String cars;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected Long advertisementId;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected Long senderId;
+    @XmlElement(namespace = "http://localhost:8095/microservices/rent")
     protected int numberOfUnseen;
 
     /**
