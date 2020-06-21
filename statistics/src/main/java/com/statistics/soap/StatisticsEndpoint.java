@@ -6,6 +6,7 @@ import com.statistics.soap.code.CommentRequest;
 import com.statistics.soap.code.CommentResponse;
 import com.statistics.soap.code.GetCommentRequest;
 import com.statistics.soap.code.GetCommentResponse;
+import com.statistics.soap.code.CommentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -42,7 +43,7 @@ public class StatisticsEndpoint {
         commentDTO.setCommenter_id(request.getCommenterId());
         commentDTO.setCommenter(request.getCommenter());
         commentDTO.setRent_request_id(request.getRentRequestId());
-        long id = this.commentService.addCommentOwner(commentDTO);
+        long id = this.commentService.addComment(commentDTO);
 
         response.setCommentId(id);
 
