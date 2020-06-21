@@ -1,8 +1,11 @@
 package com.statistics.soap;
 
+import com.statistics.dto.CommentDTO;
 import com.statistics.service.CommentService;
 import com.statistics.soap.code.CommentRequest;
 import com.statistics.soap.code.CommentResponse;
+import com.statistics.soap.code.GetCommentRequest;
+import com.statistics.soap.code.GetCommentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -10,10 +13,11 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Endpoint
 public class StatisticsEndpoint {
-    private static final String NAMESPACE_URI = "http://localhost:8095/microservices/statistics";
+    private static final String NAMESPACE_URI = "http://localhost:8090/microservices/statistics";
 
     @Autowired
     private CommentService commentService;
@@ -43,6 +47,35 @@ public class StatisticsEndpoint {
         response.setCommentId(id);
 
         System.out.println("zavrsio request");
+        return response;
+
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCommentRequest")
+    @ResponsePayload
+    public GetCommentResponse getComments(@RequestPayload GetCommentRequest request) {
+        System.out.println("Soap request");
+
+
+        List<CommentDTO> comments = commentService.findProcessedAdvertisementComments(request.getAdvertisementId());
+        GetCommentResponse response = new GetCommentResponse();
+
+        for (CommentDTO dto : comments) {
+            com.statistics.soap.code.CommentDTO soapComment = new com.statistics.soap.code.CommentDTO();
+            soapComment.setId(dto.getId());
+            soapComment.setContent(dto.getContent());
+            soapComment.setDate(dto.getDateString());
+            soapComment.setDateString(dto.getDate().toString());
+            soapComment.setStatus(dto.getStatus());
+            soapComment.setAdvertisementId(dto.getAdvertisement_id());
+            soapComment.setCommenterId(dto.getCommenter_id());
+            soapComment.setCommenterId(dto.getCommenter_id());
+            soapComment.setCommenter(dto.getCommenter());
+            soapComment.setRentRequestId(dto.getRent_request_id());
+            response.getComment().add(soapComment);
+        }
+
+
         return response;
 
     }

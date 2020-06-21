@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema
+        xmlns:tns="http://localhost:8090/microservices/statistics"
         xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0"
         targetNamespace="http://localhost:8090/microservices/statistics"
         elementFormDefault="qualified">
@@ -38,6 +39,22 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element type="xs:long" name="commentId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCommentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="advertisementId" type="xs:long" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getCommentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="comment" type="tns:CommentDTO" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

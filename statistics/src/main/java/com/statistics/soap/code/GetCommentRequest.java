@@ -16,46 +16,48 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="commentId" type="{http://www.w3.org/2001/XMLSchema}long"/&gt;
+ *         &lt;element name="advertisementId" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-        "commentId"
+        "advertisementId"
 })
-@XmlRootElement(name = "commentResponse")
-public class CommentResponse {
+@XmlRootElement(name = "getCommentRequest")
+public class GetCommentRequest {
 
-    protected long commentId;
+    protected Long advertisementId;
 
     /**
-     * Gets the value of the commentId property.
-     * 
+     * Gets the value of the advertisementId property.
+     *
+     * @return possible object is
+     * {@link Long }
      */
-    public long getCommentId() {
-        return commentId;
+    public Long getAdvertisementId() {
+        return advertisementId;
     }
 
     /**
-     * Sets the value of the commentId property.
-     * 
+     * Sets the value of the advertisementId property.
+     *
+     * @param value allowed object is
+     *              {@link Long }
      */
-    public void setCommentId(long value) {
-        this.commentId = value;
+    public void setAdvertisementId(Long value) {
+        this.advertisementId = value;
     }
 
 }
