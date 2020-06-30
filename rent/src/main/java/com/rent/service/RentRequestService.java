@@ -1,6 +1,7 @@
 package com.rent.service;
 
 import com.rent.dto.RentRequestDTO;
+import com.rent.dto.RequestsHolderDTO;
 import com.rent.model.RentRequest;
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public interface RentRequestService {
 
     List<RentRequest> findPending(Long id, LocalDateTime startDate, LocalDateTime endDate);
 
-    void save(RentRequest requestDTO);
+    RentRequest save(RentRequest requestDTO);
 
     void cleanOldRequests();
 
@@ -29,4 +30,12 @@ public interface RentRequestService {
     RentRequest physicalRent(RentRequestDTO rentDTO);
 
     RentRequestDTO cancelRentRequest(long id);
+
+    void processRequest(String confirm, RentRequestDTO rentDTO);
+
+    void processRequestsBundle(String confirm, RequestsHolderDTO holderDTO);
+
+    void sendRequest(RequestsHolderDTO holderDTO);
+
+    RentRequestDTO getRentRequest(String id);
 }
