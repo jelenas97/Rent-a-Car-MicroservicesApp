@@ -105,6 +105,24 @@ public class RentRequestImpl implements RentRequestService {
     }
 
     @Override
+    public List<RentRequestDTO> getPaidRentRequests(long id) {
+
+        List<RentRequestDTO> paidList = new ArrayList<>();
+
+        List<RentRequestStatus> statuses = new ArrayList<>();
+        statuses.add(RentRequestStatus.PAID);
+        List<RentRequest> paidListR = rentRequestRepository.findBySenderIdAndRentRequestStatusIn(id, statuses);
+
+        for (RentRequest rr : paidListR) {
+
+            String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+            paidList.add(new RentRequestDTO(rr, 0, carClass));
+        }
+
+        return paidList;
+    }
+
+    @Override
     public void changeStatus(Long id, String status) {
         RentRequest rentRequest = this.rentRequestRepository.find(id);
         rentRequest.setRentRequestStatus(RentRequestStatus.valueOf(status));
@@ -163,6 +181,18 @@ public class RentRequestImpl implements RentRequestService {
 
         RentRequest rr = this.rentRequestRepository.find(id);
         rr.setRentRequestStatus(RentRequestStatus.CANCELED);
+        this.rentRequestRepository.save(rr);
+        String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+        RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
+
+        return rrDTO;
+    }
+
+    @Override
+    public RentRequestDTO payRentRequest(long id) {
+
+        RentRequest rr = this.rentRequestRepository.find(id);
+        rr.setRentRequestStatus(RentRequestStatus.PAID);
         this.rentRequestRepository.save(rr);
         String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
         RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
