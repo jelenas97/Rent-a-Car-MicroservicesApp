@@ -69,4 +69,20 @@ public class ObjectFactory {
         return new CommentResponse();
     }
 
+    /**
+     * Create an instance of {@link CommentOwnerRequest }
+     *
+     */
+    public CommentOwnerRequest createCommentOwnerRequest() {
+        return new CommentOwnerRequest();
+    }
+
+    /**
+     * Create an instance of {@link CommentOwnerResponse }
+     *
+     */
+    public CommentOwnerResponse createCommentOwnerResponse() {
+        return new CommentOwnerResponse();
+    }
+
 }
