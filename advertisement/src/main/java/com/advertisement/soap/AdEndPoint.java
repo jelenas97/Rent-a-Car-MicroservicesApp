@@ -1,6 +1,9 @@
 package com.advertisement.soap;
 
 import com.advertisement.client.AuthenticationClient;
+import com.advertisement.client.StatisticClient;
+import com.advertisement.dto.CarDTO;
+import com.advertisement.dto.RateDTO;
 import com.advertisement.dto.StatisticDTO;
 import com.advertisement.model.Advertisement;
 import com.advertisement.model.Car;
@@ -23,6 +26,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLEventReader;
 import java.beans.XMLDecoder;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Endpoint
@@ -53,6 +58,9 @@ public class AdEndPoint {
     @Autowired
     private PriceListService priceListService;
 
+    @Autowired
+    private StatisticClient statisticClient;
+
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "postAdRequest")
     @ResponsePayload
     public PostAdResponse getTest(@RequestPayload PostAdRequest request) {
@@ -72,7 +80,6 @@ public class AdEndPoint {
         newAd.setOwnerId(request.getOwnerId());
         newAd.setStartDate(startDate);
         newAd.setEndDate(endDate);
-        newAd.setCdw(request.isCdw());
         newAd.setKilometresLimit(request.getLimitKm());
         newAd.setPlace(request.getLocation());
 //treba discount
@@ -113,7 +120,29 @@ public class AdEndPoint {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        CustomPrincipal cp = (CustomPrincipal) auth.getPrincipal();
         if(request.getType().equals("rate")) {
-            List<StatisticDTO> statisticDTOList = this.adService.getBestRate(request.getIdUser());
+            List<StatisticDTO> statisticDTOList = new ArrayList<StatisticDTO>();
+            List<Advertisement> ads = this.adService.findAll(request.getIdUser());
+            for(Advertisement ad : ads)
+            {
+                double rate = 0.0;
+                RateDTO rates = this.statisticClient.getAverageAdvertisementRateFirst(ad.getId());
+                try {
+                    if(rates != null)
+                    {
+                        rate = rates.getAverage_rate();
+                    }
+                } catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                StatisticDTO statisticDTO = new StatisticDTO();
+                CarDTO car = this.carService.findById(this.adService.getIdCar(ad.getId()));
+                statisticDTO.setCarName(car.getCarBrand() + ' ' + car.getCarModel());
+                statisticDTO.setRate(rate);
+                statisticDTOList.add(statisticDTO);
+            }
+            statisticDTOList.sort(Comparator.comparing(StatisticDTO::getRate).reversed());
+
             GetStatisticResponse response = new GetStatisticResponse();
             for (StatisticDTO stat : statisticDTOList) {
                 com.advertisement.soap.code.StatisticDTO statSoap = new com.advertisement.soap.code.StatisticDTO();
@@ -127,6 +156,7 @@ public class AdEndPoint {
         } else if(request.getType().equals("comment")) {
             List<StatisticDTO> statisticDTOList = this.adService.getMostComment(request.getIdUser());
             GetStatisticResponse response = new GetStatisticResponse();
+
             for(StatisticDTO stat: statisticDTOList)
             {
                 com.advertisement.soap.code.StatisticDTO statSoap = new com.advertisement.soap.code.StatisticDTO();
@@ -140,6 +170,7 @@ public class AdEndPoint {
         } else {
             List<StatisticDTO> statisticDTOList = this.adService.getMostKm(request.getIdUser());
             GetStatisticResponse response = new GetStatisticResponse();
+
             for(StatisticDTO stat: statisticDTOList)
             {
                 com.advertisement.soap.code.StatisticDTO statSoap = new com.advertisement.soap.code.StatisticDTO();

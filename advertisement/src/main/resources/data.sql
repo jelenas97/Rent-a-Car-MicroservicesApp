@@ -46,37 +46,37 @@ insert into car(available_tracking, kid_seats, mileage, name, rate, car_brand_id
                 transmission_type_id, car_model_id)
 values (1, 2, 1000, 'Sián', 5.0, 1, 1, 3, 1);
 
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (1, 20, 'Novi Sad', 5000, 1, 3, 1, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values ( 20, 'Novi Sad', 5000, 1, 3, 1, '2020-05-03', '2020-10-03');
 
 insert into car(available_tracking, kid_seats, mileage, name, rate, car_brand_id, car_class_id,
                 transmission_type_id, car_model_id)
 values (1, 0, 10000, 'Batmobile', 10.0, 2, 2, 2,2);
 
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (0, 10, 'Novi Sad', 5000, 2, 4, 2, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values ( 10, 'Novi Sad', 5000, 2, 4, 2, '2020-05-03', '2020-10-03');
 --
 insert into car(available_tracking,kid_seats, mileage, name, rate, car_brand_id, car_class_id,
                 transmission_type_id, car_model_id)
 values (1, 0, 10000,'NOVO', 10.0, 1, 1, 1,1);
 
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (0, 20, 'Novi Sad', 5000, 3, 1, 1, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values ( 20, 'Novi Sad', 5000, 3, 1, 1, '2020-05-03', '2020-10-03');
 --
 insert into car(available_tracking,kid_seats, mileage, name, rate, car_brand_id, car_class_id,
                 transmission_type_id, car_model_id)
 values (0, 3, 54000, 'BB-Gier', 9.0, 3, 3, 3,3);
 
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (0, 10, 'Novi Sad', 500000, 4, 3, 1, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values ( 10, 'Novi Sad', 500000, 4, 3, 1, '2020-05-03', '2020-10-03');
 
 
 insert into car(available_tracking, kid_seats, mileage, name, rate, car_brand_id, car_class_id,
                 transmission_type_id, car_model_id)
 values (1,0, 5040, 'Harper', 5.0, 1, 1, 3, 1);
 
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (1, 20, 'Novi Sad', 5000, 5, 3, 1, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values ( 20, 'Novi Sad', 5000, 5, 3, 1, '2020-05-03', '2020-10-03');
 
 
 
@@ -84,14 +84,14 @@ insert into car(available_tracking, kid_seats, mileage, name, rate, car_brand_id
                 transmission_type_id, car_model_id)
 values (1,0, 5040, 'Honys', 5.0, 1, 1, 3, 1);
 
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (1, 20, 'Novi Sad', 5000, 6, 3, 1, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values (20, 'Novi Sad', 5000, 6, 3, 1, '2020-05-03', '2020-10-03');
 
 insert into car(available_tracking,kid_seats, mileage, name, rate, car_brand_id, car_class_id,
                 transmission_type_id, car_model_id)
 values (1, 0, 5040, 'Ruops', 5.0, 1, 1, 3, 1);
-insert into advertisement(cdw, discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
-values (1, 20, 'Novi Sad', 5000, 7, 3, 1, '2020-05-03', '2020-10-03');
+insert into advertisement( discount, place, kilometres_limit, car_id, owner_id, price_list_id, start_date, end_date)
+values ( 20, 'Novi Sad', 5000, 7, 3, 1, '2020-05-03', '2020-10-03');
 
 
 

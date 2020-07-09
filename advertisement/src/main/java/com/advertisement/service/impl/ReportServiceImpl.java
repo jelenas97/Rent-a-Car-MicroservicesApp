@@ -25,4 +25,9 @@ public class ReportServiceImpl implements ReportService {
     public void save(Report report) {
         reportRepository.save(report);
     }
+
+    @Override
+    public List<Report> findAllByAd(Long id) {
+        return this.reportRepository.findAllByAdId(id);
+    }
 }

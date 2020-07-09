@@ -48,4 +48,21 @@ public class RateController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while loading rates");
         }
     }
+
+    @GetMapping(value="/{id}/first", produces="application/json")
+    //@PreAuthorize("hasAnyAuthority('ROLE_CLIENT', 'ROLE_AGENT')")
+    @PermitAll
+    public RateDTO getAverageAdvertisementRateFirst(@PathVariable Long id){
+
+        try {
+            List<RateDTO> rates = this.rateService.findAverageAdvRate(id);
+            if(rates.size() != 0) {
+                return rates.get(0);
+            } else {
+                return  null;
+            }
+        }catch(NullPointerException e){
+            return null;
+        }
+    }
 }

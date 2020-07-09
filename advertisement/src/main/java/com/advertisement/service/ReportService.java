@@ -10,4 +10,5 @@ public interface ReportService {
 
     void save(Report report);
 
+    List<Report> findAllByAd(Long id);
 }
