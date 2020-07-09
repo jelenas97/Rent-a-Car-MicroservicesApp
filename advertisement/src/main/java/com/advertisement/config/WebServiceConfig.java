@@ -34,23 +34,10 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         return wsdl11Definition;
     }
 
-    @Bean(name = "schema2")
-    public DefaultWsdl11Definition defaultWsdl22Definition(XsdSchema reportSchema) {
-        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("schema2Port");
-        wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://localhost:8084/report");
-        wsdl11Definition.setSchema(reportSchema);
-        return wsdl11Definition;
-    }
-
     @Bean
     public XsdSchema adSchema() {
         return new SimpleXsdSchema(new ClassPathResource("schema1.xsd"));
     }
 
-    @Bean
-    public XsdSchema reportSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("schema2.xsd"));
-    }
+
 }
