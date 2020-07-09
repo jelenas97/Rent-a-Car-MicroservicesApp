@@ -3,9 +3,9 @@ package com.rent.service.impl;
 
 import com.core.commands.ReserveCommand;
 import com.rent.client.AdvertisementClient;
+import com.rent.client.MessagesClient;
 import com.rent.client.StatisticsClient;
-import com.rent.dto.CommentAndRateDTO;
-import com.rent.dto.RentRequestDTO;
+import com.rent.dto.*;
 import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
 import com.rent.model.RequestsHolder;
@@ -20,9 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +33,14 @@ public class RentRequestImpl implements RentRequestService {
     private transient CommandGateway commandGateway;
 
     @Autowired
-    private StatisticsClient statisticsClient;
+    private AdvertisementClient advertisementClient;
 
     @Autowired
-    private AdvertisementClient advertisementClient;
+    private MessagesClient messagesClient;
+
+    @Autowired
+    private StatisticsClient statisticsClient;
+
 
     @Autowired
     private RequestsHolderService requestsHolderService;
@@ -103,6 +105,24 @@ public class RentRequestImpl implements RentRequestService {
     }
 
     @Override
+    public List<RentRequestDTO> getPaidRentRequests(long id) {
+
+        List<RentRequestDTO> paidList = new ArrayList<>();
+
+        List<RentRequestStatus> statuses = new ArrayList<>();
+        statuses.add(RentRequestStatus.PAID);
+        List<RentRequest> paidListR = rentRequestRepository.findBySenderIdAndRentRequestStatusIn(id, statuses);
+
+        for (RentRequest rr : paidListR) {
+
+            String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+            paidList.add(new RentRequestDTO(rr, 0, carClass));
+        }
+
+        return paidList;
+    }
+
+    @Override
     public void changeStatus(Long id, String status) {
         RentRequest rentRequest = this.rentRequestRepository.find(id);
         rentRequest.setRentRequestStatus(RentRequestStatus.valueOf(status));
@@ -116,8 +136,8 @@ public class RentRequestImpl implements RentRequestService {
 
 
     @Override
-    public void save(RentRequest rentRequest) {
-        this.rentRequestRepository.save(rentRequest);
+    public RentRequest save(RentRequest rentRequest) {
+        return this.rentRequestRepository.save(rentRequest);
     }
 
     @Override
@@ -127,8 +147,6 @@ public class RentRequestImpl implements RentRequestService {
     public void cleanOldRequests() {
         System.out.println("Requests maintenance");
         LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        //for trying put every30sec.cron and use twoMinutes instead of yesterday
-        //LocalDateTime twoMinutes = LocalDateTime.now().minusMinutes(2);
         List<RentRequest> requests = this.rentRequestRepository.findOldRequests(yesterday);
 
         System.out.println("Found : " + requests);
@@ -170,12 +188,118 @@ public class RentRequestImpl implements RentRequestService {
         return rrDTO;
     }
 
+    @Override
+    public RentRequestDTO payRentRequest(long id) {
+
+        RentRequest rr = this.rentRequestRepository.find(id);
+        rr.setRentRequestStatus(RentRequestStatus.PAID);
+        this.rentRequestRepository.save(rr);
+        String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+        RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
+
+        return rrDTO;
+    }
+
+    @Override
+    public void processRequest(String confirm, RentRequestDTO rentDTO) {
+        if (confirm.equals("YES")) {
+            System.out.println(rentDTO);
+            TermSearchDTO termSearchDTO = new TermSearchDTO(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+            List<TermDTO> term = this.advertisementClient.getTakenTerms(termSearchDTO);
+            System.out.println("Zauzeti termini su " + term.toString());
+
+            if (term.size() == 0) {
+                System.out.println("NEMA TERMINA SA PREKLAPANJEM!!!!");
+                RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
+                if (request != null) {
+                    this.rent(request);
+                    List<RentRequest> rentRequests = this.findPending(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+                    System.out.println("Ove odbijam " + rentRequests);
+                    this.automaticRejection(rentRequests);
+                }
+            } else {
+                this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
+            }
+        } else {
+            this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
+        }
+    }
+
+    @Override
+    public void processRequestsBundle(String confirm, RequestsHolderDTO holderDTO) {
+        if (confirm.equals("YES")) {
+            //true = nema preklapanja  u jednom terminu! Dodaj ih sve!
+            //false = ima preklapanja u jednom/vise! Sve odbij!
+            Boolean yes = true;
+            for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
+                System.out.println(rentDTO);
+                TermSearchDTO termSearchDTO = new TermSearchDTO(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
+                List<TermDTO> term = this.advertisementClient.getTakenTerms(termSearchDTO);
+                System.out.println("Zauzeti termini su " + term.toString());
+                if (term.size() != 0) {
+                    yes = false;
+                }
+            }
+            if (yes) {
+                RentRequestDTO dto = new RentRequestDTO();
+                for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
+                    RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
+                    dto = rentDTO;
+                    if (request != null) {
+                        this.rent(request);
+                    }
+                }
+                List<RentRequest> rentRequests = this.findPending(dto.getAdvertisementId(), dto.getStartDateTime(), dto.getEndDateTime());
+                this.automaticRejection(rentRequests);
+            } else {
+                for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
+                    this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
+                }
+            }
+        } else {
+            for (RentRequestDTO r : holderDTO.getRentRequests()) {
+                this.changeStatus(r.getId(), RentRequestStatus.CANCELED.toString());
+            }
+        }
+    }
+
+    @Override
+    public void sendRequest(RequestsHolderDTO holderDTO) {
+        System.out.println("Posal zahtjev " + holderDTO);
+        Set<Long> usersIds = new HashSet<>();
+        for (RentRequestDTO requestDTO : holderDTO.getRentRequests()) {
+            AdvertisementDTO ad = this.advertisementClient.getAdvertisement(requestDTO.getAdvertisementId());
+            usersIds.add(ad.getOwnerId());
+        }
+        System.out.println("Owners:" + usersIds);
+        for (Long id : usersIds) {
+            RequestsHolder rq = new RequestsHolder(holderDTO.getBundle());
+            System.out.println("Vlasnik = " + id);
+
+            for (RentRequestDTO requestDTO : holderDTO.getRentRequests()) {
+                AdvertisementDTO ad = this.advertisementClient.getAdvertisement(requestDTO.getAdvertisementId());
+
+                if (id.equals(ad.getOwnerId())) {
+                    RentRequest rentRequest = new RentRequest(requestDTO, requestDTO.getSenderId(), requestDTO.getAdvertisementId(), rq);
+                    this.save(rentRequest);
+                }
+            }
+        }
+    }
+
+    @Override
+    public RentRequestDTO getRentRequest(String id) {
+        RentRequest rentRequest = this.findById(Long.parseLong(id));
+        return new RentRequestDTO(rentRequest);
+    }
+
+
     public void automaticRejection(List<RentRequest> rentRequests) {
         for (RentRequest request : rentRequests) {
             RequestsHolder holder = this.requestsHolderService.findById(request.getRequests().getId());
             if (holder.getBundle()) {
                 List<Long> listIds = holder.getRentRequests().stream()
-                        .map(Object -> Object.getId())
+                        .map(RentRequest::getId)
                         .collect(Collectors.toList());
                 for (Long id : listIds) {
                     System.out.println("Ovo je bilo u bundle uklanjam!!!" + id);
@@ -185,8 +309,48 @@ public class RentRequestImpl implements RentRequestService {
                 this.changeStatus(request.getId(), "CANCELED");
             }
         }
-
     }
+
+    @Override
+    public RentRequest findById(long id) {
+        return rentRequestRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<RentRequestDTO> getRentRequestReserved(long id) {
+        try {
+
+            List<RentRequestDTO> reserved = new ArrayList<>();
+
+            List<RentRequest> listReserved = this.rentRequestRepository.findBySenderIdAndStatus(id);
+            List<AdvertisementDTO> advertisementDTO = this.advertisementClient.getUserAdvertisements(id);
+            List<Long> ids = new ArrayList<Long>();
+            for(AdvertisementDTO ad : advertisementDTO)
+            {
+                ids.add(ad.getId());
+            }
+            List<RentRequest> listOwnerId = this.rentRequestRepository.findByOwnerIdAndStatus(ids);
+
+            listReserved.addAll(listOwnerId);
+            for (RentRequest rr : listReserved) {
+                int numberOfUnseen = 0;
+                List<MessageDTO> messageDTOS = new ArrayList<MessageDTO>();
+                messageDTOS = this.messagesClient.getMessagesFromRentRequest(rr.getId().toString());
+                for (MessageDTO m : messageDTOS) {
+                    if (m.getRecepientId().equals(id) && !m.isSeen()) {
+                        numberOfUnseen++;
+                    }
+                }
+                reserved.add(new RentRequestDTO(rr, numberOfUnseen));
+            }
+
+            return reserved;
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 }

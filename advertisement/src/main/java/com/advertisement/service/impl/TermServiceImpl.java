@@ -15,7 +15,6 @@ import java.util.List;
 
 
 @Service
-@Transactional
 public class TermServiceImpl implements TermService {
     @Autowired
     private TermRepository termRepository;

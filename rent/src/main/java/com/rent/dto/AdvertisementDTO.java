@@ -24,5 +24,5 @@ public class AdvertisementDTO {
     private Boolean availableTracking;
     private Double price;
     private String model;
-    private Long ownerID;
+    private Long ownerId;
 }

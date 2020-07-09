@@ -1,13 +1,8 @@
 package com.rent.controller;
 
-import com.rent.client.AdvertisementClient;
-import com.rent.dto.*;
-import com.rent.enumerations.RentRequestStatus;
-import com.rent.model.RentRequest;
-import com.rent.model.RequestsHolder;
-import com.rent.repository.RentRequestRepository;
+import com.rent.dto.RentRequestDTO;
+import com.rent.dto.RequestsHolderDTO;
 import com.rent.service.RentRequestService;
-import com.rent.service.RequestsHolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,26 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(value = "rentRequest")
 public class RentRequestController {
-    @Autowired
-    private RentRequestRepository rentRequestRepository;
 
     @Autowired
     private RentRequestService rentRequestService;
-
-    @Autowired
-    private AdvertisementClient advertisementClient;
-
-    @Autowired
-    private RequestsHolderService requestsHolderService;
 
     @GetMapping(value = "/history/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     // @PreAuthorize("hasAuthority('ROLE_CLIENT')")
@@ -60,33 +44,25 @@ public class RentRequestController {
         }
     }
 
+    @GetMapping(value = "/paid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
+    public ResponseEntity<List<RentRequestDTO>> getPaidRentRequests(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(rentRequestService.getPaidRentRequests(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @PostMapping(produces = "application/json", consumes = "application/json")
     // @PreAuthorize("hasAuthority('ROLE_AGENT') and hasAuthority('ROLE_CLIENT')")
     @PermitAll
     public ResponseEntity sentRequest(@RequestBody RequestsHolderDTO holderDTO) {
         try {
-            System.out.println("Posal zahtjev " + holderDTO);
-            Set<Long> usersIds = new HashSet<>();
-            for (RentRequestDTO requestDTO : holderDTO.getRentRequests()) {
-                AdvertisementDTO ad = this.advertisementClient.getAdvertisement(requestDTO.getAdvertisementId());
-                usersIds.add(ad.getOwnerID());
-            }
-            System.out.println("Owners:" + usersIds);
-            for (Long id : usersIds) {
-                RequestsHolder rq = new RequestsHolder(holderDTO.getBundle());
-                System.out.println("Vlasnik = " + id);
-
-                for (RentRequestDTO requestDTO : holderDTO.getRentRequests()) {
-                    AdvertisementDTO ad = this.advertisementClient.getAdvertisement(requestDTO.getAdvertisementId());
-
-                    if (id.equals(ad.getOwnerID())) {
-                        RentRequest rentRequest = new RentRequest(requestDTO, requestDTO.getSenderId(), requestDTO.getAdvertisementId(), rq);
-                        System.out.println(rentRequest);
-                        //treba i holder snimiti???
-                        this.rentRequestService.save(rentRequest);
-                    }
-                }
-            }
+            this.rentRequestService.sendRequest(holderDTO);
             return new ResponseEntity(HttpStatus.OK);
         } catch (NullPointerException e) {
             return ResponseEntity.notFound().build();
@@ -97,79 +73,20 @@ public class RentRequestController {
     @PermitAll
     public ResponseEntity<?> processRequestsBundle(@PathVariable String confirm, @RequestBody RequestsHolderDTO holderDTO) {
         try {
-            if (confirm.equals("YES")) {
-                //true = nema preklapanja  u jednom terminu! Dodaj ih sve!
-                //false = ima preklapanja u jednom/vise! Sve odbij!
-                Boolean yes = true;
-                for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
-                    System.out.println(rentDTO);
-                    TermSearchDTO termSearchDTO = new TermSearchDTO(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
-                    List<TermDTO> term = this.advertisementClient.getTakenTerms(termSearchDTO);
-                    System.out.println("Zauzeti termini su " + term.toString());
-                    if (term.size() != 0) {
-                        yes = false;
-                    }
-                }
-                if (yes) {
-                    RentRequestDTO dto = new RentRequestDTO();
-                    for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
-                        RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
-                        dto = rentDTO;
-                        if (request != null) {
-                            this.rentRequestService.rent(request);
-
-
-                        }
-                    }
-
-                    List<RentRequest> rentRequests = this.rentRequestService.findPending(dto.getAdvertisementId(), dto.getStartDateTime(), dto.getEndDateTime());
-                    this.automaticRejection(rentRequests);
-                } else {
-                    for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
-                        this.rentRequestService.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
-                    }
-                }
-            } else {
-                for (RentRequestDTO r : holderDTO.getRentRequests()) {
-                    this.rentRequestService.changeStatus(r.getId(), RentRequestStatus.CANCELED.toString());
-
-                }
-            }
+            this.rentRequestService.processRequestsBundle(confirm, holderDTO);
             return new ResponseEntity(null, HttpStatus.OK);
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
-    //Accept or reject requests from users!
+
     @PostMapping(value = "/request/{confirm}", produces = "application/json")
     //   @PreAuthorize("hasAuthority('ROLE_AGENT')")
     @PermitAll
     public ResponseEntity<?> processRequest(@PathVariable String confirm, @RequestBody RentRequestDTO rentDTO) {
         try {
-
-
-            if (confirm.equals("YES")) {
-                System.out.println(rentDTO);
-                TermSearchDTO termSearchDTO = new TermSearchDTO(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
-                List<TermDTO> term = this.advertisementClient.getTakenTerms(termSearchDTO);
-                System.out.println("Zauzeti termini su " + term.toString());
-
-                if (term.size() == 0) {
-                    System.out.println("NEMA TERMINA SA PREKLAPANJEM!!!!");
-                    RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
-                    if (request != null) {
-                        this.rentRequestService.rent(request);
-                        List<RentRequest> rentRequests = this.rentRequestService.findPending(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
-                        System.out.println("Ove odbijam " + rentRequests);
-                        this.automaticRejection(rentRequests);
-                    }
-                } else {
-                    this.rentRequestService.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
-                }
-            } else {
-                this.rentRequestService.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
-            }
-            return new ResponseEntity(null, HttpStatus.OK);
+            this.rentRequestService.processRequest(confirm, rentDTO);
+            return ResponseEntity.status(HttpStatus.OK).body("Processing request finished successfully");
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
@@ -187,35 +104,40 @@ public class RentRequestController {
         }
     }
 
-
-    public void automaticRejection(List<RentRequest> rentRequests) {
-        for (RentRequest request : rentRequests) {
-            RequestsHolder holder = this.requestsHolderService.findById(request.getRequests().getId());
-            if (holder.getBundle()) {
-                List<Long> listIds = holder.getRentRequests().stream()
-                        .map(Object -> Object.getId())
-                        .collect(Collectors.toList());
-
-
-                for (Long id : listIds) {
-                    System.out.println("Ovo je bilo u bundle uklanjam!!!" + id);
-                    this.rentRequestService.changeStatus(id, "CANCELED");
-                }
-
-            } else {
-                this.rentRequestService.changeStatus(request.getId(), "CANCELED");
-            }
-        }
-
+    @GetMapping(value = "/{id}", produces = "application/json" )
+    public RentRequestDTO getRentRequest(@PathVariable("id") String id){
+        return this.rentRequestService.getRentRequest(id);
     }
 
+    @GetMapping(value = "/user/{id}/reserved", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    public ResponseEntity<List<RentRequestDTO>> getRentRequestsReserved(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(rentRequestService.getRentRequestReserved(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
     @PutMapping("/cancel/{id}")
     //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @PermitAll
     public ResponseEntity cancelRentRequest(@PathVariable long id){
-
         try{
             RentRequestDTO rrDTO = rentRequestService.cancelRentRequest(id);
+            return  new ResponseEntity(rrDTO, HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping("/pay/{id}")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
+    public ResponseEntity payRentRequest(@PathVariable long id){
+        try{
+            RentRequestDTO rrDTO = rentRequestService.payRentRequest(id);
             return  new ResponseEntity(rrDTO, HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);

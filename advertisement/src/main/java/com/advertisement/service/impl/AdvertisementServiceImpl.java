@@ -2,15 +2,13 @@ package com.advertisement.service.impl;
 
 
 import com.advertisement.client.AuthenticationClient;
-import com.advertisement.dto.UserDTO;
+import com.advertisement.client.StatisticClient;
+import com.advertisement.dto.*;
+import com.advertisement.model.*;
+import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.model.Advertisement;
 import com.advertisement.repository.AdvertisementRepository;
-import com.advertisement.dto.AdvertisementDTO;
-import com.advertisement.dto.SearchDTO;
-import com.advertisement.model.Advertisement;
-import com.advertisement.model.CarModel;
-import com.advertisement.model.FuelType;
-import com.advertisement.repository.AdvertisementRepository;
+import com.advertisement.repository.CarRepository;
 import com.advertisement.service.AdvertisementService;
 import com.advertisement.service.CarModelService;
 import com.advertisement.service.CarService;
@@ -55,11 +53,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Autowired
     private CarService carService;
 
+    @Autowired
+    private CarRepository carRepository;
+
+    @Autowired
+    private StatisticClient statisticClient;
+
     @Override
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
         List<Advertisement> ads = this.advertisementRepository.findAll(today);
-        ads = loadImages(ads);
+        ads = loadImagesLocally(ads);
         return ads;
     }
 
@@ -137,7 +141,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 retAds.add(adv);
             }
         }
-        retAds = loadImages(retAds);
+        retAds = loadImagesLocally(retAds);
         return retAds;
     }
     @Override
@@ -203,5 +207,76 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         String carClass=a.getCar().getCarClass().getName();
 
         return carClass;
+    }
+
+    @Override
+    public List<StatisticDTO> getMostComment(Long id) {
+        List<StatisticDTO> statistics = new ArrayList<StatisticDTO>();
+        List<Advertisement> ads = this.findAll(id);
+        for (Advertisement a : ads) {
+            StatisticDTO stat = new StatisticDTO();
+            ResponseEntity<List<CommentDTO>> commentsRE = this.statisticClient.getProcessedAdvertisementComments(a.getId());
+            Long numberOfComments = Integer.toUnsignedLong(commentsRE.getBody().size());
+            Long idCar = this.advertisementRepository.getCarId(a.getId());
+            Car car = this.carRepository.findById(idCar).orElse(null);
+            stat.setCarName(car.getName());
+            stat.setComment(numberOfComments);
+            statistics.add(stat);
+        }
+        statistics.sort(Comparator.comparing(StatisticDTO::getComment).reversed());
+        return statistics;
+    }
+
+    @Override
+    public List<StatisticDTO> getMostKm(Long id) {
+        List<StatisticDTO> statistics = new ArrayList<StatisticDTO>();
+        List<Advertisement> ads = this.findAll(id);
+        for (Advertisement a : ads) {
+            Long idCar = this.advertisementRepository.getCarId(a.getId());
+            Car car = this.carRepository.findById(idCar).orElse(null);
+            StatisticDTO stat = new StatisticDTO();
+            stat.setCarName(car.getName());
+            stat.setKm(Integer.toUnsignedLong(car.getMileage()));
+            statistics.add(stat);
+        }
+        statistics.sort(Comparator.comparing(StatisticDTO::getKm).reversed());
+        return statistics;
+    }
+
+    @Override
+    public List<StatisticDTO> getBestRate(Long id) {
+        List<StatisticDTO> statistics = new ArrayList<StatisticDTO>();
+        List<Advertisement> ads = this.findAll(id);
+        for (Advertisement a : ads) {
+            Long idCar = this.advertisementRepository.getCarId(a.getId());
+            Car car = this.carRepository.findById(idCar).orElse(null);
+            StatisticDTO stat = new StatisticDTO();
+            stat.setCarName(car.getName());
+            stat.setRate(car.getRate());
+            statistics.add(stat);
+        }
+        statistics.sort(Comparator.comparing(StatisticDTO::getRate).reversed());
+        return statistics;
+    }
+
+    private List<Advertisement> loadImagesLocally(List<Advertisement> ads) {
+        for (int i = 0; i < ads.size(); i++) {
+            String rootPath = System.getProperty("user.dir");
+            String resourceFile = rootPath + "\\advertisement\\images\\" +  ads.get(i).getCar().getId() + ".txt";
+            ads.get(i).getCar().setImageGallery(new ArrayList<String>());
+
+            try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    ads.get(i).getCar().getImageGallery().add(line);
+                    line = bufferedReader.readLine();
+                }
+            } catch (FileNotFoundException e) {
+                // Exception handling
+            } catch (IOException e) {
+                // Exception handling
+            }
+        }
+        return ads;
     }
 }

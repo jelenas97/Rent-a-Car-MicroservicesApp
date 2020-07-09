@@ -1,10 +1,13 @@
 package com.advertisement.soap;
 
 import com.advertisement.client.AuthenticationClient;
+import com.advertisement.dto.StatisticDTO;
 import com.advertisement.model.Advertisement;
 import com.advertisement.model.Car;
 import com.advertisement.model.PriceList;
 import com.advertisement.service.*;
+import com.advertisement.soap.code.GetStatisticRequest;
+import com.advertisement.soap.code.GetStatisticResponse;
 import com.advertisement.soap.code.PostAdRequest;
 import com.advertisement.soap.code.PostAdResponse;
 import com.netflix.discovery.converters.jackson.serializer.ApplicationXmlDeserializer;
@@ -20,6 +23,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLEventReader;
 import java.beans.XMLDecoder;
 import java.time.LocalDate;
+import java.util.List;
 
 @Endpoint
 public class AdEndPoint {
@@ -29,7 +33,7 @@ public class AdEndPoint {
     private AdvertisementService adService;
 
     @Autowired
-    private AuthenticationClient authenticationClient;
+    private CarService carService;
 
     @Autowired
     private CarBrandService carBrandService;
@@ -99,6 +103,58 @@ public class AdEndPoint {
         System.out.println("zavrsio request");
         return response;
 
-}
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getStatisticRequest")
+    @ResponsePayload
+    public GetStatisticResponse getStatistic(@RequestPayload GetStatisticRequest request) {
+        System.out.println("Soap request");
+//
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        CustomPrincipal cp = (CustomPrincipal) auth.getPrincipal();
+        if(request.getType().equals("rate")) {
+            List<StatisticDTO> statisticDTOList = this.adService.getBestRate(request.getIdUser());
+            GetStatisticResponse response = new GetStatisticResponse();
+            for (StatisticDTO stat : statisticDTOList) {
+                com.advertisement.soap.code.StatisticDTO statSoap = new com.advertisement.soap.code.StatisticDTO();
+                statSoap.setCarName(stat.getCarName());
+                statSoap.setRate(stat.getRate());
+                response.getStatistics().add(statSoap);
+            }
+
+            System.out.println("zavrsio request");
+            return response;
+        } else if(request.getType().equals("comment")) {
+            List<StatisticDTO> statisticDTOList = this.adService.getMostComment(request.getIdUser());
+            GetStatisticResponse response = new GetStatisticResponse();
+            for(StatisticDTO stat: statisticDTOList)
+            {
+                com.advertisement.soap.code.StatisticDTO statSoap = new com.advertisement.soap.code.StatisticDTO();
+                statSoap.setCarName(stat.getCarName());
+                statSoap.setComment(stat.getComment());
+                response.getStatistics().add(statSoap);
+            }
+
+            System.out.println("zavrsio request");
+            return response;
+        } else {
+            List<StatisticDTO> statisticDTOList = this.adService.getMostKm(request.getIdUser());
+            GetStatisticResponse response = new GetStatisticResponse();
+            for(StatisticDTO stat: statisticDTOList)
+            {
+                com.advertisement.soap.code.StatisticDTO statSoap = new com.advertisement.soap.code.StatisticDTO();
+                statSoap.setCarName(stat.getCarName());
+                statSoap.setKm(stat.getKm());
+                response.getStatistics().add(statSoap);
+            }
+
+            System.out.println("zavrsio request");
+            return response;
+
+        }
+
+    }
+
+
 
 }

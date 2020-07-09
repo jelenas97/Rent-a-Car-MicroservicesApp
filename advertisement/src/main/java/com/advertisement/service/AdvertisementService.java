@@ -1,5 +1,6 @@
 package com.advertisement.service;
 import com.advertisement.dto.SearchDTO;
+import com.advertisement.dto.StatisticDTO;
 import com.advertisement.model.Advertisement;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface AdvertisementService {
     int findAllCount(Long ownerId);
     Advertisement find(Long id);
     String getRentRequestsCarClass(Long id);
+
+    List<StatisticDTO> getMostComment(Long id);
+
+    List<StatisticDTO> getMostKm(Long id);
+
+    List<StatisticDTO> getBestRate(Long id);
 }

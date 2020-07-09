@@ -12,4 +12,6 @@ public interface RequestsHolderService {
 
     List<com.rent.soap.code.RequestsHolder> getAllPendingSoap(Long id);
     RequestsHolder findById(Long id);
+
+    List<RequestsHolderDTO> getRequestHolders(Long id);
 }

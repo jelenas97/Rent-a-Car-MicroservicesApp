@@ -42,4 +42,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     Advertisement findByCarId(Long id);
 
+    @Query(value = "select a.car.id from Advertisement a where a.id = ?1 ")
+    Long getCarId(Long id);
 }

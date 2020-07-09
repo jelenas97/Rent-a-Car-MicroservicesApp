@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:tns="http://localhost:8087/microservices/messages" targetNamespace="http://localhost:8087/microservices/messages" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="Messages">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long" minOccurs="0"/>
+      <xs:element name="rentRequestId" type="xs:long" minOccurs="0"/>
+      <xs:element name="content" type="xs:string" minOccurs="0"/>
+      <xs:element name="date" type="xs:string" minOccurs="0"/>
+      <xs:element name="senderId" type="xs:long" minOccurs="0"/>
+      <xs:element name="recepientId" type="xs:long" minOccurs="0"/>
+      <xs:element name="seen" type="xs:boolean" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="postMessageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:long" name="idMessage"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="postMessageRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="message" type="tns:Messages"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMessageRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="userId" type="xs:long" minOccurs="0"/>
+        <xs:element name="rentRequestId" type="xs:long" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getMessageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="message" type="tns:Messages" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

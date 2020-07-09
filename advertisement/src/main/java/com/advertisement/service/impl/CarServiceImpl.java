@@ -25,6 +25,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void add(Car car) {
         car.setName(car.getCarBrand() + " " + car.getCarModel());
+        car.setRate(0.0);
         carRepository.save(car);
         saveImagesLocal(car.getImageGallery(), car);
     }
@@ -61,7 +62,7 @@ public class CarServiceImpl implements CarService {
     public CarDTO findById(String id) {
         Long carId = Long.parseLong(id);
         Car car = this.carRepository.findById(carId).orElse(null);
-        car = loadImages(car);
+        car = loadImagesLocally(car);
 
         Advertisement a= advertisementRepository.findByCarId(carId);
         CarDTO carDTO = new CarDTO(car, a);
@@ -71,6 +72,26 @@ public class CarServiceImpl implements CarService {
 
     private Car loadImages(Car car) {
         String resourceFile = "images/" + car.getId() + ".txt";
+        car.setImageGallery(new ArrayList<String>());
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                car.getImageGallery().add(line);
+                line = bufferedReader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            // Exception handling
+        } catch (IOException e) {
+            // Exception handling
+        }
+
+        return car;
+    }
+
+    private Car loadImagesLocally(Car car) {
+        String rootPath = System.getProperty("user.dir");
+        String resourceFile = rootPath + "\\advertisement\\images\\" + car.getId() + ".txt";
         car.setImageGallery(new ArrayList<String>());
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(resourceFile))) {

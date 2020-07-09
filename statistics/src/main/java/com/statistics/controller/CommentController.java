@@ -78,7 +78,7 @@ public class CommentController {
 
     @GetMapping(value="/{id}", produces="application/json")
     //@PreAuthorize("hasAnyAuthority('ROLE_CLIENT','ROLE_AGENT')")
-    @PermitAll
+    //@PermitAll
     public ResponseEntity<?> getProcessedAdvertisementComments(@PathVariable Long id){
 
         try {
