@@ -53,6 +53,14 @@ zuul:
       path: /auth/**
       stripPrefix: false
       serviceId: authentication
+    authentication_agent:
+      path: /agent/**
+      stripPrefix: false
+      serviceId: authentication
+    authentication_registerRequest:
+      path: /registerRequest/**
+      stripPrefix: false
+      serviceId: authentication
     rent_rentRequest:
       path: /rentRequest/**
       stripPrefix: false
