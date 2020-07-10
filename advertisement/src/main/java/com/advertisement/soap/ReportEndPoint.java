@@ -1,12 +1,16 @@
 package com.advertisement.soap;
 
+import com.advertisement.dto.CarDTO;
+import com.advertisement.model.Advertisement;
+import com.advertisement.model.Report;
 import com.advertisement.model.Term;
+import com.advertisement.service.AdvertisementService;
+import com.advertisement.service.CarService;
+import com.advertisement.service.ReportService;
 import com.advertisement.service.TermService;
-import com.advertisement.soap.code.AdvertisementDTO;
-import com.advertisement.soap.code.GetAllAgentsRentedTermsRequest;
-import com.advertisement.soap.code.GetAllAgentsRentedTermsResponse;
-import com.advertisement.soap.code.TermDTO;
+import com.advertisement.soap.code.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
@@ -18,11 +22,21 @@ import java.util.List;
 public class ReportEndPoint {
 
     @Autowired
+    private CarService carService;
+
+    @Autowired
     private TermService termService;
+
+    @Autowired
+    private ReportService reportService;
+
+    @Autowired
+    private AdvertisementService advertisementService;
+
 
     private static final String NAMESPACE_URI = "http://localhost:8084/advertisement";
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllAgentsRented")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllAgentsRentedTermsRequest")
     @ResponsePayload
     public GetAllAgentsRentedTermsResponse getAllAgentsRentedTerms(@RequestPayload GetAllAgentsRentedTermsRequest request) {
         System.out.println("Soap request");
@@ -37,12 +51,14 @@ public class ReportEndPoint {
             termDTO.setEndDate(t.getEndDate().toString());
 
             AdvertisementDTO advertisementDTO = new AdvertisementDTO();
-            advertisementDTO.setId(t.getAdvertisement().getId());
-            advertisementDTO.setName(t.getAdvertisement().getCar().getName());
-            advertisementDTO.setCarBrand(t.getAdvertisement().getCar().getCarBrand().getName());
-            advertisementDTO.setModel(t.getAdvertisement().getCar().getCarModel().getName());
-            advertisementDTO.setStartDate(t.getAdvertisement().getStartDate().toString());
-            advertisementDTO.setEndDate(t.getAdvertisement().getEndDate().toString());
+
+            Advertisement advertisement = advertisementService.find(t.getAdvertisement().getId());
+            CarDTO car = carService.findById(advertisement.getCar().getId().toString());
+
+            advertisementDTO.setId(advertisement.getId());
+            advertisementDTO.setCarBrand(car.getCarBrand());
+            advertisementDTO.setModel(car.getCarModel());
+            advertisementDTO.setName(car.getName());
 
             termDTO.setAdvertisement(advertisementDTO);
 
@@ -50,9 +66,36 @@ public class ReportEndPoint {
 
         }
 
-        System.out.println("POYYYY");
         return response;
 
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "postReportRequest")
+    @ResponsePayload
+    public PostReportResponse save(@RequestPayload PostReportRequest postReportRequest) {
+
+        Advertisement advertisement = advertisementService.find(postReportRequest.getAdvertisementId());
+        Term term = termService.findById(postReportRequest.getTermId());
+        term.setReportWritten(true);
+        term.setAdvertisement(advertisement);
+        termService.save(term);
+
+        PostReportResponse postReportResponse = new PostReportResponse();
+        Report report = new Report();
+
+        report.setDescription(postReportRequest.getDescription());
+        report.setKilometers(postReportRequest.getKilometers());
+        report.setAdvertisement(advertisement);
+        report.setTerm(term);
+
+        ResponseEntity responseEntity = reportService.save(report);
+        Report postedReport = (Report) responseEntity.getBody();
+
+        postReportResponse.setReportId(postedReport.getId());
+        postReportResponse.setAdvertisementId(postedReport.getAdvertisement().getId());
+        postReportResponse.setTermId(postedReport.getTerm().getId());
+
+        return postReportResponse;
     }
 
 }
