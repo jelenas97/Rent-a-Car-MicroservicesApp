@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="kilometers" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="termId" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="advertisementId" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,7 +33,9 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "kilometers",
-    "description"
+    "description",
+    "termId",
+    "advertisementId"
 })
 @XmlRootElement(name = "postReportRequest", namespace = "http://localhost:8084/advertisement")
 public class PostReportRequest {
@@ -40,6 +44,10 @@ public class PostReportRequest {
     protected int kilometers;
     @XmlElement(namespace = "http://localhost:8084/advertisement", required = true)
     protected String description;
+    @XmlElement(namespace = "http://localhost:8084/advertisement")
+    protected long termId;
+    @XmlElement(namespace = "http://localhost:8084/advertisement")
+    protected long advertisementId;
 
     /**
      * Gets the value of the kilometers property.
@@ -79,6 +87,38 @@ public class PostReportRequest {
      */
     public void setDescription(String value) {
         this.description = value;
+    }
+
+    /**
+     * Gets the value of the termId property.
+     * 
+     */
+    public long getTermId() {
+        return termId;
+    }
+
+    /**
+     * Sets the value of the termId property.
+     * 
+     */
+    public void setTermId(long value) {
+        this.termId = value;
+    }
+
+    /**
+     * Gets the value of the advertisementId property.
+     * 
+     */
+    public long getAdvertisementId() {
+        return advertisementId;
+    }
+
+    /**
+     * Sets the value of the advertisementId property.
+     * 
+     */
+    public void setAdvertisementId(long value) {
+        this.advertisementId = value;
     }
 
 }

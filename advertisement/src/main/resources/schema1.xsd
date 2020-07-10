@@ -180,6 +180,8 @@
             <xs:sequence>
                 <xs:element name="kilometers" type="xs:int"/>
                 <xs:element name="description" type="xs:string"/>
+                <xs:element type="xs:long" name="termId"/>
+                <xs:element type="xs:long" name="advertisementId"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
