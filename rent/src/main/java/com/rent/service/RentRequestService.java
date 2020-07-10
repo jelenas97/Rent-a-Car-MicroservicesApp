@@ -18,6 +18,8 @@ public interface RentRequestService {
 
     List<RentRequestDTO> getCancelableRentRequests(long id);
 
+    List<RentRequestDTO> getPaidRentRequests(long id);
+
     void changeStatus(Long id, String status);
 
     List<RentRequest> findPending(Long id, LocalDateTime startDate, LocalDateTime endDate);
@@ -41,4 +43,6 @@ public interface RentRequestService {
     void sendRequest(RequestsHolderDTO holderDTO);
 
     RentRequestDTO getRentRequest(String id);
+
+    RentRequestDTO payRentRequest(long id);
 }

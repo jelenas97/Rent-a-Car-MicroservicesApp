@@ -2,10 +2,7 @@ package com.statistics.soap;
 
 import com.statistics.dto.CommentDTO;
 import com.statistics.service.CommentService;
-import com.statistics.soap.code.CommentRequest;
-import com.statistics.soap.code.CommentResponse;
-import com.statistics.soap.code.GetCommentRequest;
-import com.statistics.soap.code.GetCommentResponse;
+import com.statistics.soap.code.*;
 import com.statistics.soap.code.CommentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -50,6 +47,31 @@ public class StatisticsEndpoint {
         System.out.println("zavrsio request");
         return response;
 
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "commentOwnerRequest")
+    @ResponsePayload
+    public CommentOwnerResponse commentOwnerResponse(@RequestPayload CommentOwnerRequest request) {
+        System.out.println("Soap request");
+
+        CommentOwnerResponse response = new CommentOwnerResponse();
+
+        com.statistics.dto.CommentDTO commentDTO = new com.statistics.dto.CommentDTO();
+        commentDTO.setAdvertisement_id(request.getAdvertisementId());
+
+        LocalDate date = LocalDate.parse(request.getDate());
+
+        commentDTO.setDate(date);
+        commentDTO.setDateString(date.toString());
+        commentDTO.setContent(request.getContent());
+        commentDTO.setStatus(request.getStatus());
+        commentDTO.setCommenter_id(request.getCommenterId());
+        commentDTO.setCommenter(request.getCommenter());
+        long id = this.commentService.addCommentOwner(commentDTO);
+
+        response.setCommentId(id);
+
+        return response;
     }
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCommentRequest")

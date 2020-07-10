@@ -43,6 +43,29 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="commentOwnerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long" minOccurs="0"/>
+                <xs:element name="date" type="xs:string" minOccurs="0"/>
+                <xs:element name="dateString" type="xs:string" minOccurs="0"/>
+                <xs:element name="content" type="xs:string" minOccurs="0"/>
+                <xs:element name="status" type="xs:string" minOccurs="0"/>
+                <xs:element name="advertisement_id" type="xs:long" minOccurs="0"/>
+                <xs:element name="commenter_id" type="xs:long" minOccurs="0"/>
+                <xs:element name="commenter" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="commentOwnerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element type="xs:long" name="commentId"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="getCommentRequest">
         <xs:complexType>
             <xs:sequence>
