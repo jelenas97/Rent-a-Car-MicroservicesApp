@@ -14,6 +14,9 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
@@ -29,7 +32,7 @@ public class PhysicalRentEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "physicalRentRequest")
     @ResponsePayload
-    public PhysicalRentResponse physicalRentResponse(@RequestPayload PhysicalRentRequest request) {
+    public PhysicalRentResponse physicalRentResponse(@RequestPayload PhysicalRentRequest request) throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
         System.out.println("Soap request");
 
 

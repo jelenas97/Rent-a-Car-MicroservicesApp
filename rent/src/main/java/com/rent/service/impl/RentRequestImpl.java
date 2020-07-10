@@ -221,7 +221,7 @@ public class RentRequestImpl implements RentRequestService {
                 RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
                 if (request != null) {
                     this.rent(request);
-                    UserDTO userDTO = this.userClient.getUser(request.getSenderId());
+                    UserDTO userDTO = this.userClient.getUser(request.getSenderId().toString());
                     String accept = "Your request for reservation has been accepted";
                     EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
                     new ProducerRMQ(emailMessage.toString());
@@ -231,14 +231,14 @@ public class RentRequestImpl implements RentRequestService {
                 }
             } else {
                 this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
-                UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId());
+                UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId().toString());
                 String accept = "Your request for reservation has been rejected";
                 EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
                 new ProducerRMQ(emailMessage.toString());
             }
         } else {
             this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
-            UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId());
+            UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId().toString());
             String accept = "Your request for reservation has been rejected";
             EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
             new ProducerRMQ(emailMessage.toString());
@@ -267,7 +267,7 @@ public class RentRequestImpl implements RentRequestService {
                     dto = rentDTO;
                     if (request != null) {
                         this.rent(request);
-                        UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId());
+                        UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId().toString());
                         String accept = "Your request for bundle reservation has been accepted";
                         EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
                         new ProducerRMQ(emailMessage.toString());
@@ -281,7 +281,7 @@ public class RentRequestImpl implements RentRequestService {
                     this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
                     id = rentDTO.getSenderId();
                 }
-                UserDTO userDTO = this.userClient.getUser(id);
+                UserDTO userDTO = this.userClient.getUser(id.toString());
                 String accept = "Your request for bundle reservation has been rejected";
                 EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
                 new ProducerRMQ(emailMessage.toString());
@@ -292,7 +292,7 @@ public class RentRequestImpl implements RentRequestService {
                 this.changeStatus(r.getId(), RentRequestStatus.CANCELED.toString());
                 id = r.getSenderId();
             }
-            UserDTO userDTO = this.userClient.getUser(id);
+            UserDTO userDTO = this.userClient.getUser(id.toString());
             String accept = "Your request for bundle reservation has been rejected";
             EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
             new ProducerRMQ(emailMessage.toString());
@@ -342,12 +342,12 @@ public class RentRequestImpl implements RentRequestService {
                     this.changeStatus(id, "CANCELED");
 
                 }
-                UserDTO userDTO = this.userClient.getUser(request.getSenderId());
+                UserDTO userDTO = this.userClient.getUser(request.getSenderId().toString());
                 String accept = "Your request for bundle reservation has been rejected because other requests are accepted";
                 EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
                 new ProducerRMQ(emailMessage.toString());
             } else {
-                UserDTO userDTO = this.userClient.getUser(request.getSenderId());
+                UserDTO userDTO = this.userClient.getUser(request.getSenderId().toString());
                 String accept = "Your request for reservation has been rejected because other requests are accepted";
                 EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
                 new ProducerRMQ(emailMessage.toString());
