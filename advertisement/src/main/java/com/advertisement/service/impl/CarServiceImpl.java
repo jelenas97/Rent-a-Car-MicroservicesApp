@@ -6,7 +6,9 @@ import com.advertisement.model.Car;
 import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.repository.CarRepository;
 import com.advertisement.service.CarService;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -21,6 +23,9 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     private AdvertisementRepository advertisementRepository;
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Override
     public void add(Car car) {
@@ -107,6 +112,13 @@ public class CarServiceImpl implements CarService {
         }
 
         return car;
+    }
+
+    @RabbitListener(queues="${locationqueue}")
+    public void sendLocation(String message) {
+        System.out.println(message);
+        this.simpMessagingTemplate.convertAndSend("/socket-publisher" ,
+                message);
     }
 
 }
