@@ -38,6 +38,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PostReportRequest }
+     * 
+     */
+    public PostReportRequest createPostReportRequest() {
+        return new PostReportRequest();
+    }
+
+    /**
      * Create an instance of {@link PostAdRequest }
      * 
      */
@@ -62,6 +70,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PostReportResponse }
+     * 
+     */
+    public PostReportResponse createPostReportResponse() {
+        return new PostReportResponse();
+    }
+
+    /**
      * Create an instance of {@link GetStatisticResponse }
      * 
      */
@@ -78,6 +94,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetAllAgentsRentedTermsRequest }
+     * 
+     */
+    public GetAllAgentsRentedTermsRequest createGetAllAgentsRentedTermsRequest() {
+        return new GetAllAgentsRentedTermsRequest();
+    }
+
+    /**
      * Create an instance of {@link PostAdResponse }
      * 
      */
@@ -86,11 +110,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetAllAgentsRentedTermsResponse }
+     * 
+     */
+    public GetAllAgentsRentedTermsResponse createGetAllAgentsRentedTermsResponse() {
+        return new GetAllAgentsRentedTermsResponse();
+    }
+
+    /**
+     * Create an instance of {@link TermDTO }
+     * 
+     */
+    public TermDTO createTermDTO() {
+        return new TermDTO();
+    }
+
+    /**
      * Create an instance of {@link CarBrand }
      * 
      */
     public CarBrand createCarBrand() {
         return new CarBrand();
+    }
+
+    /**
+     * Create an instance of {@link Report }
+     * 
+     */
+    public Report createReport() {
+        return new Report();
     }
 
     /**
@@ -123,6 +171,14 @@ public class ObjectFactory {
      */
     public Term createTerm() {
         return new Term();
+    }
+
+    /**
+     * Create an instance of {@link AdvertisementDTO }
+     * 
+     */
+    public AdvertisementDTO createAdvertisementDTO() {
+        return new AdvertisementDTO();
     }
 
     /**
