@@ -90,7 +90,7 @@ public class RentRequestController {
     public ResponseEntity<?> processRequest(@PathVariable String confirm, @RequestBody RentRequestDTO rentDTO) {
         try {
             this.rentRequestService.processRequest(confirm, rentDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Processing request finished successfully");
+            return new ResponseEntity(null, HttpStatus.OK);
         } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
