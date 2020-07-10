@@ -18,18 +18,12 @@ public class AuthorityServiceImpl implements AuthorityService {
     private AuthorityRepository authorityRepository;
 
     @Override
-    public List<Authority> findById(Long id) {
-        Authority auth = this.authorityRepository.getOne(id);
-        List<Authority> auths = new ArrayList<>();
-        auths.add(auth);
-        return auths;
+    public Authority findById(Long id) {
+        return this.authorityRepository.getOne(id);
     }
 
     @Override
-    public List<Authority> findByName(String name) {
-        Authority auth = this.authorityRepository.findByName(name);
-        List<Authority> auths = new ArrayList<>();
-        auths.add(auth);
-        return auths;
+    public Authority findByName(String name) {
+        return this.authorityRepository.findByName(name);
     }
 }
