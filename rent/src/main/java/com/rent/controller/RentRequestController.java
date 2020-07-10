@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -62,7 +65,8 @@ public class RentRequestController {
         try {
             this.rentRequestService.processRequestsBundle(confirm, holderDTO);
             return new ResponseEntity(null, HttpStatus.OK);
-        } catch (NullPointerException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
@@ -74,7 +78,8 @@ public class RentRequestController {
         try {
             this.rentRequestService.processRequest(confirm, rentDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Processing request finished successfully");
-        } catch (NullPointerException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
@@ -86,7 +91,8 @@ public class RentRequestController {
         try {
             this.rentRequestService.physicalRent(rentDTO);
             return new ResponseEntity(null, HttpStatus.OK);
-        } catch (NullPointerException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
