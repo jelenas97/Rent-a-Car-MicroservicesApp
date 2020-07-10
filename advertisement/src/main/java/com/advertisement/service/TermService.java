@@ -15,4 +15,6 @@ public interface TermService {
     List<Term> getAllWithReports();
 
     void save(Term term);
+
+    Term findById(Long id);
 }
