@@ -5,10 +5,12 @@ import com.core.commands.ReserveCommand;
 import com.rent.client.AdvertisementClient;
 import com.rent.client.MessagesClient;
 import com.rent.client.StatisticsClient;
+import com.rent.client.UserClient;
 import com.rent.dto.*;
 import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
 import com.rent.model.RequestsHolder;
+import com.rent.rabbitmq.ProducerRMQ;
 import com.rent.repository.RentRequestRepository;
 import com.rent.service.RentRequestService;
 import com.rent.service.RequestsHolderService;
@@ -19,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,6 +45,9 @@ public class RentRequestImpl implements RentRequestService {
 
     @Autowired
     private StatisticsClient statisticsClient;
+
+    @Autowired
+    private UserClient userClient;
 
 
     @Autowired
@@ -105,6 +113,24 @@ public class RentRequestImpl implements RentRequestService {
     }
 
     @Override
+    public List<RentRequestDTO> getPaidRentRequests(long id) {
+
+        List<RentRequestDTO> paidList = new ArrayList<>();
+
+        List<RentRequestStatus> statuses = new ArrayList<>();
+        statuses.add(RentRequestStatus.PAID);
+        List<RentRequest> paidListR = rentRequestRepository.findBySenderIdAndRentRequestStatusIn(id, statuses);
+
+        for (RentRequest rr : paidListR) {
+
+            String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+            paidList.add(new RentRequestDTO(rr, 0, carClass));
+        }
+
+        return paidList;
+    }
+
+    @Override
     public void changeStatus(Long id, String status) {
         RentRequest rentRequest = this.rentRequestRepository.find(id);
         rentRequest.setRentRequestStatus(RentRequestStatus.valueOf(status));
@@ -140,7 +166,7 @@ public class RentRequestImpl implements RentRequestService {
     }
 
     @Override
-    public RentRequest physicalRent(RentRequestDTO rentDTO) {
+    public RentRequest physicalRent(RentRequestDTO rentDTO) throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
         System.out.println("Physical rent " + rentDTO);
         RequestsHolder holder = new RequestsHolder();
         holder.setBundle(false);
@@ -171,7 +197,19 @@ public class RentRequestImpl implements RentRequestService {
     }
 
     @Override
-    public void processRequest(String confirm, RentRequestDTO rentDTO) {
+    public RentRequestDTO payRentRequest(long id) {
+
+        RentRequest rr = this.rentRequestRepository.find(id);
+        rr.setRentRequestStatus(RentRequestStatus.PAID);
+        this.rentRequestRepository.save(rr);
+        String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+        RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
+
+        return rrDTO;
+    }
+
+    @Override
+    public void processRequest(String confirm, RentRequestDTO rentDTO) throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
         if (confirm.equals("YES")) {
             System.out.println(rentDTO);
             TermSearchDTO termSearchDTO = new TermSearchDTO(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
@@ -183,20 +221,32 @@ public class RentRequestImpl implements RentRequestService {
                 RentRequest request = this.rentRequestRepository.findById(rentDTO.getId()).orElse(null);
                 if (request != null) {
                     this.rent(request);
+                    UserDTO userDTO = this.userClient.getUser(request.getSenderId().toString());
+                    String accept = "Your request for reservation has been accepted";
+                    EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+                    new ProducerRMQ(emailMessage.toString());
                     List<RentRequest> rentRequests = this.findPending(rentDTO.getAdvertisementId(), rentDTO.getStartDateTime(), rentDTO.getEndDateTime());
                     System.out.println("Ove odbijam " + rentRequests);
                     this.automaticRejection(rentRequests);
                 }
             } else {
                 this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
+                UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId().toString());
+                String accept = "Your request for reservation has been rejected";
+                EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+                new ProducerRMQ(emailMessage.toString());
             }
         } else {
             this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
+            UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId().toString());
+            String accept = "Your request for reservation has been rejected";
+            EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+            new ProducerRMQ(emailMessage.toString());
         }
     }
 
     @Override
-    public void processRequestsBundle(String confirm, RequestsHolderDTO holderDTO) {
+    public void processRequestsBundle(String confirm, RequestsHolderDTO holderDTO) throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
         if (confirm.equals("YES")) {
             //true = nema preklapanja  u jednom terminu! Dodaj ih sve!
             //false = ima preklapanja u jednom/vise! Sve odbij!
@@ -217,19 +267,35 @@ public class RentRequestImpl implements RentRequestService {
                     dto = rentDTO;
                     if (request != null) {
                         this.rent(request);
+                        UserDTO userDTO = this.userClient.getUser(rentDTO.getSenderId().toString());
+                        String accept = "Your request for bundle reservation has been accepted";
+                        EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+                        new ProducerRMQ(emailMessage.toString());
                     }
                 }
                 List<RentRequest> rentRequests = this.findPending(dto.getAdvertisementId(), dto.getStartDateTime(), dto.getEndDateTime());
                 this.automaticRejection(rentRequests);
             } else {
+                Long id = 1L;
                 for (RentRequestDTO rentDTO : holderDTO.getRentRequests()) {
                     this.changeStatus(rentDTO.getId(), RentRequestStatus.CANCELED.toString());
+                    id = rentDTO.getSenderId();
                 }
+                UserDTO userDTO = this.userClient.getUser(id.toString());
+                String accept = "Your request for bundle reservation has been rejected";
+                EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+                new ProducerRMQ(emailMessage.toString());
             }
         } else {
+            Long id = 1L;
             for (RentRequestDTO r : holderDTO.getRentRequests()) {
                 this.changeStatus(r.getId(), RentRequestStatus.CANCELED.toString());
+                id = r.getSenderId();
             }
+            UserDTO userDTO = this.userClient.getUser(id.toString());
+            String accept = "Your request for bundle reservation has been rejected";
+            EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+            new ProducerRMQ(emailMessage.toString());
         }
     }
 
@@ -264,7 +330,7 @@ public class RentRequestImpl implements RentRequestService {
     }
 
 
-    public void automaticRejection(List<RentRequest> rentRequests) {
+    public void automaticRejection(List<RentRequest> rentRequests) throws NoSuchAlgorithmException, KeyManagementException, URISyntaxException {
         for (RentRequest request : rentRequests) {
             RequestsHolder holder = this.requestsHolderService.findById(request.getRequests().getId());
             if (holder.getBundle()) {
@@ -274,13 +340,21 @@ public class RentRequestImpl implements RentRequestService {
                 for (Long id : listIds) {
                     System.out.println("Ovo je bilo u bundle uklanjam!!!" + id);
                     this.changeStatus(id, "CANCELED");
+
                 }
+                UserDTO userDTO = this.userClient.getUser(request.getSenderId().toString());
+                String accept = "Your request for bundle reservation has been rejected because other requests are accepted";
+                EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+                new ProducerRMQ(emailMessage.toString());
             } else {
+                UserDTO userDTO = this.userClient.getUser(request.getSenderId().toString());
+                String accept = "Your request for reservation has been rejected because other requests are accepted";
+                EmailMessage emailMessage = new EmailMessage(userDTO.getEmail(), accept);
+                new ProducerRMQ(emailMessage.toString());
                 this.changeStatus(request.getId(), "CANCELED");
             }
         }
     }
-
     @Override
     public RentRequest findById(long id) {
         return rentRequestRepository.findById(id).orElse(null);

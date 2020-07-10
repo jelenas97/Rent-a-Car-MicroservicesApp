@@ -71,4 +71,9 @@ public class TermServiceImpl implements TermService {
         termRepository.save(term);
     }
 
+    @Override
+    public Term findById(Long id) {
+        return termRepository.findById(id).get();
+    }
+
 }

@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -44,6 +47,19 @@ public class RentRequestController {
         }
     }
 
+    @GetMapping(value = "/paid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
+    public ResponseEntity<List<RentRequestDTO>> getPaidRentRequests(@PathVariable String id) {
+        try {
+            return new ResponseEntity<>(rentRequestService.getPaidRentRequests(Long.parseLong(id)), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @PostMapping(produces = "application/json", consumes = "application/json")
     // @PreAuthorize("hasAuthority('ROLE_AGENT') and hasAuthority('ROLE_CLIENT')")
     @PermitAll
@@ -62,7 +78,8 @@ public class RentRequestController {
         try {
             this.rentRequestService.processRequestsBundle(confirm, holderDTO);
             return new ResponseEntity(null, HttpStatus.OK);
-        } catch (NullPointerException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
@@ -73,8 +90,9 @@ public class RentRequestController {
     public ResponseEntity<?> processRequest(@PathVariable String confirm, @RequestBody RentRequestDTO rentDTO) {
         try {
             this.rentRequestService.processRequest(confirm, rentDTO);
-            return ResponseEntity.status(HttpStatus.OK).body("Processing request finished successfully");
-        } catch (NullPointerException e) {
+            return new ResponseEntity(null, HttpStatus.OK);
+        } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
@@ -86,7 +104,8 @@ public class RentRequestController {
         try {
             this.rentRequestService.physicalRent(rentDTO);
             return new ResponseEntity(null, HttpStatus.OK);
-        } catch (NullPointerException e) {
+        } catch (NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error during processing request bundle");
         }
     }
@@ -112,6 +131,19 @@ public class RentRequestController {
     public ResponseEntity cancelRentRequest(@PathVariable long id){
         try{
             RentRequestDTO rrDTO = rentRequestService.cancelRentRequest(id);
+            return  new ResponseEntity(rrDTO, HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PutMapping("/pay/{id}")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
+    public ResponseEntity payRentRequest(@PathVariable long id){
+        try{
+            RentRequestDTO rrDTO = rentRequestService.payRentRequest(id);
             return  new ResponseEntity(rrDTO, HttpStatus.OK);
         }catch(Exception e){
             System.out.println(e);

@@ -180,8 +180,6 @@
             <xs:sequence>
                 <xs:element name="kilometers" type="xs:int"/>
                 <xs:element name="description" type="xs:string"/>
-                <xs:element type="xs:long" name="termId"/>
-                <xs:element type="xs:long" name="advertisementId"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -208,32 +206,6 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="termDTOS" type="tns:TermDTO" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="getStatisticResponse">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="statistics" type="tns:statisticDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:complexType name="statisticDTO">
-        <xs:sequence>
-            <xs:element type="xs:string" name="carName"/>
-            <xs:element type="xs:long" name="km"/>
-            <xs:element type="xs:double" name="rate"/>
-            <xs:element type="xs:long" name="comment"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:element name="getStatisticRequest">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element type="xs:long" name="idUser"/>
-                <xs:element type="xs:string" name="type"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
