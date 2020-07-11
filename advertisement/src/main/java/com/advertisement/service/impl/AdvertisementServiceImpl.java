@@ -9,10 +9,7 @@ import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.model.Advertisement;
 import com.advertisement.repository.AdvertisementRepository;
 import com.advertisement.repository.CarRepository;
-import com.advertisement.service.AdvertisementService;
-import com.advertisement.service.CarModelService;
-import com.advertisement.service.CarService;
-import com.advertisement.service.FuelTypeService;
+import com.advertisement.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +56,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Autowired
     private StatisticClient statisticClient;
 
+    @Autowired
+    private ReportService reportService;
+
     @Override
     public List<Advertisement> findAll() {
         LocalDate today = LocalDate.now();
@@ -87,10 +87,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             Predicate<Advertisement> byLimitMileage = ad -> ad.getKilometresLimit() >= dto.getLimitMileage();
             predicates.add(byLimitMileage);
         }
-        if (dto.getDmg() != null) {
+      /*  if (dto.getDmg() != null) {
             Predicate<Advertisement> byCwd = ad -> ad.getCdw() == dto.getDmg();
             predicates.add(byCwd);
-        }
+        }*/
         if (dto.getBrand() != null) {
             Predicate<Advertisement> byBrand = ad -> ad.getCar().getCarBrand().getName().equals(dto.getBrand());
             predicates.add(byBrand);
@@ -236,7 +236,13 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             Car car = this.carRepository.findById(idCar).orElse(null);
             StatisticDTO stat = new StatisticDTO();
             stat.setCarName(car.getName());
-            stat.setKm(Integer.toUnsignedLong(car.getMileage()));
+            Long km = 0l;
+            List<Report> reports =  this.reportService.findAllByAd(a.getId());
+            for(Report r : reports)
+            {
+                km += r.getKilometers();
+            }
+            stat.setKm(km);
             statistics.add(stat);
         }
         statistics.sort(Comparator.comparing(StatisticDTO::getKm).reversed());
@@ -245,18 +251,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public List<StatisticDTO> getBestRate(Long id) {
-        List<StatisticDTO> statistics = new ArrayList<StatisticDTO>();
+        List<StatisticDTO> statisticDTOList = new ArrayList<StatisticDTO>();
         List<Advertisement> ads = this.findAll(id);
-        for (Advertisement a : ads) {
-            Long idCar = this.advertisementRepository.getCarId(a.getId());
-            Car car = this.carRepository.findById(idCar).orElse(null);
-            StatisticDTO stat = new StatisticDTO();
-            stat.setCarName(car.getName());
-            stat.setRate(car.getRate());
-            statistics.add(stat);
+        for(Advertisement ad : ads)
+        {
+            double rate = 0.0;
+            RateDTO rates = this.statisticClient.getAverageAdvertisementRateFirst(ad.getId());
+            if(rates != null) {
+                rate = rates.getAverage_rate();
+            }
+            StatisticDTO statisticDTO = new StatisticDTO();
+            CarDTO car = this.carService.findById(this.getIdCar(ad.getId()));
+            statisticDTO.setCarName(car.getCarBrand() + ' ' + car.getCarModel());
+            statisticDTO.setRate(rate);
+            statisticDTOList.add(statisticDTO);
         }
-        statistics.sort(Comparator.comparing(StatisticDTO::getRate).reversed());
-        return statistics;
+        statisticDTOList.sort(Comparator.comparing(StatisticDTO::getRate).reversed());
+        return statisticDTOList;
+    }
+
+    @Override
+    public String getIdCar(Long id) {
+        Long idCar = this.advertisementRepository.getCarId(id);
+        return idCar.toString();
     }
 
     private List<Advertisement> loadImagesLocally(List<Advertisement> ads) {

@@ -25,4 +25,6 @@ public interface AdvertisementService {
     List<StatisticDTO> getMostKm(Long id);
 
     List<StatisticDTO> getBestRate(Long id);
+
+    String getIdCar(Long id);
 }

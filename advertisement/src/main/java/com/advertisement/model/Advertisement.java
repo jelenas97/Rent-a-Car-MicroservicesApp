@@ -34,9 +34,7 @@ public class Advertisement {
     @Column
     @XmlElement
     private String place;
-    @Column
-    @XmlElement
-    private Boolean cdw;
+
     @Column(name = "startDate", nullable = false)
     @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     @XmlElement
@@ -72,7 +70,6 @@ public class Advertisement {
                 ", priceList=" + priceList +
                 ", discount=" + discount +
                 ", place='" + place + '\'' +
-                ", cdw=" + cdw +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 '}';
