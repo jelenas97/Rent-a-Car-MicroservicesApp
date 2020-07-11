@@ -34,4 +34,9 @@ public class ReportServiceImpl implements ReportService {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public List<Report> findAllByAd(Long id) {
+        return this.reportRepository.findAllByAdId(id);
+    }
 }

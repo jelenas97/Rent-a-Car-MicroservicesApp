@@ -7,4 +7,6 @@ public interface CarService {
     void add(Car car);
 
     CarDTO findById(String id);
+
+    void sendLocation(String message);
 }
