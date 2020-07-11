@@ -117,3 +117,10 @@ insert into car_fuel_type(car_id, fuel_type_id)
 values (5, 2);
 insert into car_fuel_type(car_id, fuel_type_id)
 values (6, 1);
+
+
+insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (1, 0, '2020-07-05', 0, '2020-07-01');
+insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (1, 0, '2020-07-21', 0, '2020-07-10');
+insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (1, 0, '2020-06-05', 0, '2020-06-01');
+insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (2, 0, '2020-07-10', 0, '2020-07-05');
+insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (2, 0, '2020-06-05', 0, '2020-06-01');

@@ -42,7 +42,7 @@ zuul:
       stripPrefix: false
       serviceId: advertisement
     advertisement_pricelist:
-      path: /pricelist/**
+      path: /priceList/**
       stripPrefix: false
       serviceId: advertisement
     authentication_user:
@@ -51,6 +51,14 @@ zuul:
       serviceId: authentication
     authentication_auth:
       path: /auth/**
+      stripPrefix: false
+      serviceId: authentication
+    authentication_agent:
+      path: /agent/**
+      stripPrefix: false
+      serviceId: authentication
+    authentication_registerRequest:
+      path: /registerRequest/**
       stripPrefix: false
       serviceId: authentication
     rent_rentRequest:

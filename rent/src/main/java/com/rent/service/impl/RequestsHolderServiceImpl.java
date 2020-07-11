@@ -98,4 +98,15 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
     public RequestsHolder findById(Long id) {
         return this.requestsHolderRepository.find(id);
     }
+
+    @Override
+    public List<RequestsHolderDTO> getRequestHolders(Long id) {
+        List<RequestsHolderDTO> holders = this.getAllPending(id);
+        for (RequestsHolderDTO holder : holders) {
+            if (holder.getRentRequests().size() <= 1) {
+                holder.setBundle(false);
+            }
+        }
+        return holders;
+    }
 }

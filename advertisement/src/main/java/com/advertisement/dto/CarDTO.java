@@ -27,6 +27,7 @@ public class CarDTO {
     private String carModel;
     private Long advertisementId;
     private Long ownerId;
+    private String name;
 
     public CarDTO(Car car, Advertisement a) {
         this.id = car.getId();
@@ -41,5 +42,6 @@ public class CarDTO {
         this.carModel = car.getCarModel().getName();
         this.advertisementId= a.getId();
         this.ownerId=a.getOwnerId();
+        this.name = car.getName();
     }
 }

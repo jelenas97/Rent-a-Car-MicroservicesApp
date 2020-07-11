@@ -15,7 +15,7 @@ public interface UserService {
 
     User findByUsername(String username) throws UsernameNotFoundException;
 
-    User save(UserDTO userDTO);
+    User save(User user);
 
     User findById(Long id);
 

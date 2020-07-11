@@ -15,7 +15,6 @@ import java.util.List;
 
 
 @Service
-@Transactional
 public class TermServiceImpl implements TermService {
     @Autowired
     private TermRepository termRepository;
@@ -70,6 +69,11 @@ public class TermServiceImpl implements TermService {
     @Override
     public void save(Term term) {
         termRepository.save(term);
+    }
+
+    @Override
+    public Term findById(Long id) {
+        return termRepository.findById(id).get();
     }
 
 }
