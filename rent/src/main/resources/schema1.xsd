@@ -16,7 +16,16 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:element name="getRentRequestRequest">
+    <xs:complexType name="RequestsHolderDTO">
+        <xs:sequence>
+            <xs:element name="rentRequests" type="tns:RentRequest" nillable="true" minOccurs="0"
+                        maxOccurs="unbounded"/>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="bundle" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getRentRequestRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="rentRequestId" type="xs:long" minOccurs="0"/>
@@ -31,5 +40,23 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+
+    <xs:element name="getRequestHoldersRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRequestHoldersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="requestsHolder" type="tns:RequestsHolderDTO" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
 </xs:schema>
 

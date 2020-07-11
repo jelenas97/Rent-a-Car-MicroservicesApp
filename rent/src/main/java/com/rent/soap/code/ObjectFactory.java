@@ -8,6 +8,7 @@
 
 package com.rent.soap.code;
 
+
 import javax.xml.bind.annotation.XmlRegistry;
 
 
@@ -31,14 +32,12 @@ public class ObjectFactory {
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: soapkodenesto
-     * 
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link PhysicalRentRequest }
-     *
      */
     public PhysicalRentRequest createPhysicalRentRequest() {
         return new PhysicalRentRequest();
@@ -46,7 +45,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PhysicalRentResponse }
-     *
      */
     public PhysicalRentResponse createPhysicalRentResponse() {
         return new PhysicalRentResponse();
@@ -54,7 +52,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RentRequests }
-     *
      */
     public RentRequests createRentRequests() {
         return new RentRequests();
@@ -62,14 +59,13 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RequestsHolder }
-     *
      */
     public RequestsHolder createRequestsHolder() {
         return new RequestsHolder();
     }
+
     /**
      * Create an instance of {@link GetRentRequestRequest }
-     *
      */
     public GetRentRequestRequest createGetRentRequestRequest() {
         return new GetRentRequestRequest();
@@ -77,7 +73,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link GetRentRequestResponse }
-     *
      */
     public GetRentRequestResponse createGetRentRequestResponse() {
         return new GetRentRequestResponse();
@@ -85,10 +80,32 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link RentRequest }
-     *
      */
     public RentRequest createRentRequest() {
         return new RentRequest();
     }
+
+    public GetRequestHoldersResponse createGetRequestHoldersResponse() {
+        return new GetRequestHoldersResponse();
+    }
+
+    /**
+     * Create an instance of {@link RequestsHolderDTO }
+     */
+    public RequestsHolderDTO createRequestsHolderDTO() {
+        return new RequestsHolderDTO();
+    }
+
+    /**
+     * Create an instance of {@link GetRentRequestResponse }
+     *
+     */
+    /**
+     * Create an instance of {@link GetRequestHoldersRequest }
+     */
+    public GetRequestHoldersRequest createGetRequestHoldersRequest() {
+        return new GetRequestHoldersRequest();
+    }
+
 
 }

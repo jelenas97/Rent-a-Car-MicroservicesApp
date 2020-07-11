@@ -6,9 +6,8 @@ import com.rent.dto.RequestsHolderDTO;
 import com.rent.model.RentRequest;
 import com.rent.model.RequestsHolder;
 import com.rent.repository.RequestsHolderRepository;
+import com.rent.service.RentRequestService;
 import com.rent.service.RequestsHolderService;
-import com.rent.soap.code.RentRequestStatus;
-import com.rent.soap.code.RentRequests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,9 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
 
     @Autowired
     private AdvertisementClient advertisementClient;
+
+    @Autowired
+    private RentRequestService rentRequestService;
 
     @Override
     public RequestsHolder save(RequestsHolder requestsHolder) {
@@ -55,7 +57,7 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
     }
 
     @Override
-    public List<com.rent.soap.code.RequestsHolder> getAllPendingSoap(Long id) {
+    public List<com.rent.soap.code.RequestsHolderDTO> getAllPendingSoap(Long id) {
 
         List<AdvertisementDTO> advertisements = this.advertisementClient.getUserAdvertisements(id);
         List<Long> ads = new ArrayList<>();
@@ -63,26 +65,23 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
             ads.add(ad.getId());
         }
         List<RequestsHolder> holders = this.requestsHolderRepository.getAllPending(ads);
-        List<com.rent.soap.code.RequestsHolder> holdersSoap = new ArrayList<>();
+        List<com.rent.soap.code.RequestsHolderDTO> holdersSoap = new ArrayList<>();
 
         for (RequestsHolder holder : holders) {
-            com.rent.soap.code.RequestsHolder newH = new com.rent.soap.code.RequestsHolder();
+            com.rent.soap.code.RequestsHolderDTO newH = new com.rent.soap.code.RequestsHolderDTO();
 
             newH.setId(holder.getId());
             newH.setBundle(holder.getBundle());
-            for (RentRequest rent : holder.getRentRequests()) {
-                RentRequests soapReq = new RentRequests();
+            List<RentRequest> holderRequests = this.rentRequestService.getHolderRequests(holder.getId());
+            for (RentRequest rent : holderRequests) {
+                com.rent.soap.code.RentRequest soapReq = new com.rent.soap.code.RentRequest();
                 soapReq.setId(rent.getId());
-                soapReq.setVersion(rent.getVersion());
                 soapReq.setEndDateTime(rent.getEndDateTime().toString());
                 soapReq.setStartDateTime(rent.getStartDateTime().toString());
                 com.rent.enumerations.RentRequestStatus rentRequestStatus = rent.getRentRequestStatus();
-                RentRequestStatus statusSoap = RentRequestStatus.valueOf(rentRequestStatus.toString());
-                soapReq.setRentRequestStatus(statusSoap);
+                soapReq.setRentRequestStatus(rentRequestStatus.toString());
                 soapReq.setSenderId(rent.getSenderId());
                 soapReq.setAdvertisementId(rent.getAdvertisementId());
-                soapReq.setCreated(rent.getCreated().toString());
-                soapReq.setRequests(newH);
 
                 newH.getRentRequests().add(soapReq);
             }

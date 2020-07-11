@@ -2,8 +2,7 @@ package com.rent.soap;
 
 import com.rent.dto.RentRequestDTO;
 import com.rent.service.RentRequestService;
-import com.rent.soap.code.GetRentRequestRequest;
-import com.rent.soap.code.GetRentRequestResponse;
+import com.rent.service.RequestsHolderService;
 import com.rent.soap.code.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -11,7 +10,6 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Endpoint
@@ -21,6 +19,9 @@ public class RentEndPoint {
 
     @Autowired
     private RentRequestService rentRequestService;
+
+    @Autowired
+    private RequestsHolderService requestsHolderService;
 
 
 
@@ -33,8 +34,7 @@ public class RentEndPoint {
 
         GetRentRequestResponse response = new GetRentRequestResponse();
 
-        for(RentRequestDTO rrDTO : rentRequests)
-        {
+        for(RentRequestDTO rrDTO : rentRequests) {
             RentRequest rr = new RentRequest();
             rr.setAdvertisementId(rrDTO.getAdvertisementId());
             rr.setEndDateString(rrDTO.getEndDateString());
@@ -50,6 +50,21 @@ public class RentEndPoint {
 
 
         System.out.println("zavrsio request");
+        return response;
+
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getRequestHoldersRequest")
+    @ResponsePayload
+    public GetRequestHoldersResponse getRequestHoldersResponse(@RequestPayload GetRequestHoldersRequest request) {
+
+        GetRequestHoldersResponse response = new GetRequestHoldersResponse();
+
+        List<com.rent.soap.code.RequestsHolderDTO> list = this.requestsHolderService.getAllPendingSoap(request.getId());
+
+        for (com.rent.soap.code.RequestsHolderDTO holderDTO : list) {
+            response.getRequestsHolder().add(holderDTO);
+        }
         return response;
 
     }
