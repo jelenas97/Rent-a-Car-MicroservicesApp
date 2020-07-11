@@ -62,4 +62,9 @@ public class UserController {
     public User user(Principal user) {
         return this.userService.findByUsername(user.getName());
     }
+
+    @PostMapping("/username")
+    public User userByUsername(@RequestBody String username) {
+        return this.userService.findByUsername(username);
+    }
 }
