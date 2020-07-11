@@ -32,4 +32,6 @@ public interface RentRequestRepository extends JpaRepository<RentRequest, Long> 
 
     @Query(value = "select t from RentRequest t where t.advertisementId in (?1) and t.rentRequestStatus='RESERVED'")
     List<RentRequest> findByOwnerIdAndStatus(List<Long> ids);
+    @Query(value = "select t from RentRequest t where t.requests.id = ?1 and t.rentRequestStatus='PENDING'")
+    List<RentRequest> getHolderRequests(Long id);
 }

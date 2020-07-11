@@ -82,7 +82,6 @@ public class RequestsHolderServiceImpl implements RequestsHolderService {
                 soapReq.setRentRequestStatus(rentRequestStatus.toString());
                 soapReq.setSenderId(rent.getSenderId());
                 soapReq.setAdvertisementId(rent.getAdvertisementId());
-
                 newH.getRentRequests().add(soapReq);
             }
 

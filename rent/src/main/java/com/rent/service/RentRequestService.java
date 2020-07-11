@@ -46,5 +46,5 @@ public interface RentRequestService {
 
     RentRequestDTO payRentRequest(long id);
 
-    List<RentRequest> getHolderRequests(Long hold)
+    List<RentRequest> getHolderRequests(Long hold);
 }

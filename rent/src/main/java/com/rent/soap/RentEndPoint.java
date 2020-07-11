@@ -10,7 +10,11 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Endpoint
 public class RentEndPoint {
@@ -68,4 +72,79 @@ public class RentEndPoint {
         return response;
 
     }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "confirmRequestHolderRequest")
+    @ResponsePayload
+    public ConfirmRequestHolderResponse confirmHolder(@RequestPayload ConfirmRequestHolderRequest request) {
+
+        com.rent.dto.RequestsHolderDTO holderDTO = new com.rent.dto.RequestsHolderDTO();
+        holderDTO.setBundle(request.getRequestsHolder().isBundle());
+        holderDTO.setId(request.getRequestsHolder().getId());
+        Set<RentRequestDTO> lista = new HashSet<RentRequestDTO>();
+
+        for(RentRequest rr : request.getRequestsHolder().getRentRequests())
+        {
+            RentRequestDTO rrDto = new RentRequestDTO();
+            rrDto.setAdvertisementId(rr.getAdvertisementId());
+            rrDto.setCars(rr.getCars());
+            rrDto.setId(rr.getId());
+            rrDto.setEndDateString(rr.getEndDateString());
+            rrDto.setStartDateString(rr.getStartDateString());
+            rrDto.setEndDateTime(LocalDateTime.parse(rr.getEndDateTime()));
+            rrDto.setStartDateTime(LocalDateTime.parse(rr.getStartDateTime()));
+            rrDto.setNumberOfUnseen(rr.getNumberOfUnseen());
+            rrDto.setRentRequestStatus(rr.getRentRequestStatus());
+            rrDto.setSenderId(rr.getSenderId());
+
+            lista.add(rrDto);
+
+        }
+        holderDTO.setRentRequests(lista);
+        try {
+            this.rentRequestService.processRequestsBundle(request.getConfirm(), holderDTO);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        ConfirmRequestHolderResponse response = new ConfirmRequestHolderResponse();
+        response.setSuccess("success");
+        return response;
+
+    }
+
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "confirmRentRequestRequest")
+    @ResponsePayload
+    public ConfirmRentRequestResponse confirmRentRequest(@RequestPayload ConfirmRentRequestRequest request) {
+
+
+        RentRequestDTO rrDto = new RentRequestDTO();
+        rrDto.setAdvertisementId(request.getRequest().getAdvertisementId());
+        rrDto.setCars(request.getRequest().getCars());
+        rrDto.setId(request.getRequest().getId());
+        rrDto.setEndDateString(request.getRequest().getEndDateString());
+        rrDto.setStartDateString(request.getRequest().getStartDateString());
+        rrDto.setEndDateTime(LocalDateTime.parse(request.getRequest().getEndDateTime()));
+        rrDto.setStartDateTime(LocalDateTime.parse(request.getRequest().getStartDateTime()));
+        rrDto.setNumberOfUnseen(request.getRequest().getNumberOfUnseen());
+        rrDto.setRentRequestStatus(request.getRequest().getRentRequestStatus());
+        rrDto.setSenderId(request.getRequest().getSenderId());
+
+
+
+
+        try {
+            this.rentRequestService.processRequest(request.getConfirm(),rrDto);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        ConfirmRentRequestResponse response = new ConfirmRentRequestResponse();
+        response.setSuccess("success");
+        return response;
+
+    }
+
+
 }
