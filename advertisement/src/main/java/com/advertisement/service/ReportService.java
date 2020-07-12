@@ -12,4 +12,6 @@ public interface ReportService {
     ResponseEntity<?> save(Report report);
 
     List<Report> findAllByAd(Long id);
+
+    void extraPay(Report report);
 }

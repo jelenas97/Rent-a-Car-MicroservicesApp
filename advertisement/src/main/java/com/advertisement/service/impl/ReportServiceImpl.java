@@ -1,6 +1,10 @@
 package com.advertisement.service.impl;
 
+import com.advertisement.client.RentClient;
+import com.advertisement.dto.ExtraPayDTO;
+import com.advertisement.model.PriceList;
 import com.advertisement.model.Report;
+import com.advertisement.repository.PriceListRepository;
 import com.advertisement.repository.ReportRepository;
 import com.advertisement.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,12 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private ReportRepository reportRepository;
 
+    @Autowired
+    private PriceListRepository priceListRepository;
+
+    @Autowired
+    private RentClient rentClient;
+
     @Override
     public List<Report> findAll() {
         return reportRepository.findAll();
@@ -33,6 +43,21 @@ public class ReportServiceImpl implements ReportService {
             e.printStackTrace();
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public void extraPay(Report report){
+
+        ExtraPayDTO extraPayDTO = new ExtraPayDTO();
+        extraPayDTO.setStartDate(report.getTerm().getStartDate());
+        extraPayDTO.setEndDate(report.getTerm().getEndDate());
+        extraPayDTO.setAdvertisementId(report.getAdvertisement().getId());
+
+        PriceList priceList= priceListRepository.findByAdvertisementId(extraPayDTO.getAdvertisementId());
+        long input = priceList.getPricePerKm().longValue();
+        Long finalPrice = input * report.getKilometers();
+        extraPayDTO.setExtraPayPrice(finalPrice);
+        this.rentClient.addExtraPay(extraPayDTO);
     }
 
     @Override

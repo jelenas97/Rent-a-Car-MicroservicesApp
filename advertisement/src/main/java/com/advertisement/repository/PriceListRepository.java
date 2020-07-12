@@ -11,4 +11,6 @@ import java.util.List;
 public interface PriceListRepository extends JpaRepository<PriceList, Long> {
     @Query(value = "select p from PriceList p where p.creatorId=?1")
     List<PriceList> findByCreatorId(Long id);
+
+    PriceList findByAdvertisementId(Long id);
 }
