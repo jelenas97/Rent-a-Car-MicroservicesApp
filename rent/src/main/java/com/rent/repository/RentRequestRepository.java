@@ -38,4 +38,8 @@ public interface RentRequestRepository extends JpaRepository<RentRequest, Long> 
     List<RentRequest> findsarindugnaziv6(Long adv_id);
 
     List<RentRequest> findByStartDateTimeAndEndDateTimeAndAdvertisementId(LocalDateTime start, LocalDateTime end, Long adv_id);
+
+    @Query(value = "select t from RentRequest t where t.requests.id = ?1 and t.rentRequestStatus='PENDING'")
+    List<RentRequest> getHolderRequests(Long id);
+
 }

@@ -32,7 +32,7 @@ public class CarServiceImpl implements CarService {
         car.setName(car.getCarBrand() + " " + car.getCarModel());
         car.setRate(0.0);
         carRepository.save(car);
-        saveImagesLocal(car.getImageGallery(), car);
+        saveImages(car.getImageGallery(), car);
     }
 
 
@@ -67,7 +67,7 @@ public class CarServiceImpl implements CarService {
     public CarDTO findById(String id) {
         Long carId = Long.parseLong(id);
         Car car = this.carRepository.findById(carId).orElse(null);
-        car = loadImagesLocally(car);
+        car = loadImages(car);
 
         Advertisement a= advertisementRepository.findByCarId(carId);
         CarDTO carDTO = new CarDTO(car, a);

@@ -32,7 +32,6 @@ insert into rent_request(advertisement_id, sender_id,end_date_time , rent_reques
 values (1, 1,'2020-07-29T22:00', 'RESERVED', '2020-06-27T22:00', 1, 1, '2020-06-18T12:28:09.063');
 
 
-
 insert into rent_request(advertisement_id, sender_id,end_date_time , rent_request_status, start_date_time, requests_id,version, created)
 values (2, 1,'2020-07-19T22:00', 'PENDING', '2020-06-17T22:00', 2, 1, '2020-06-18T12:28:09.063');
 insert into rent_request(advertisement_id, sender_id,end_date_time , rent_request_status, start_date_time, requests_id,version, created)
@@ -41,9 +40,9 @@ insert into rent_request(advertisement_id, sender_id,end_date_time , rent_reques
 values (2, 1,'2020-08-04T22:00', 'PENDING', '2020-06-30T22:00',  2, 1, '2020-06-18T12:28:09.063');
 
 
-
 insert into rent_request(advertisement_id, sender_id,end_date_time , rent_request_status, start_date_time, requests_id,version, created)
 values (3, 1,'2020-08-26T22:00', 'PENDING', '2020-07-03T22:00', 2, 1, '2020-06-18T12:28:09.063');
+
 
 
 

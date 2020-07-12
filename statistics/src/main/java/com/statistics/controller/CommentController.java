@@ -13,7 +13,7 @@ import javax.annotation.security.PermitAll;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/comment", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "comment", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin("http://localhost:4200")
 public class CommentController {
 

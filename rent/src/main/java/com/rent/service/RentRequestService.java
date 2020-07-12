@@ -46,7 +46,11 @@ public interface RentRequestService {
     RentRequestDTO getRentRequest(String id);
 
     RentRequestDTO payRentRequest(long id);
+
     RentRequestDTO extraPayRentRequest(long id);
 
     void addExtraPay(ExtraPayDTO dto);
+
+    List<RentRequest> getHolderRequests(Long hold);
+
 }

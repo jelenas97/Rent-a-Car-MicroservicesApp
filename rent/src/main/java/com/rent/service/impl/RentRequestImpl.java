@@ -11,13 +11,13 @@ import com.rent.enumerations.RentRequestStatus;
 import com.rent.model.RentRequest;
 import com.rent.model.RequestsHolder;
 import com.rent.rabbitmq.ProducerRMQ;
-import com.rent.repository.RentRequestRepository;
 import com.rent.service.RentRequestService;
 import com.rent.service.RequestsHolderService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import com.rent.repository.*;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -229,6 +229,11 @@ public class RentRequestImpl implements RentRequestService {
         RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
 
         return rrDTO;
+
+    @Override
+    public List<RentRequest> getHolderRequests(Long hold) {
+        return this.rentRequestRepository.getHolderRequests(hold);
+
     }
 
     @Override
@@ -357,7 +362,8 @@ public class RentRequestImpl implements RentRequestService {
         for (RentRequest request : rentRequests) {
             RequestsHolder holder = this.requestsHolderService.findById(request.getRequests().getId());
             if (holder.getBundle()) {
-                List<Long> listIds = holder.getRentRequests().stream()
+                List<RentRequest> listReq = this.rentRequestRepository.getHolderRequests(holder.getId());
+                List<Long> listIds = listReq.stream()
                         .map(RentRequest::getId)
                         .collect(Collectors.toList());
                 for (Long id : listIds) {
