@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,13 +77,23 @@ public class RentRequestImpl implements RentRequestService {
         List<RentRequestDTO> historyList = new ArrayList<>();
 
         LocalDateTime dateTime = LocalDateTime.now();
+
+        List<RentRequestStatus> list = new ArrayList<>();
         RentRequestStatus status = RentRequestStatus.PAID;
-        List<RentRequest> historyListR = rentRequestRepository.findBySenderIdAndRentRequestStatusAndEndDateTimeLessThanEqual(id, status, dateTime);
+        RentRequestStatus status1 = RentRequestStatus.EXTRA_PAY;
+        list.add(status);
+        list.add(status1);
+
+        List<RentRequest> all = new ArrayList<>();
+        for(RentRequestStatus st : list){
+            List<RentRequest> historyListR = rentRequestRepository.findBySenderIdAndRentRequestStatusAndEndDateTimeLessThanEqual(id, st, dateTime);
+            all.addAll(historyListR);
+        }
 
         CommentAndRateDTO dto = statisticsClient.getCommentsAndRates(id);
 
-        System.out.println(historyListR);
-        for (RentRequest rr : historyListR) {
+        System.out.println(all);
+        for (RentRequest rr : all) {
 
             String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
             historyList.add(new RentRequestDTO(rr, dto, carClass));
@@ -198,6 +209,18 @@ public class RentRequestImpl implements RentRequestService {
 
     @Override
     public RentRequestDTO payRentRequest(long id) {
+
+        RentRequest rr = this.rentRequestRepository.find(id);
+        rr.setRentRequestStatus(RentRequestStatus.PAID);
+        this.rentRequestRepository.save(rr);
+        String carClass= advertisementClient.getRentRequestsCarClass(rr.getAdvertisementId());
+        RentRequestDTO rrDTO = new RentRequestDTO(rr, 0,carClass);
+
+        return rrDTO;
+    }
+
+    @Override
+    public RentRequestDTO extraPayRentRequest(long id) {
 
         RentRequest rr = this.rentRequestRepository.find(id);
         rr.setRentRequestStatus(RentRequestStatus.PAID);
@@ -395,6 +418,26 @@ public class RentRequestImpl implements RentRequestService {
         }
     }
 
+    @Override
+    public void addExtraPay(ExtraPayDTO dto){
+
+        LocalDateTime start = LocalDateTime.of(dto.getStartDate(), LocalTime.of(22, 0));
+        LocalDateTime end = LocalDateTime.of(dto.getEndDate(), LocalTime.of(22, 0));
+        Long id = dto.getAdvertisementId();
+        List<RentRequest> list2 = rentRequestRepository.findsarindugnaziv6(id);
+
+        for(RentRequest rentRequest : list2){
+            if(rentRequest.getStartDateTime().toString().equals(start.toString())){
+                if(rentRequest.getEndDateTime().toString().equals(end.toString())){
+                    rentRequest.setRentRequestStatus(RentRequestStatus.EXTRA_PAY);
+                    rentRequest.setExtraPay(dto.getExtraPayPrice());
+
+                    rentRequestRepository.save(rentRequest);
+
+                }
+            }
+        }
+    }
 
 
 }

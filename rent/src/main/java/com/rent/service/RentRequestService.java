@@ -1,5 +1,6 @@
 package com.rent.service;
 
+import com.rent.dto.ExtraPayDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.dto.RequestsHolderDTO;
 import com.rent.model.RentRequest;
@@ -45,4 +46,7 @@ public interface RentRequestService {
     RentRequestDTO getRentRequest(String id);
 
     RentRequestDTO payRentRequest(long id);
+    RentRequestDTO extraPayRentRequest(long id);
+
+    void addExtraPay(ExtraPayDTO dto);
 }

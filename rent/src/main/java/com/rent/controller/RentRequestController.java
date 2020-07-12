@@ -1,5 +1,6 @@
 package com.rent.controller;
 
+import com.rent.dto.ExtraPayDTO;
 import com.rent.dto.RentRequestDTO;
 import com.rent.dto.RequestsHolderDTO;
 import com.rent.service.RentRequestService;
@@ -151,5 +152,29 @@ public class RentRequestController {
         }
     }
 
+    @PutMapping("/extraPay/{id}")
+    //@PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PermitAll
+    public ResponseEntity extraPayRentRequest(@PathVariable long id){
+        try{
+            RentRequestDTO rrDTO = rentRequestService.extraPayRentRequest(id);
+            return  new ResponseEntity(rrDTO, HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/extraPay")
+    @PermitAll
+    public ResponseEntity addExtraPay(@RequestBody ExtraPayDTO dto){
+        try{
+            this.rentRequestService.addExtraPay(dto);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch(Exception e){
+            System.out.println(e);
+            return new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
 
 }

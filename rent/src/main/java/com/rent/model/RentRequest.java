@@ -71,6 +71,10 @@ public class RentRequest {
     @XmlElement
     private Long rateId;
 
+    @Column
+    @XmlElement
+    private Long extraPay;
+
 
     public RentRequest(RentRequestDTO requestDTO, Long senderId, Long advertisementId, RequestsHolder holder) {
         this.startDateTime = requestDTO.getStartDateTime();

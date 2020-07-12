@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -32,4 +33,9 @@ public interface RentRequestRepository extends JpaRepository<RentRequest, Long> 
 
     @Query(value = "select t from RentRequest t where t.advertisementId in (?1) and t.rentRequestStatus='RESERVED'")
     List<RentRequest> findByOwnerIdAndStatus(List<Long> ids);
+
+    @Query(value = "select t from RentRequest t where t.advertisementId=?1")
+    List<RentRequest> findsarindugnaziv6(Long adv_id);
+
+    List<RentRequest> findByStartDateTimeAndEndDateTimeAndAdvertisementId(LocalDateTime start, LocalDateTime end, Long adv_id);
 }
