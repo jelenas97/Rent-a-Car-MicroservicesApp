@@ -50,7 +50,7 @@ values ('2020-08-04T22:00', 'PENDING', '2020-06-30T22:00', 1, 2, 2, 1, '2020-06-
 
 insert into rent_request(end_date_time, rent_request_status, start_date_time, advertisement_id, requests_id, sender_id,
                          version, created)
-values ('2020-08-26T22:00', 'PENDING', '2020-07-03T22:00', 1, 3, 2, 1, '2020-06-18T12:28:09.063');
+values ('2020-08-26T22:00', 'RESERVED', '2020-07-03T22:00', 1, 3, 2, 1, '2020-06-18T12:28:09.063');
 
 
 
