@@ -124,3 +124,4 @@ insert into term (advertisement_id, canceled, end_date, report_written, start_da
 insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (1, 0, '2020-06-05', 0, '2020-06-01');
 insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (2, 0, '2020-07-10', 0, '2020-07-05');
 insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (2, 0, '2020-06-05', 0, '2020-06-01');
+insert into term (advertisement_id, canceled, end_date, report_written, start_date) values (2, 0, '2020-06-25', 0, '2020-06-20');
