@@ -1,5 +1,6 @@
 package com.advertisement.controller;
 
+import com.advertisement.dto.ExtraPayDTO;
 import com.advertisement.model.Report;
 import com.advertisement.model.Term;
 import com.advertisement.service.ReportService;
@@ -20,11 +21,15 @@ public class ReportController {
     @Autowired
     private TermService termService;
 
+    
     @PostMapping(consumes = "application/json")
     public void save(@RequestBody Report report) {
         Term term = report.getTerm();
         term.setReportWritten(true);
         term.setAdvertisement(report.getAdvertisement());
+
+        reportService.extraPay(report);
+
         termService.save(term);
         reportService.save(report);
     }
